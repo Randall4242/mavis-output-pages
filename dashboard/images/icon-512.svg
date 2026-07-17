@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="32" fill="#1e3a8a"/>
+  <g transform="translate(20, 30)" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="10,80 40,55 70,90 100,40 130,65"/>
+    <circle cx="10" cy="80" r="4" fill="white"/>
+    <circle cx="40" cy="55" r="4" fill="white"/>
+    <circle cx="70" cy="90" r="4" fill="white"/>
+    <circle cx="100" cy="40" r="4" fill="white"/>
+    <circle cx="130" cy="65" r="4" fill="white"/>
+  </g>
+  <text x="96" y="170" font-family="-apple-system, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">PORTFOLIO</text>
+</svg>
