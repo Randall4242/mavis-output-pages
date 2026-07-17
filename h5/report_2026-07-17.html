@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>盘后报告 2026-07-17</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0a0a; color: #e5e5e5;
+    padding: 16px; max-width: 720px; margin: 0 auto;
+    line-height: 1.55;
+  }
+  .header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+    padding: 20px; border-radius: 12px; margin-bottom: 16px;
+  }
+  .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .header .date { font-size: 13px; color: #c7d2fe; }
+  .section {
+    background: #171717; border-radius: 12px; padding: 16px; margin-bottom: 12px;
+  }
+  .section h2 {
+    font-size: 14px; font-weight: 700; color: #fbbf24;
+    margin-bottom: 12px; letter-spacing: 0.5px;
+  }
+  .hero-pnl {
+    text-align: center; padding: 24px 16px; border-radius: 12px;
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); margin-bottom: 12px;
+  }
+  .hero-pnl .label { font-size: 12px; color: #ffffffcc; }
+  .hero-pnl .value { font-size: 36px; font-weight: 800; color: #fff; margin: 8px 0; }
+  .hero-pnl .pct { font-size: 16px; color: #ffffffee; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 6px; text-align: left; border-bottom: 1px solid #262626; }
+  th { color: #9ca3af; font-weight: 600; font-size: 11px; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  /* A 股惯例: 红涨绿跌 — .red 表示涨/盈, .green 表示跌/亏 */
+  .red { color: #ef4444; font-weight: 600; }
+  .green { color: #10b981; font-weight: 600; }
+  .gray { color: #9ca3af; }
+  .holding-card {
+    background: #1f1f1f; border-radius: 8px; padding: 12px; margin-bottom: 8px;
+    border-left: 3px solid #ef4444;
+  }
+  .holding-card .name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .holding-card .row {
+    display: flex; justify-content: space-between; font-size: 12px;
+    color: #d1d5db; padding: 2px 0;
+  }
+  .holding-card .row .k { color: #9ca3af; }
+  .market-row {
+    display: flex; justify-content: space-between; padding: 6px 0;
+    border-bottom: 1px solid #262626;
+  }
+  .market-row .v { font-weight: 600; }
+  .chart {
+    background: #fff; border-radius: 8px; padding: 8px; margin: 8px 0;
+  }
+  .chart img { width: 100%; height: auto; border-radius: 4px; }
+  .insight {
+    background: #1c1917; border-left: 3px solid #f59e0b;
+    padding: 10px 12px; margin: 8px 0; border-radius: 4px;
+    font-size: 12px;
+  }
+  .insight b { color: #fbbf24; }
+  .footer {
+    text-align: center; color: #6b7280; font-size: 11px;
+    padding: 16px 0 8px;
+  }
+  .verified {
+    display: inline-block; background: #064e3b; color: #6ee7b7;
+    padding: 2px 8px; border-radius: 4px; font-size: 10px;
+  }
+  .degraded {
+    display: inline-block; background: #78350f; color: #fcd34d;
+    padding: 2px 8px; border-radius: 4px; font-size: 10px;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>📊 Mavis Stock Tracker · 每日盘后</h1>
+    <div class="date">2026-07-17 · 17:47</div>
+  </div>
+
+  
+        <div class="section">
+          <h2>🌐 大盘环境</h2>
+          <div class="market-row">
+            <span class="k">上证指数</span>
+            <span class="v">3764.15 <span class="green">(-3.05%)</span></span>
+          </div>
+          <div class="market-row">
+            <span class="k">深证成指</span>
+            <span class="v">13706.88 <span class="green">(-5.40%)</span></span>
+          </div>
+        </div>
+
+  <div class="hero-pnl">
+    <div class="label">总盈亏</div>
+    <div class="value">+0.00 元</div>
+    <div class="pct">+0.00%</div>
+  </div>
+
+  <div class="section">
+    <h2>💰 持仓明细</h2>
+    <p class='gray'>无持仓</p>
+  </div>
+
+  
+        <div class="section">
+          <h2>🚪 已清仓持仓 (2 只)</h2>
+          <div class="closed-total">累计实现 <b class="green">-12.00 元</b></div>
+          
+            <div class="holding-card closed">
+              <div class="name">港股创新药ETF <span class="green" style="font-size:13px;">-64 元</span>
+                <span class="gray" style="font-size:11px;">(清仓 2026-07-08)</span></div>
+              <div class="row"><span class="k">股数</span><span>0 股</span></div>
+              <div class="row"><span class="k">成本</span><span>1.481</span></div>
+              <div class="row"><span class="k">卖出价</span><span>1.465</span></div>
+              <div class="row"><span class="k">实现盈亏</span><span class="green">-64.00 元 (-1.08%)</span></div>
+              <div class="row"><span class="k">现金分红</span><span>无分红</span></div>
+            </div>
+            <div class="holding-card closed">
+              <div class="name">厦门国贸 <span class="red" style="font-size:13px;">+52 元</span>
+                <span class="gray" style="font-size:11px;">(清仓 2026-07-03)</span></div>
+              <div class="row"><span class="k">股数</span><span>400 股</span></div>
+              <div class="row"><span class="k">成本</span><span>5.550</span></div>
+              <div class="row"><span class="k">卖出价</span><span>5.560</span></div>
+              <div class="row"><span class="k">实现盈亏</span><span class="red">+52.00 元 (+2.34%)</span></div>
+              <div class="row"><span class="k">现金分红</span><span>+48 分红</span></div>
+            </div>
+        </div>
+
+  <div class="section">
+    <h2>📈 行情总览</h2>
+    
+    <table>
+      <thead><tr><th>标的</th><th class="num">现价</th><th class="num">涨跌</th>
+        <th class="num">换手</th><th class="num">PE(TTM)</th><th>验证</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  <div class="section">
+    <h2>🔍 多源验证</h2>
+    <p style="font-size:12px; color:#d1d5db;">多源对齐 0/0 · 单源一致 0/0 · 未通过 0/0<br>当前搜狐接口 DNS 解析失败, 降级为腾讯主源 + 内部一致性校验</p>
+  </div>
+
+  <div class="footer">
+    数据源: 腾讯 qt.gtimg.cn (主) · 天天基金 fundgz (ETF) · 恒生金融数据库 MCP (深度)<br>
+    生成于 2026-07-17 17:47:32 CST
+  </div>
+</body>
+</html>
