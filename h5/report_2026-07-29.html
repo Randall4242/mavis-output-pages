@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>盘后报告 2026-07-23</title>
+<title>盘后报告 2026-07-29</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -27,7 +27,7 @@
   }
   .hero-pnl {
     text-align: center; padding: 24px 16px; border-radius: 12px;
-    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); margin-bottom: 12px;
+    background: linear-gradient(135deg, #047857 0%, #064e3b 100%); margin-bottom: 12px;
   }
   .hero-pnl .label { font-size: 12px; color: #ffffffcc; }
   .hero-pnl .value { font-size: 36px; font-weight: 800; color: #fff; margin: 8px 0; }
@@ -42,7 +42,7 @@
   .gray { color: #9ca3af; }
   .holding-card {
     background: #1f1f1f; border-radius: 8px; padding: 12px; margin-bottom: 8px;
-    border-left: 3px solid #ef4444;
+    border-left: 3px solid #10b981;
   }
   .holding-card .name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
   .holding-card .row {
@@ -82,7 +82,7 @@
 <body>
   <div class="header">
     <h1>📊 Mavis Stock Tracker · 每日盘后</h1>
-    <div class="date">2026-07-23 · 17:45</div>
+    <div class="date">2026-07-29 · 16:21</div>
   </div>
 
   
@@ -90,23 +90,38 @@
           <h2>🌐 大盘环境</h2>
           <div class="market-row">
             <span class="k">上证指数</span>
-            <span class="v">3876.78 <span class="red">(+0.25%)</span></span>
+            <span class="v">3828.47 <span class="red">(+0.40%)</span></span>
           </div>
           <div class="market-row">
             <span class="k">深证成指</span>
-            <span class="v">14123.31 <span class="red">(+0.44%)</span></span>
+            <span class="v">13658.44 <span class="red">(+1.10%)</span></span>
           </div>
         </div>
 
   <div class="hero-pnl">
     <div class="label">总盈亏</div>
-    <div class="value">+0.00 元</div>
-    <div class="pct">+0.00%</div>
+    <div class="value">34.70 元</div>
+    <div class="pct">-0.19%</div>
   </div>
 
   <div class="section">
     <h2>💰 持仓明细</h2>
-    <p class='gray'>无持仓</p>
+    
+    <div class="holding-card">
+      <div class="name">金地集团 <span class="red" style="font-size:13px;">+42.60 元</span></div>
+      <div class="row"><span class="k">股数</span><span>600 股</span></div>
+      <div class="row"><span class="k">成本</span><span>2.199</span></div>
+      <div class="row"><span class="k">现价</span><span>2.270</span></div>
+      <div class="row"><span class="k">盈亏率</span><span class="red">+3.23%</span></div>
+    </div>
+
+    <div class="holding-card">
+      <div class="name">杉杉股份 <span class="green" style="font-size:13px;">-77.30 元</span></div>
+      <div class="row"><span class="k">股数</span><span>1300 股</span></div>
+      <div class="row"><span class="k">成本</span><span>13.129</span></div>
+      <div class="row"><span class="k">现价</span><span>13.070</span></div>
+      <div class="row"><span class="k">盈亏率</span><span class="green">-0.45%</span></div>
+    </div>
   </div>
 
   
@@ -140,7 +155,71 @@
     <table>
       <thead><tr><th>标的</th><th class="num">现价</th><th class="num">涨跌</th>
         <th class="num">换手</th><th class="num">PE(TTM)</th><th>验证</th></tr></thead>
-      <tbody></tbody>
+      <tbody>
+        <tr>
+          <td>沪深300<br><span class="gray" style="font-size:10px;">000300</span></td>
+          <td class="num">4600.26</td>
+          <td class="num red">+0.67%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>港股创新药ETF<br><span class="gray" style="font-size:10px;">513780</span></td>
+          <td class="num">1.52</td>
+          <td class="num red">+1.40%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>金地集团<br><span class="gray" style="font-size:10px;">600383</span></td>
+          <td class="num">2.27</td>
+          <td class="num red">+2.71%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>厦门国贸<br><span class="gray" style="font-size:10px;">600755</span></td>
+          <td class="num">5.83</td>
+          <td class="num red">+1.57%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>杉杉股份<br><span class="gray" style="font-size:10px;">600884</span></td>
+          <td class="num">13.07</td>
+          <td class="num red">+3.65%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>春秋航空<br><span class="gray" style="font-size:10px;">601021</span></td>
+          <td class="num">46.09</td>
+          <td class="num green">-0.07%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>中远海控<br><span class="gray" style="font-size:10px;">601919</span></td>
+          <td class="num">15.55</td>
+          <td class="num red">+0.78%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr>
+        <tr>
+          <td>联讯仪器<br><span class="gray" style="font-size:10px;">688808</span></td>
+          <td class="num">1788.14</td>
+          <td class="num green">-3.34%</td>
+          <td class="num">0.00%</td>
+          <td class="num">0.0</td>
+          <td><span class="verified">✅单源</span></td>
+        </tr></tbody>
     </table>
   </div>
 
@@ -154,12 +233,12 @@
 
   <div class="section">
     <h2>🔍 多源验证</h2>
-    <p style="font-size:12px; color:#d1d5db;">多源对齐 0/0 · 单源一致 0/0 · 未通过 0/0<br>当前搜狐接口 DNS 解析失败, 降级为腾讯主源 + 内部一致性校验</p>
+    <p style="font-size:12px; color:#d1d5db;">多源对齐 0/9 · 单源一致 9/9 · 未通过 0/9<br>当前搜狐接口 DNS 解析失败, 降级为腾讯主源 + 内部一致性校验</p>
   </div>
 
   <div class="footer">
     数据源: 腾讯 qt.gtimg.cn (主) · 天天基金 fundgz (ETF) · 恒生金融数据库 MCP (深度)<br>
-    生成于 2026-07-23 17:45:00 CST
+    生成于 2026-07-29 16:21:15 CST
   </div>
 </body>
 </html>
