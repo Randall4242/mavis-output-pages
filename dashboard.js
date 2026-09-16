@@ -69,7 +69,6 @@
       this.renderExcess(data);
       this.renderHoldings(data);
       this.renderClosed(data);
-      this.renderContribution(data);
       this.renderTradeSummary(data);
       this.renderTransactions(data);
       this.renderCharts(data);
@@ -152,13 +151,22 @@
       if (!container) return;
       container.innerHTML = list.map(h => {
         const loss = h.pnl_abs < 0;
+        // 单日字段可能为 null (新持仓 或 没有上一交易日数据)
+        const dailyRows = [];
+        if (h.change_pct != null) {
+          dailyRows.push(`<div class="row"><span class="k">今日涨跌</span><span class="${pnlClass(h.change_amount)}">${h.change_amount >= 0 ? '+' : ''}${h.change_amount.toFixed(3)} (${fmtPct(h.change_pct)})</span></div>`);
+        }
+        if (h.daily_pnl != null) {
+          dailyRows.push(`<div class="row"><span class="k">今日盈亏</span><span class="${pnlClass(h.daily_pnl)}">${fmtMoney(h.daily_pnl)}</span></div>`);
+        }
         return `
           <div class="holding-card ${loss ? 'loss' : ''}">
             <div class="name">${escapeHtml(h.name)} <span style="color:#9ca3af;font-weight:normal">(${h.code})</span></div>
             <div class="row"><span class="k">持仓</span><span>${h.shares.toLocaleString()} 股</span></div>
             <div class="row"><span class="k">成本</span><span>${h.cost.toFixed(3)}</span></div>
             <div class="row"><span class="k">现价</span><span>${h.close.toFixed(3)}</span></div>
-            <div class="row"><span class="k">盈亏</span><span class="${pnlClass(h.pnl_abs)}">${fmtMoney(h.pnl_abs)} (${fmtPct(h.pnl_pct)})</span></div>
+            ${dailyRows.join('\n            ')}
+            <div class="row"><span class="k">累计盈亏</span><span class="${pnlClass(h.pnl_abs)}">${fmtMoney(h.pnl_abs)} (${fmtPct(h.pnl_pct)})</span></div>
           </div>`;
       }).join('');
     },
@@ -183,22 +191,6 @@
           <div class="row"><span class="k">收回</span><span>${fmtMoneyAbs(c.recv_total)}</span></div>
           <div class="row"><span class="k">实现盈亏</span><span class="${pnlClass(c.realized_abs)}">${fmtMoney(c.realized_abs)} (${fmtPct(c.realized_pct)})</span></div>
         </div>`).join('');
-    },
-
-    renderContribution(data) {
-      const list = data.holdings || [];
-      const tbody = $('contribution-tbody');
-      if (!tbody) return;
-      tbody.innerHTML = list.map(h => `
-        <tr>
-          <td>${escapeHtml(h.name)}</td>
-          <td class="num">${h.shares.toLocaleString()}</td>
-          <td class="num">${h.cost.toFixed(3)}</td>
-          <td class="num">${h.close.toFixed(3)}</td>
-          <td class="num ${pnlClass(h.pnl_abs)}">${fmtMoney(h.pnl_abs)}</td>
-          <td class="num ${pnlClass(h.pnl_abs)}">${fmtPct(h.pnl_pct)}</td>
-          <td class="num ${h.contribution_pct >= 0 ? 'red' : 'green'}">${h.contribution_pct >= 0 ? '+' : ''}${h.contribution_pct.toFixed(1)}%</td>
-        </tr>`).join('');
     },
 
     renderTradeSummary(data) {
