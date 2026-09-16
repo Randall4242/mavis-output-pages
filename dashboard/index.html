@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>持仓 Dashboard · 2026-09-15</title>
+<title>持仓 Dashboard · —</title>
 <meta http-equiv="Cache-Control" content="no-cache">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,7 +29,7 @@
   }
   .hero-pnl {
     text-align: center; padding: 24px 16px; border-radius: 12px;
-    background: linear-gradient(135deg, #047857 0%, #064e3b 100%); margin-bottom: 12px;
+    background: var(--hero-bg); margin-bottom: 12px;
   }
   .hero-pnl .label { font-size: 12px; color: #ffffffcc; }
   .hero-pnl .value { font-size: 36px; font-weight: 800; color: #fff; margin: 8px 0; }
@@ -56,15 +56,27 @@
     color: #d1d5db; padding: 2px 0;
   }
   .holding-card .row .k { color: #9ca3af; }
-  .chart {
-    background: #fff; border-radius: 8px; padding: 8px; margin: 8px 0;
+  .chart-wrap {
+    background: #1f1f1f; border-radius: 8px; padding: 12px; margin: 8px 0;
+    min-height: 280px; position: relative;
   }
-  .chart img { width: 100%; height: auto; border-radius: 4px; display: block; }
-  .footer {
-    text-align: center; color: #6b7280; font-size: 11px;
-    padding: 20px 0 40px;
+  .chart-wrap canvas { width: 100% !important; max-height: 320px; }
+  .chart-loading {
+    color: #6b7280; font-size: 12px; text-align: center; padding: 24px;
   }
-  .footer a { color: #9ca3af; text-decoration: none; }
+
+  /* 加载占位 */
+  .skeleton {
+    background: linear-gradient(90deg, #1f1f1f 0%, #2a2a2a 50%, #1f1f1f 100%);
+    background-size: 200% 100%;
+    animation: skeleton 1.4s ease-in-out infinite;
+    border-radius: 4px;
+    color: transparent;
+  }
+  @keyframes skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 
   /* 刷新按钮 */
   .refresh-fab {
@@ -97,6 +109,12 @@
     max-width: 240px; line-height: 1.5;
   }
   .refresh-toast.show { opacity: 1; }
+
+  .footer {
+    text-align: center; color: #6b7280; font-size: 11px;
+    padding: 20px 0 40px;
+  }
+  .footer a { color: #9ca3af; text-decoration: none; }
 </style>
 
 <!-- PWA -->
@@ -106,342 +124,138 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="持仓 Dashboard">
 <link rel="apple-touch-icon" href="images/icon-192.svg">
+
+<!-- Chart.js (本地 vendor, 不走 CDN 保证 offline) -->
+<script src="vendor/chart.umd.min.js"></script>
 </head>
 <body>
 
 <div class="header">
   <h1 data-i18n="title">📊 持仓 Dashboard</h1>
-  <div class="date">2026-09-15 · 更新于 07:07</div>
+  <div class="date" id="header-date">加载中…</div>
 </div>
 
-<div class="hero-pnl" style="padding:16px">
+<!-- 三段式盈亏 (Hero) -->
+<div class="hero-pnl" id="hero-pnl" style="--hero-bg: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);">
   <div style="font-size:12px;color:#9ca3af;margin-bottom:8px;text-align:left">📊 三段式盈亏 (今日)</div>
 
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1)">
-    <div style="text-align:left">
-      <div style="font-size:11px;color:#ffffffaa"><span data-i18n="label1">① 持仓盈亏</span></div>
-      <div style="font-size:11px;color:#9ca3af"><span data-i18n="sublabel1">(持仓浮盈/亏)</span></div>
+  <div class="hero-row">
+    <div class="hero-label">
+      <div style="font-size:11px;color:#ffffffaa">① 持仓盈亏</div>
+      <div style="font-size:11px;color:#9ca3af">(持仓浮盈/亏)</div>
     </div>
-    <div style="text-align:right">
-      <div style="font-size:18px;font-weight:700;color:#fff">-2521.35 元</div>
-      <div style="font-size:12px;color:#ffffffee">-14.77%</div>
-    </div>
-  </div>
-
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1)">
-    <div style="text-align:left">
-      <div style="font-size:11px;color:#ffffffaa"><span data-i18n="label2">② 已实现盈亏</span></div>
-      <div style="font-size:11px;color:#9ca3af"><span data-i18n="sublabel2">(已落袋)</span></div>
-    </div>
-    <div style="text-align:right">
-      <div style="font-size:18px;font-weight:700;color:#fff">+596.20 元</div>
-      <div style="font-size:12px;color:#ffffffee">+2.61%</div>
+    <div class="hero-value">
+      <div class="hero-money" id="floating-abs">—</div>
+      <div class="hero-pct" id="floating-pct">—</div>
     </div>
   </div>
 
-  <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0">
-    <div style="text-align:left">
-      <div style="font-size:11px;color:#ffffffaa"><span data-i18n="label3">③ 总投资盈亏</span> <span style="color:#9ca3af">(①+②)</span></div>
+  <div class="hero-row">
+    <div class="hero-label">
+      <div style="font-size:11px;color:#ffffffaa">② 已实现盈亏</div>
+      <div style="font-size:11px;color:#9ca3af">(已落袋)</div>
+    </div>
+    <div class="hero-value">
+      <div class="hero-money" id="realized-abs">—</div>
+      <div class="hero-pct" id="realized-pct">—</div>
+    </div>
+  </div>
+
+  <div class="hero-row">
+    <div class="hero-label">
+      <div style="font-size:11px;color:#ffffffaa">③ 总投资盈亏 <span style="color:#9ca3af">(①+②)</span></div>
       <div style="font-size:11px;color:#9ca3af">总% vs 初始总投入</div>
     </div>
-    <div style="text-align:right">
-      <div style="font-size:22px;font-weight:800;color:#fff">-1925.15 元</div>
-      <div style="font-size:13px;color:#ffffffee">-4.82%</div>
+    <div class="hero-value">
+      <div class="hero-money" id="total-abs">—</div>
+      <div class="hero-pct" id="total-pct">—</div>
     </div>
   </div>
 </div>
 
-<div style="font-size:11px;color:#9ca3af;text-align:center;margin-bottom:12px">
-    初始总投入 <b>39954.65</b> 元
+<div style="font-size:11px;color:#9ca3af;text-align:center;margin-bottom:12px" id="initial-principal-line">
+    初始总投入 <b id="initial-principal">—</b> 元
 </div>
 
-<div class="excess">
-        <b>🔴 跑赢 沪深 300</b>: +7.36%<br>
-        <b>🔴 跑赢 上证指数</b>: +8.32%
-    </div>
-
-<div class="section">
-  <h2 data-i18n="section2">💼 当前持仓 (2 只)</h2>
-  <div class="holding-card loss">
-          <div class="name">杉杉股份 <span style="color:#9ca3af;font-weight:normal">(600884)</span></div>
-          <div class="row"><span class="k">持仓</span><span>1300 股</span></div>
-          <div class="row"><span class="k">成本</span><span>13.130</span></div>
-          <div class="row"><span class="k">现价</span><span>11.190</span></div>
-          <div class="row"><span class="k">盈亏</span><span class="green">-2521.35 (-14.77%)</span></div>
-        </div>
-<div class="holding-card ">
-          <div class="name">厦门国贸 <span style="color:#9ca3af;font-weight:normal">(600755)</span></div>
-          <div class="row"><span class="k">持仓</span><span>1100 股</span></div>
-          <div class="row"><span class="k">成本</span><span>5.530</span></div>
-          <div class="row"><span class="k">现价</span><span>5.540</span></div>
-          <div class="row"><span class="k">盈亏</span><span class="red">+11.00 (+0.18%)</span></div>
-        </div>
+<div class="excess" id="excess-box" style="display:none">
+    <b id="excess-csi300">—</b> 跑赢沪深 300<br>
+    <b id="excess-sh">—</b> 跑赢上证指数
 </div>
 
-<div class="section"><h2>🚪 已清仓 (3 只)</h2><div style="font-size:11px;color:#9ca3af;margin-bottom:8px">
-        清仓释放本金 <b>21240.50</b> 元 · 累计实现 <b style="color:#ef4444">+549.20</b> 元
-    </div><div class="holding-card loss" style="border-left-color:#6b7280">
-          <div class="name">春秋航空 <span style="color:#9ca3af;font-weight:normal">(601021) 已清仓</span></div>
-          <div class="row"><span class="k">清仓日</span><span>2026-09-07</span></div>
-          <div class="row"><span class="k">成本</span><span>4419.00</span></div>
-          <div class="row"><span class="k">收回</span><span>4426.00</span></div>
-          <div class="row"><span class="k">实现盈亏</span><span class="red">+2.00 (+0.05%)</span></div>
-        </div>
-<div class="holding-card loss" style="border-left-color:#6b7280">
-          <div class="name">金地集团 <span style="color:#9ca3af;font-weight:normal">(600383) 已清仓</span></div>
-          <div class="row"><span class="k">清仓日</span><span>2026-09-03</span></div>
-          <div class="row"><span class="k">成本</span><span>1319.40</span></div>
-          <div class="row"><span class="k">收回</span><span>1410.00</span></div>
-          <div class="row"><span class="k">实现盈亏</span><span class="red">+85.60 (+6.49%)</span></div>
-        </div>
-<div class="holding-card loss" style="border-left-color:#6b7280">
-          <div class="name">港股创新药ETF <span style="color:#9ca3af;font-weight:normal">(513780) 已清仓</span></div>
-          <div class="row"><span class="k">清仓日</span><span>2026-07-08</span></div>
-          <div class="row"><span class="k">成本</span><span>14927.90</span></div>
-          <div class="row"><span class="k">收回</span><span>15404.50</span></div>
-          <div class="row"><span class="k">实现盈亏</span><span class="red">+461.60 (+3.09%)</span></div>
-        </div></div>
-
+<!-- 当前持仓 -->
 <div class="section">
-  <h2 data-i18n="section4">📊 持仓贡献排行 (今日)</h2>
+  <h2>💼 当前持仓 (<span id="holdings-count">0</span> 只)</h2>
+  <div id="holdings-list"></div>
+</div>
+
+<!-- 已清仓 -->
+<div class="section" id="closed-section" style="display:none">
+  <h2>🚪 已清仓 (<span id="closed-count">0</span> 只)</h2>
+  <div style="font-size:11px;color:#9ca3af;margin-bottom:8px" id="closed-summary"></div>
+  <div id="closed-list"></div>
+</div>
+
+<!-- 持仓贡献排行 -->
+<div class="section">
+  <h2>📊 持仓贡献排行 (今日)</h2>
   <table>
-        <tr><th>标的</th><th class="num">股数</th><th class="num">成本</th><th class="num">现价</th><th class="num">盈亏</th><th class="num">盈亏%</th><th class="num">贡献度</th></tr>
-        <tr>
-          <td>厦门国贸</td>
-          <td class="num">1100</td>
-          <td class="num">5.530</td>
-          <td class="num">5.540</td>
-          <td class="num red">+11.00</td>
-          <td class="num red">+0.18%</td>
-          <td class="num red">-0.4%</td>
-        </tr><tr>
-          <td>杉杉股份</td>
-          <td class="num">1300</td>
-          <td class="num">13.130</td>
-          <td class="num">11.190</td>
-          <td class="num green">-2521.35</td>
-          <td class="num green">-14.77%</td>
-          <td class="num green">+100.4%</td>
-        </tr>
-    </table>
+    <thead><tr><th>标的</th><th class="num">股数</th><th class="num">成本</th><th class="num">现价</th><th class="num">盈亏</th><th class="num">盈亏%</th><th class="num">贡献度</th></tr></thead>
+    <tbody id="contribution-tbody"></tbody>
+  </table>
 </div>
 
+<!-- 交易汇总 -->
 <div class="section">
-  <h2 data-i18n="section5">💱 交易汇总</h2>
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-        <div style="background:#1f1f1f;padding:12px;border-radius:6px;text-align:center">
-          <div style="font-size:11px;color:#9ca3af">买入次数</div>
-          <div style="font-size:24px;font-weight:700;color:#10b981">7</div>
-        </div>
-        <div style="background:#1f1f1f;padding:12px;border-radius:6px;text-align:center">
-          <div style="font-size:11px;color:#9ca3af">卖出次数</div>
-          <div style="font-size:24px;font-weight:700;color:#ef4444">3</div>
-        </div>
-        <div style="background:#1f1f1f;padding:12px;border-radius:6px;text-align:center">
-          <div style="font-size:11px;color:#9ca3af">累计买入金额</div>
-          <div style="font-size:18px;font-weight:600">27,256</div>
-        </div>
-        <div style="background:#1f1f1f;padding:12px;border-radius:6px;text-align:center">
-          <div style="font-size:11px;color:#9ca3af">累计卖出金额</div>
-          <div style="font-size:18px;font-weight:600">11,696</div>
-        </div>
-        <div style="background:#1f1f1f;padding:12px;border-radius:6px;text-align:center;grid-column:span 2">
-          <div style="font-size:11px;color:#9ca3af">累计手续费</div>
-          <div style="font-size:20px;font-weight:700;color:#f59e0b">30 元</div>
-        </div>
-    </div>
+  <h2>💱 交易汇总</h2>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px" id="trade-summary-grid"></div>
 </div>
 
+<!-- 累计盈亏趋势 (Chart.js) -->
 <div class="section">
-  <h2 data-i18n="section6">📈 累计盈亏趋势</h2>
-  <div class="chart"><img src="images/pnl_trend.png" alt="累计盈亏趋势"></div>
+  <h2>📈 累计盈亏趋势</h2>
+  <div class="chart-wrap"><canvas id="chart-pnl-trend"></canvas></div>
 </div>
 
+<!-- 累计收益率 vs 大盘 (Chart.js) -->
 <div class="section">
-  <h2 data-i18n="section7">🏆 累计收益率 vs 大盘</h2>
-  <div class="chart"><img src="images/benchmark_compare.png" alt="大盘对比"></div>
+  <h2>🏆 累计收益率 vs 大盘</h2>
+  <div class="chart-wrap"><canvas id="chart-benchmark"></canvas></div>
   <div style="font-size:11px;color:#9ca3af;margin-top:8px;text-align:center">
     以首日为基线 0% · 三条线对比
   </div>
 </div>
 
+<!-- 交易记录 (近 10 笔) -->
 <div class="section">
-  <h2 data-i18n="section8">📋 交易记录 (近 10 笔)</h2>
+  <h2>📋 交易记录 (近 <span id="tx-count">0</span> 笔)</h2>
   <table>
-        <tr><th>日期</th><th>方向</th><th>标的</th><th class="num">数量</th><th class="num">价格</th></tr>
-        <tr>
-          <td>2026-09-15</td>
-          <td>🟢 买</td>
-          <td>厦门国贸</td>
-          <td class="num">700</td>
-          <td class="num">5.570</td>
-        </tr><tr>
-          <td>2026-09-07</td>
-          <td>🔴 卖</td>
-          <td>春秋航空</td>
-          <td class="num">100</td>
-          <td class="num">44.260</td>
-        </tr><tr>
-          <td>2026-09-03</td>
-          <td>🔴 卖</td>
-          <td>金地集团</td>
-          <td class="num">600</td>
-          <td class="num">2.350</td>
-        </tr><tr>
-          <td>2026-08-19</td>
-          <td>🟢 买</td>
-          <td>春秋航空</td>
-          <td class="num">100</td>
-          <td class="num">44.190</td>
-        </tr><tr>
-          <td>2026-08-19</td>
-          <td>🟢 买</td>
-          <td>春秋航空</td>
-          <td class="num">100</td>
-          <td class="num">44.190</td>
-        </tr><tr>
-          <td>2026-08-15</td>
-          <td>🟢 买</td>
-          <td>金地集团</td>
-          <td class="num">600</td>
-          <td class="num">2.199</td>
-        </tr><tr>
-          <td>2026-07-20</td>
-          <td>🟢 买</td>
-          <td>杉杉股份</td>
-          <td class="num">200</td>
-          <td class="num">11.280</td>
-        </tr><tr>
-          <td>2026-07-08</td>
-          <td>🔴 卖</td>
-          <td>港股创新药ETF</td>
-          <td class="num">4000</td>
-          <td class="num">1.465</td>
-        </tr><tr>
-          <td>2026-07-08</td>
-          <td>🟢 买</td>
-          <td>杉杉股份</td>
-          <td class="num">400</td>
-          <td class="num">12.550</td>
-        </tr><tr>
-          <td>2026-07-07</td>
-          <td>🟢 买</td>
-          <td>港股创新药ETF</td>
-          <td class="num">4000</td>
-          <td class="num">1.481</td>
-        </tr>
-    </table>
+    <thead><tr><th>日期</th><th>方向</th><th>标的</th><th class="num">数量</th><th class="num">价格</th></tr></thead>
+    <tbody id="tx-tbody"></tbody>
+  </table>
 </div>
 
-<!-- 手动刷新按钮 -->
-<button class="refresh-fab" id="refreshBtn" title="手动刷新 dashboard" aria-label="刷新">
-  ↻
-</button>
-<div class="refresh-toast" id="refreshToast"></div>
-
-<script>
-(function() {
-  const btn = document.getElementById('refreshBtn');
-  const toast = document.getElementById('refreshToast');
-  let toastTimer = null;
-
-  function showToast(msg, type) {
-    toast.textContent = msg;
-    toast.className = 'refresh-toast show';
-    if (type) toast.style.borderLeft = '3px solid ' + (
-      type === 'success' ? '#10b981' :
-      type === 'error' ? '#ef4444' : '#fbbf24'
-    );
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
-  }
-
-  btn.addEventListener('click', async () => {
-    if (btn.classList.contains('loading')) return;
-
-    const lang = localStorage.getItem('mavis-lang') || 'zh';
-    const msg = ({
-      'zh': { start: '🔄 触发 GitHub Action...', running: '⏳ 构建中 (1-2 分钟), 请稍等...', success: '✅ 部署完成, 3 秒后刷新页面!', error: '❌ 触发失败: ' },
-      'en': { start: '🔄 Triggering GitHub Action...', running: '⏳ Building (1-2 min), please wait...', success: '✅ Deployed, refreshing in 3s!', error: '❌ Trigger failed: ' }
-    })[lang] || {};
-
-    btn.classList.add('loading');
-    btn.innerHTML = '⟳';
-    showToast(msg.start, 'info');
-
-    try {
-      const res = await fetch(
-        'https://api.github.com/repos/Randall4242/stock-tracker-data/actions/workflows/dashboard.yml/dispatches',
-        {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ ref: 'main' }),
-        }
-      );
-
-      if (res.ok) {
-        btn.classList.remove('loading');
-        btn.classList.add('success');
-        btn.innerHTML = '✓';
-        showToast(msg.success, 'success');
-        setTimeout(() => location.reload(), 3000);
-      } else {
-        throw new Error('HTTP ' + res.status);
-      }
-    } catch (e) {
-      btn.classList.remove('loading');
-      btn.classList.add('error');
-      btn.innerHTML = '✕';
-      showToast(msg.error + e.message, 'error');
-      // CORS/未认证 → 降级打开 GitHub Actions 页面
-      setTimeout(() => {
-        const lang = localStorage.getItem('mavis-lang') || 'zh';
-        const promptMsg = lang === 'en'
-          ? 'Auto-trigger blocked by CORS.
-
-Click "Run workflow" on the opened page.
-Dashboard will auto-refresh in ~2 min.'
-          : '自动触发被 CORS 阻止了。
-
-点击打开的页面上的 "Run workflow" 按钮
-Dashboard 大约 2 分钟后自动更新。';
-        if (confirm(promptMsg)) {
-          window.open('https://github.com/Randall4242/stock-tracker-data/actions/workflows/dashboard.yml', '_blank');
-          setTimeout(() => {
-            btn.classList.remove('error');
-            btn.innerHTML = '↻';
-            location.reload();
-          }, 30000);
-        }
-      }, 1500);
-    }
-
-    setTimeout(() => {
-      btn.classList.remove('success', 'error');
-      btn.innerHTML = '↻';
-    }, 8000);
-  });
-})();
-</script>
+<style>
+.hero-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0;
+}
+.hero-row + .hero-row { border-top: 1px solid rgba(255,255,255,0.1); }
+.hero-value { text-align: right; }
+.hero-money { font-size: 18px; font-weight: 700; color: #fff; }
+.hero-pct { font-size: 12px; color: #ffffffee; }
+.hero-row:nth-child(4) .hero-money { font-size: 22px; font-weight: 800; }
+.hero-row:nth-child(4) .hero-pct { font-size: 13px; }
+</style>
 
 <div class="footer">
-  Mavis Stock Tracker · v4.0 · 部署于 GitHub Pages<br>
-  <a href="https://github.com/Randall4242/stock-tracker-data">代码仓库</a>
+  数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">JSON</a>
 </div>
 
-<script src="i18n.js"></script></script>
+<!-- 刷新按钮 -->
+<button class="refresh-fab" id="refresh-fab" onclick="DashboardApp.refresh()" aria-label="刷新">↻</button>
+<div class="refresh-toast" id="refresh-toast"></div>
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('SW registered:', reg.scope))
-      .catch(err => console.warn('SW registration failed:', err));
-  });
-}
-</script>
+<!-- 数据 + 渲染 -->
+<script src="dashboard.js"></script>
 </body>
 </html>

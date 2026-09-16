@@ -1,14 +1,17 @@
-// Mavis Stock Tracker - Service Worker
+// Mavis Stock Tracker - Service Worker (v5)
 // 缓存策略: stale-while-revalidate (优先缓存, 后台更新)
+// v5: 缓存策略升级 — 缓存 dashboard.js + chart.umd.min.js + dashboard.json
+//     不再缓存 PNG (改 client-rendered chart)
 
-const CACHE_NAME = 'mavis-dashboard-v4';
+const CACHE_NAME = 'mavis-dashboard-v5';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './i18n.js',
-  './images/pnl_trend.png',
-  './images/benchmark_compare.png',
+  './dashboard.js',
+  './vendor/chart.umd.min.js',
+  './data/dashboard.json',
+  './images/icon-192.svg',
 ];
 
 self.addEventListener('install', event => {
