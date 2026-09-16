@@ -1,7 +1,7 @@
 // Mavis Stock Tracker - Service Worker
 // 缓存策略: stale-while-revalidate (优先缓存, 后台更新)
 
-const CACHE_NAME = 'mavis-dashboard-v3';
+const CACHE_NAME = 'mavis-dashboard-v4';
 const ASSETS = [
   './',
   './index.html',
