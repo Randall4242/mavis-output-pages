@@ -250,8 +250,11 @@
       const labels = series.map(s => s.trade_date);
       const pnls = series.map(s => s.total_pnl);
       const pcts = series.map(s => s.total_pct);
-      const colors = pnls.map(p => p >= 0 ? '#ef4444' : '#10b981');
-      const fillColors = pnls.map(p => p >= 0 ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.12)');
+      const colors = pcts.map(p => p >= 0 ? '#ef4444' : '#10b981');
+
+      // 响应式密度: 移动端(<768px) 刻度 5 个, 桌面端 10 个
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const maxTicks = isMobile ? 5 : 10;
 
       this.charts.pnlTrend = new Chart(el.getContext('2d'), {
         type: 'bar',
@@ -259,29 +262,11 @@
           labels,
           datasets: [
             {
-              type: 'line',
-              label: '总盈亏金额 (元)',
-              data: pnls,
-              borderColor: pnls[pnls.length - 1] >= 0 ? '#ef4444' : '#10b981',
-              backgroundColor: fillColors[fillColors.length - 1],
-              fill: false,
-              tension: 0.25,
-              pointRadius: 5,
-              pointBackgroundColor: '#fff',
-              pointBorderColor: colors.map(c => c),
-              pointBorderWidth: 2,
-              order: 1,
-              yAxisID: 'y',
-            },
-            {
-              type: 'bar',
-              label: '总盈亏率 (%)',
+              label: '日总盈亏率 (%)',
               data: pcts,
               backgroundColor: colors,
               borderColor: colors,
               borderWidth: 0,
-              order: 2,
-              yAxisID: 'y1',
             },
           ],
         },
@@ -290,22 +275,37 @@
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { labels: { color: '#e5e5e5', font: { size: 11 } } },
+            legend: { display: false },
             tooltip: {
               callbacks: {
+                title: (ctx) => {
+                  const i = ctx[0].dataIndex;
+                  return series[i].trade_date;
+                },
                 label: (ctx) => {
-                  const v = ctx.parsed.y;
-                  if (ctx.dataset.yAxisID === 'y') return `盈亏: ${v >= 0 ? '+' : ''}${v.toFixed(2)} 元`;
-                  return `盈亏率: ${v >= 0 ? '+' : ''}${v.toFixed(2)}%`;
+                  const i = ctx.dataIndex;
+                  const pnl = pnls[i];
+                  const pct = pcts[i];
+                  return [
+                    `盈亏率: ${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`,
+                    `盈亏金额: ${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)} 元`,
+                  ];
                 },
               },
             },
-            title: { display: true, text: `总盈亏金额变化 · 过去 ${series.length} 个交易日`, color: '#fbbf24', font: { size: 13, weight: 'bold' } },
+            title: { display: true, text: `每日总盈亏率 · 近 ${series.length} 个交易日`, color: '#fbbf24', font: { size: 13, weight: 'bold' } },
           },
           scales: {
-            x: { ticks: { color: '#9ca3af', maxRotation: 0, autoSkip: true, maxTicksLimit: 10 }, grid: { color: '#262626' } },
-            y: { position: 'left', ticks: { color: '#e5e5e5', callback: (v) => v.toFixed(0) + '元' }, grid: { color: '#262626' }, title: { display: true, text: '金额 (元)', color: '#e5e5e5' } },
-            y1: { position: 'right', ticks: { color: '#e5e5e5', callback: (v) => v.toFixed(1) + '%' }, grid: { display: false }, title: { display: true, text: '盈亏率 (%)', color: '#e5e5e5' } },
+            x: {
+              ticks: { color: '#9ca3af', maxRotation: 0, autoSkip: true, maxTicksLimit: maxTicks, font: { size: isMobile ? 9 : 11 } },
+              grid: { color: '#262626', display: !isMobile },
+            },
+            y: {
+              position: 'left',
+              ticks: { color: '#e5e5e5', callback: (v) => v.toFixed(1) + '%', font: { size: isMobile ? 9 : 11 } },
+              grid: { color: '#262626' },
+              title: { display: !isMobile, text: '盈亏率 (%)', color: '#e5e5e5' },
+            },
           },
         },
       });
@@ -323,12 +323,15 @@
 
       const labels = my.map(r => r.trade_date);
       const myData = my.map(r => r.cum_pct);
-      // For sh/csi300, align to same labels (取对应日期的 pct_from_baseline)
       const lookup = (arr) => Object.fromEntries((arr || []).map(r => [r.trade_date, r.pct_from_baseline]));
       const shMap = lookup(bench.sh);
       const csiMap = lookup(bench.csi300);
       const shData = labels.map(d => shMap[d] ?? null);
       const csiData = labels.map(d => csiMap[d] ?? null);
+
+      // 响应式密度
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const maxTicks = isMobile ? 5 : 10;
 
       const datasets = [
         {
@@ -336,10 +339,9 @@
           data: myData,
           borderColor: '#ef4444',
           backgroundColor: 'rgba(239,68,68,0.1)',
-          pointRadius: 5,
-          pointBackgroundColor: '#fff',
-          pointBorderColor: '#ef4444',
-          pointBorderWidth: 2,
+          pointRadius: 0,           // 去点 (用户要求)
+          pointHoverRadius: 4,
+          borderWidth: isMobile ? 2 : 2.5,
           tension: 0.25,
         },
       ];
@@ -349,7 +351,10 @@
           data: shData,
           borderColor: '#f59e0b',
           backgroundColor: 'rgba(245,158,11,0.1)',
-          pointRadius: 3,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          borderWidth: isMobile ? 1.5 : 2,
+          borderDash: [5, 3],       // 虚线区分大盘
           tension: 0.25,
           spanGaps: true,
         });
@@ -360,7 +365,10 @@
           data: csiData,
           borderColor: '#3b82f6',
           backgroundColor: 'rgba(59,130,246,0.1)',
-          pointRadius: 3,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          borderWidth: isMobile ? 1.5 : 2,
+          borderDash: [5, 3],
           tension: 0.25,
           spanGaps: true,
         });
@@ -374,7 +382,7 @@
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { labels: { color: '#e5e5e5', font: { size: 11 } } },
+            legend: { labels: { color: '#e5e5e5', font: { size: isMobile ? 10 : 11 } } },
             tooltip: {
               callbacks: {
                 label: (ctx) => `${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`,
@@ -383,8 +391,15 @@
             title: { display: true, text: '累计收益率对比 · 持仓 vs 大盘', color: '#fbbf24', font: { size: 13, weight: 'bold' } },
           },
           scales: {
-            x: { ticks: { color: '#9ca3af', maxRotation: 0, autoSkip: true, maxTicksLimit: 10 }, grid: { color: '#262626' } },
-            y: { ticks: { color: '#e5e5e5', callback: (v) => v.toFixed(1) + '%' }, grid: { color: '#262626' }, title: { display: true, text: '累计收益率 (%)', color: '#e5e5e5' } },
+            x: {
+              ticks: { color: '#9ca3af', maxRotation: 0, autoSkip: true, maxTicksLimit: maxTicks, font: { size: isMobile ? 9 : 11 } },
+              grid: { color: '#262626', display: !isMobile },
+            },
+            y: {
+              ticks: { color: '#e5e5e5', callback: (v) => v.toFixed(1) + '%', font: { size: isMobile ? 9 : 11 } },
+              grid: { color: '#262626' },
+              title: { display: !isMobile, text: '累计收益率 (%)', color: '#e5e5e5' },
+            },
           },
         },
       });
