@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-09-16T09:20:02",
+    "generated_at": "2026-09-16T09:32:39",
     "trade_date": "2026-09-16",
     "source": "supabase",
     "schema_version": 2
@@ -886,10 +886,10 @@
     },
     {
       "trade_date": "2026-08-19",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0
+      "total_cost": 22820.4,
+      "total_mkt": 20912.0,
+      "total_pnl": -1908.4,
+      "total_pct": -8.36
     },
     {
       "trade_date": "2026-08-20",
@@ -1449,7 +1449,7 @@
       },
       {
         "trade_date": "2026-08-19",
-        "cum_pct": -55.78
+        "cum_pct": -3.5
       },
       {
         "trade_date": "2026-08-20",
