@@ -99,27 +99,29 @@
   /* ============ HERO ============ */
   .hero {
     position: relative;
-    padding: 64px 48px;
+    padding: 52px 44px;
     margin-bottom: 48px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 2px;
     overflow: hidden;  /* 裁掉花纹带 PNG 超出 */
   }
-  /* 4 边 AI 铜版画花纹带 (透明背景 PNG, background-image 引用) */
+  /* 4 边 AI 铜版画花纹带 (透明背景 PNG, subtle + corner mask 让 4 角 smooth) */
   .hero-edge {
     position: absolute;
     pointer-events: none;
     z-index: 1;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    opacity: 0.62;  /* subtle: 降低密度感 */
   }
-  .hero-edge-top, .hero-edge-bottom { left: 14px; right: 14px; height: 56px; }
-  .hero-edge-top    { top: 8px;    background-image: url(images/hero-border-h.png); background-size: auto 100%; background-repeat: repeat-x; }
-  .hero-edge-bottom { bottom: 8px; background-image: url(images/hero-border-h.png); background-size: auto 100%; background-repeat: repeat-x; }
-  .hero-edge-left, .hero-edge-right { top: 14px; bottom: 14px; width: 64px; }
-  .hero-edge-left   { left: 8px;   background-image: url(images/hero-border-v.png); background-size: 100% auto; background-repeat: repeat-y; }
-  .hero-edge-right  { right: 8px;  background-image: url(images/hero-border-v.png); background-size: 100% auto; background-repeat: repeat-y; }
+  /* 顶/底: 高度 36px (缩), 用 mask 让两端 fade out → 4 角 smooth */
+  .hero-edge-top, .hero-edge-bottom { left: 14px; right: 14px; height: 36px; }
+  .hero-edge-top    { top: 8px;    background-image: url(images/hero-border-h.png); background-size: auto 100%; background-repeat: repeat-x; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
+  .hero-edge-bottom { bottom: 8px; background-image: url(images/hero-border-h.png); background-size: auto 100%; background-repeat: repeat-x; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
+  /* 左/右: 宽度 40px (缩), mask 让两端 fade out */
+  .hero-edge-left, .hero-edge-right { top: 14px; bottom: 14px; width: 40px; }
+  .hero-edge-left   { left: 8px;   background-image: url(images/hero-border-v.png); background-size: 100% auto; background-repeat: repeat-y; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
+  .hero-edge-right  { right: 8px;  background-image: url(images/hero-border-v.png); background-size: 100% auto; background-repeat: repeat-y; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
 
   .hero-meta-top {
     font-family: 'JetBrains Mono', monospace;
@@ -310,11 +312,11 @@
     .hero-meta-top { margin-bottom: 14px; }
     .hero-label { margin-bottom: 12px; }
 
-    /* 4 边花纹带 mobile 缩 (8px 距 + 32/36px 高/宽) */
-    .hero-edge-top, .hero-edge-bottom { left: 12px; right: 12px; height: 36px; }
+    /* 4 边花纹带 mobile 缩 (8px 距 + 24/28px 高/宽) */
+    .hero-edge-top, .hero-edge-bottom { left: 12px; right: 12px; height: 24px; }
     .hero-edge-top    { top: 8px; }
     .hero-edge-bottom { bottom: 8px; }
-    .hero-edge-left, .hero-edge-right { top: 12px; bottom: 12px; width: 40px; }
+    .hero-edge-left, .hero-edge-right { top: 12px; bottom: 12px; width: 28px; }
     .hero-edge-left   { left: 8px; }
     .hero-edge-right  { right: 8px; }
 
@@ -883,7 +885,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v11 · 2026-09-17 · ELSEWHERE 母题 · AI 铜版画 PNG 花纹</div>
+  <div>PORTFOLIO DASHBOARD · v12 · 2026-09-17 · ELSEWHERE 母题 · AI 铜版画 PNG 花纹 (subtle + corner smooth)</div>
 </footer>
 
 <!-- 刷新按钮 -->
