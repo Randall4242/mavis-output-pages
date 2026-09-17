@@ -1,13 +1,10 @@
-// Mavis Stock Tracker - Service Worker (v11)
+// Mavis Stock Tracker - Service Worker (v12)
 // 缓存策略: stale-while-revalidate (优先缓存, 后台更新)
-// v5: 缓存策略升级 — 缓存 dashboard.js + chart.umd.min.js + dashboard.json
-// v6: UI 视觉升级 (elsewhere 母题 + 铜版画装饰) — 缓存 v6 强制刷新
-// v8: mobile 装饰重排布 (Hero 4 角 96→64, Holding 卡左边框 6→5, 数字 48-56, tooltip bottom)
-// v9: Hero 4 角藤蔓 → 4 边细密花纹带
-// v10: 修花纹带超画面 + 花纹密度升级
-// v11: 装饰从 SVG 几何花纹换成 AI 绘制铜版画 PNG (images/hero-border-h.png 1584×284 + images/hero-border-v.png 692×1376, 透明背景, 深棕 #3A2E26)
+// v5-v10: 见前议
+// v11: 装饰从 SVG 几何花纹换成 AI 绘制铜版画 PNG
+// v12: 花纹缩小 (top/bottom 56→36, left/right 64→40) + 淡观感 (opacity 0.62) + 角过渡 smooth (CSS mask 边缘 fade out) + PNG 压缩 (1MB→334KB, 2.4MB→820KB)
 
-const CACHE_NAME = 'mavis-dashboard-v11';
+const CACHE_NAME = 'mavis-dashboard-v12';
 const ASSETS = [
   './',
   './index.html',
