@@ -364,7 +364,7 @@
       }
       const labels = series.map(s => s.trade_date.substring(5)); // MM-DD
       const pnls = series.map(s => s.total_pnl);
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
       const maxTicks = isMobile ? 5 : 10;
 
       // sub line: date range
@@ -377,7 +377,7 @@
 
       // gradient fill (under curve, light red for down theme)
       const ctx = el.getContext('2d');
-      const gradient = ctx.createLinearGradient(0, 0, 0, isMobile ? 220 : 280);
+      const gradient = ctx.createLinearGradient(0, 0, 0, 280);
       gradient.addColorStop(0, 'rgba(122, 138, 118, 0.18)');
       gradient.addColorStop(1, 'rgba(122, 138, 118, 0.00)');
 
@@ -410,14 +410,12 @@
               backgroundColor: '#1A1A1A',
               titleColor: '#F7F7F5',
               bodyColor: '#F7F7F5',
-              titleFont: { family: 'JetBrains Mono', size: isMobile ? 9 : 11, weight: 600 },
-              bodyFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 12 },
-              padding: isMobile ? 6 : 10,
+              titleFont: { family: 'JetBrains Mono', size: 11, weight: 600 },
+              bodyFont: { family: 'JetBrains Mono', size: 12 },
+              padding: 10,
               borderColor: '#3A2E26',
               borderWidth: 1,
               displayColors: false,
-              yAlign: isMobile ? 'bottom' : undefined,
-              xAlign: isMobile ? 'center' : undefined,
               callbacks: {
                 title: (ctx) => {
                   const i = ctx[0].dataIndex;
@@ -484,7 +482,7 @@
         return csiMap[fullDate] ?? null;
       });
 
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
       const maxTicks = isMobile ? 5 : 10;
 
       const datasets = [
@@ -548,13 +546,11 @@
               backgroundColor: '#1A1A1A',
               titleColor: '#F7F7F5',
               bodyColor: '#F7F7F5',
-              titleFont: { family: 'JetBrains Mono', size: isMobile ? 9 : 11, weight: 600 },
-              bodyFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 12 },
-              padding: isMobile ? 6 : 10,
+              titleFont: { family: 'JetBrains Mono', size: 11, weight: 600 },
+              bodyFont: { family: 'JetBrains Mono', size: 12 },
+              padding: 10,
               borderColor: '#3A2E26',
               borderWidth: 1,
-              yAlign: isMobile ? 'bottom' : undefined,
-              xAlign: isMobile ? 'center' : undefined,
               callbacks: {
                 label: (ctx) => `${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`,
               },
