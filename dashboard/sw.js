@@ -4,9 +4,10 @@
 // v11: 装饰从 SVG 几何花纹换成 AI 绘制铜版画 PNG
 // v12: 花纹缩小 + opacity 0.62 + 角过渡 smooth + PNG 压缩
 // v13: 微调再缩 (top/bottom 22, left/right 22, opacity 0.5, mask 22)
-// v14: 改方向 — 删 4 边 PNG 花纹带 → 4 角 SVG 小纹章 (corner-emblem: 钻石 cluster + 微光芒 + micro dot, 16×16) + hero 浮雕感 box-shadow (inset 内阴影 + 1px 浮起). 死板边框 → 邮票角设计感
+// v14: 删 4 边 PNG 花纹带 → 4 角 SVG 小纹章 (corner-emblem)
+// v15: fallback — AI 服务挂了, 用现有 v11 浓密铜版画 PNG, 改 layout: 顶部+底部各 1 张 no-repeat 居中 (不死板边框), 删左/右 4 边 background-image, opacity 0.38, 保留 4 角纹章作设计锚点
 
-const CACHE_NAME = 'mavis-dashboard-v14';
+const CACHE_NAME = 'mavis-dashboard-v15';
 const ASSETS = [
   './',
   './index.html',
