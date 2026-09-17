@@ -320,16 +320,37 @@
       this.updateCarryForwardNote(data.pnl_series || []);
     },
 
-    // Round 3 Option D: 纯文字注释 "前 N 天为假设性回填" (N = count carry_forward days)
+    // Round 3 Option D: 纯文字注释 "X 天为假设性回填" (动态范围)
     updateCarryForwardNote(series) {
       const note = $('carry-forward-note');
       if (!note) return;
       const cfDays = series.filter(s => s.cost_basis === 'carry_forward').length;
       if (cfDays === 0) {
         note.style.display = 'none';
-      } else {
-        note.style.display = '';
+        return;
+      }
+      // 计算 contiguous ranges (carry_forward 不一定连续)
+      const ranges = [];
+      let start = null;
+      for (let i = 0; i < series.length; i++) {
+        const isCf = series[i].cost_basis === 'carry_forward';
+        if (isCf && start === null) start = i;
+        else if (!isCf && start !== null) { ranges.push([start, i - 1]); start = null; }
+      }
+      if (start !== null) ranges.push([start, series.length - 1]);
+
+      note.style.display = '';
+      if (ranges.length === 1 && ranges[0][0] === 0) {
+        // 单一连续段且从开始
         note.innerHTML = `<span class="legend-mark"></span>前 ${cfDays} 天为假设性回填`;
+      } else if (ranges.length === 1) {
+        // 单一连续段但不在开始
+        const [s, e] = ranges[0];
+        note.innerHTML = `<span class="legend-mark"></span>${cfDays} 天为假设性回填 (${series[s].trade_date.substring(5)} ~ ${series[e].trade_date.substring(5)})`;
+      } else {
+        // 多段 (典型: 初始 3 天 + 4-6 月空仓 62 天)
+        const short = ranges.map(([s, e]) => `${series[s].trade_date.substring(5)}~${series[e].trade_date.substring(5)}`).join(' + ');
+        note.innerHTML = `<span class="legend-mark"></span>${cfDays} 天为假设性回填 (${short})`;
       }
     },
 
