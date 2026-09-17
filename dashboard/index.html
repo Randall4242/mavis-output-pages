@@ -99,29 +99,31 @@
   /* ============ HERO ============ */
   .hero {
     position: relative;
-    padding: 48px 36px;
+    padding: 48px 40px;
     margin-bottom: 48px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 2px;
-    overflow: hidden;  /* 裁掉花纹带 PNG 超出 */
+    /* 浮雕感: 外细线 + 内淡阴影 + 外淡阴影 (像压印印刷品) */
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.6),       /* 内浅高光 (纸张感) */
+      inset 0 1px 24px rgba(58,46,38,0.04),         /* 内淡阴影 (压印感) */
+      0 1px 0 rgba(58,46,38,0.06);                  /* 外 1px 微浮起 */
   }
-  /* 4 边 AI 铜版画花纹带 (透明背景 PNG, subtle + corner mask 让 4 角 smooth) */
-  .hero-edge {
+  /* 4 角 SVG 小纹章 (取代 4 边花纹带, 不再是死板边框, 是"邮票角装饰" 设计感) */
+  .hero-corner {
     position: absolute;
+    width: 16px;
+    height: 16px;
+    color: var(--accent-engrave);
     pointer-events: none;
     z-index: 1;
-    background-repeat: no-repeat;
-    opacity: 0.5;  /* 更 subtle: 浓密保留但降低密度感 */
+    opacity: 0.55;  /* subtle 但看得见 */
   }
-  /* 顶/底: 高度 22px (大幅缩), mask fade 范围 22px → 4 角几乎无重叠 */
-  .hero-edge-top, .hero-edge-bottom { left: 18px; right: 18px; height: 22px; }
-  .hero-edge-top    { top: 8px;    background-image: url(images/hero-border-h.png); background-size: auto 100%; background-repeat: repeat-x; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); }
-  .hero-edge-bottom { bottom: 8px; background-image: url(images/hero-border-h.png); background-size: auto 100%; background-repeat: repeat-x; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); }
-  /* 左/右: 宽度 22px (大幅缩), mask fade 22px */
-  .hero-edge-left, .hero-edge-right { top: 18px; bottom: 18px; width: 22px; }
-  .hero-edge-left   { left: 8px;   background-image: url(images/hero-border-v.png); background-size: 100% auto; background-repeat: repeat-y; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); }
-  .hero-edge-right  { right: 8px;  background-image: url(images/hero-border-v.png); background-size: 100% auto; background-repeat: repeat-y; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); }
+  .hero-corner-tl { top: 12px;    left: 12px;   }
+  .hero-corner-tr { top: 12px;    right: 12px;  transform: scaleX(-1); }
+  .hero-corner-bl { bottom: 12px; left: 12px;   transform: scaleY(-1); }
+  .hero-corner-br { bottom: 12px; right: 12px;  transform: scale(-1, -1); }
 
   .hero-meta-top {
     font-family: 'JetBrains Mono', monospace;
@@ -312,13 +314,12 @@
     .hero-meta-top { margin-bottom: 14px; }
     .hero-label { margin-bottom: 12px; }
 
-    /* 4 边花纹带 mobile 缩 (8px 距 + 16/16px 高/宽) */
-    .hero-edge-top, .hero-edge-bottom { left: 14px; right: 14px; height: 16px; }
-    .hero-edge-top    { top: 8px; }
-    .hero-edge-bottom { bottom: 8px; }
-    .hero-edge-left, .hero-edge-right { top: 14px; bottom: 14px; width: 16px; }
-    .hero-edge-left   { left: 8px; }
-    .hero-edge-right  { right: 8px; }
+    /* 4 角小纹章 mobile 缩 (12px) */
+    .hero-corner { width: 12px; height: 12px; }
+    .hero-corner-tl { top: 10px;    left: 10px;   }
+    .hero-corner-tr { top: 10px;    right: 10px;  transform: scaleX(-1); }
+    .hero-corner-bl { bottom: 10px; left: 10px;   transform: scaleY(-1); }
+    .hero-corner-br { bottom: 10px; right: 10px;  transform: scale(-1, -1); }
 
     /* Hero 数字 B 档 48-56 */
     .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
@@ -647,6 +648,22 @@
 <!-- SVG defs: shared symbols for 4 corners + 4 dividers -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <!-- Hero 4 角小纹章 (邮票式精致前卫: 钻石 cluster + 微细线 + 4 角光芒) -->
+    <symbol id="corner-emblem" viewBox="0 0 16 16">
+      <!-- 中央菱形 cluster -->
+      <path d="M8 4 L11 8 L8 12 L5 8 Z" stroke="currentColor" stroke-width="0.7" fill="none"/>
+      <path d="M8 6 L10 8 L8 10 L6 8 Z" stroke="currentColor" stroke-width="0.4" fill="currentColor"/>
+      <!-- 4 角微光芒 -->
+      <line x1="8" y1="2" x2="8" y2="3.2" stroke="currentColor" stroke-width="0.5"/>
+      <line x1="8" y1="12.8" x2="8" y2="14" stroke="currentColor" stroke-width="0.5"/>
+      <line x1="2" y1="8" x2="3.2" y2="8" stroke="currentColor" stroke-width="0.5"/>
+      <line x1="12.8" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="0.5"/>
+      <!-- 4 角端点 micro dot -->
+      <circle cx="8" cy="2" r="0.6" fill="currentColor"/>
+      <circle cx="14" cy="8" r="0.6" fill="currentColor"/>
+      <circle cx="8" cy="14" r="0.6" fill="currentColor"/>
+      <circle cx="2" cy="8" r="0.6" fill="currentColor"/>
+    </symbol>
     <!-- Victorian/Edwardian corner ornament (Morris/Beardsley vine scrollwork) -->
     <symbol id="corner-pattern" viewBox="0 0 96 96">
       <path d="M0 0 L82 0 M0 0 L0 82" stroke="currentColor" stroke-width="0.9" fill="none" stroke-linecap="round"/>
@@ -739,12 +756,12 @@
   </div>
 </header>
 
-<!-- ============ HERO (AI 绘制铜版画透明背景花纹 PNG, 4 边 background-image) ============ -->
+<!-- ============ HERO (4 角邮票式 SVG 小纹章 + 浮雕内阴影, 不用 4 边花纹带) ============ -->
 <section class="hero">
-  <div class="hero-edge hero-edge-top"></div>
-  <div class="hero-edge hero-edge-bottom"></div>
-  <div class="hero-edge hero-edge-left"></div>
-  <div class="hero-edge hero-edge-right"></div>
+  <svg class="hero-corner hero-corner-tl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <svg class="hero-corner hero-corner-tr" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <svg class="hero-corner hero-corner-bl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <svg class="hero-corner hero-corner-br" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
   <div class="hero-label">总投资盈亏 · 总览</div>
@@ -885,7 +902,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v13 · 2026-09-17 · ELSEWHERE 母题 · AI 铜版画 PNG 花纹 (subtle 微调)</div>
+  <div>PORTFOLIO DASHBOARD · v14 · 2026-09-17 · ELSEWHERE 母题 · 4 角纹章 + 浮雕内阴影</div>
 </footer>
 
 <!-- 刷新按钮 -->
