@@ -3,9 +3,10 @@
 // v5-v10: 见前议
 // v11: 装饰从 SVG 几何花纹换成 AI 绘制铜版画 PNG
 // v12: 花纹缩小 + opacity 0.62 + 角过渡 smooth + PNG 压缩
-// v13: 微调 — 再缩 (top/bottom 36→22, left/right 40→22) + opacity 0.62→0.5 + mask fade 14→22 + 浓密保留只调尺寸
+// v13: 微调再缩 (top/bottom 22, left/right 22, opacity 0.5, mask 22)
+// v14: 改方向 — 删 4 边 PNG 花纹带 → 4 角 SVG 小纹章 (corner-emblem: 钻石 cluster + 微光芒 + micro dot, 16×16) + hero 浮雕感 box-shadow (inset 内阴影 + 1px 浮起). 死板边框 → 邮票角设计感
 
-const CACHE_NAME = 'mavis-dashboard-v13';
+const CACHE_NAME = 'mavis-dashboard-v14';
 const ASSETS = [
   './',
   './index.html',
