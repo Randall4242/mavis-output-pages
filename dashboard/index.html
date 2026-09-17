@@ -5,69 +5,598 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>持仓 Dashboard · —</title>
 <meta http-equiv="Cache-Control" content="no-cache">
+
+<!-- Fonts: Inter (display + body) + JetBrains Mono (tag) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: #0a0a0a; color: #e5e5e5;
-    padding: 16px; max-width: 720px; margin: 0 auto;
-    line-height: 1.55;
-  }
-  .header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
-    padding: 20px; border-radius: 12px; margin-bottom: 16px;
-    text-align: center;
-  }
-  .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .header .date { font-size: 13px; color: #c7d2fe; }
-  .section {
-    background: #171717; border-radius: 12px; padding: 16px; margin-bottom: 12px;
-  }
-  .section h2 {
-    font-size: 14px; font-weight: 700; color: #fbbf24;
-    margin-bottom: 12px; letter-spacing: 0.5px;
-  }
-  .hero-pnl {
-    text-align: center; padding: 24px 16px; border-radius: 12px;
-    background: var(--hero-bg); margin-bottom: 12px;
-  }
-  .hero-pnl .label { font-size: 12px; color: #ffffffcc; }
-  .hero-pnl .value { font-size: 36px; font-weight: 800; color: #fff; margin: 8px 0; }
-  .hero-pnl .pct { font-size: 16px; color: #ffffffee; }
-  .excess {
-    margin-top: 12px; padding: 12px; background: #fef3c7;
-    border-left: 3px solid #f59e0b; border-radius: 6px;
-    color: #92400e; font-size: 13px;
-  }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { padding: 8px 6px; text-align: left; border-bottom: 1px solid #262626; }
-  th { color: #9ca3af; font-weight: 600; font-size: 11px; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  .red { color: #ef4444; font-weight: 600; }
-  .green { color: #10b981; font-weight: 600; }
-  .holding-card {
-    background: #1f1f1f; border-radius: 8px; padding: 12px; margin-bottom: 8px;
-    border-left: 3px solid #ef4444;
-  }
-  .holding-card.loss { border-left-color: #10b981; }
-  .holding-card .name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-  .holding-card .row {
-    display: flex; justify-content: space-between; font-size: 12px;
-    color: #d1d5db; padding: 2px 0;
-  }
-  .holding-card .row .k { color: #9ca3af; }
-  .chart-wrap {
-    background: #1f1f1f; border-radius: 8px; padding: 12px; margin: 8px 0;
-    min-height: 280px; position: relative;
-  }
-  .chart-wrap canvas { width: 100% !important; max-height: 320px; }
-  .chart-loading {
-    color: #6b7280; font-size: 12px; text-align: center; padding: 24px;
+  /* ============ Design Tokens (2026-09-17 grill 收口) ============ */
+  :root {
+    --bg: #F7F7F5;
+    --bg-card: #FFFFFF;
+    --bg-section: #F0EFEB;
+    --ink-primary: #1A1A1A;
+    --ink-secondary: #6B6B6B;
+    --ink-muted: #A8A8A8;
+    --border: #E8E6E1;
+    --accent-up: #C45C4F;
+    --accent-up-soft: #E8C9C5;
+    --accent-down: #7A8A76;
+    --accent-down-soft: #D4DAD0;
+    --accent-engrave: #3A2E26;
+    --accent-orange: #FF6B35;
   }
 
-  /* 加载占位 */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink-primary);
+    padding: 24px 16px 80px;
+    max-width: 1180px;
+    margin: 0 auto;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ HEADER ============ */
+  header.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-square {
+    width: 22px;
+    height: 22px;
+    background: var(--ink-primary);
+    border-radius: 2px;
+  }
+  .logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  nav.tabs {
+    display: flex;
+    gap: 32px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  nav.tabs a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  nav.tabs a.active {
+    color: var(--ink-primary);
+    border-bottom-color: var(--ink-primary);
+  }
+  nav.tabs a:hover { color: var(--ink-primary); }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .header-meta svg { color: var(--ink-secondary); cursor: pointer; }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    padding: 48px 40px;
+    margin-bottom: 48px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    /* 浮雕感: 外细线 + 内淡阴影 + 外淡阴影 (像压印印刷品) */
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.6),
+      inset 0 1px 24px rgba(58,46,38,0.04),
+      0 1px 0 rgba(58,46,38,0.06);
+  }
+  /* 顶部 + 底部 AI 铜版画花纹 (单张 no-repeat 居中, 不死板边框, 是"卡片装饰边") */
+  .hero-edge {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background-image: url('https://cdn.jsdelivr.net/gh/Randall4242/mavis-output-pages@main/dashboard/images/hero-border-h.png');
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: center center;
+    opacity: 0.38;  /* subtle: 浓密保留 + 真铜版画质感, 但降低存在感 */
+  }
+  .hero-edge-top    { top: 8px;    }
+  .hero-edge-bottom { bottom: 8px; }
+  /* 4 角小纹章 (保留: 给装饰加设计锚点) */
+  .hero-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    color: var(--accent-engrave);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.45;
+  }
+  .hero-corner-tl { top: 10px;    left: 10px;   }
+  .hero-corner-tr { top: 10px;    right: 10px;  transform: scaleX(-1); }
+  .hero-corner-bl { bottom: 10px; left: 10px;   transform: scaleY(-1); }
+  .hero-corner-br { bottom: 10px; right: 10px;  transform: scale(-1, -1); }
+
+  .hero-meta-top {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 24px;
+  }
+  .hero-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-secondary);
+    margin-bottom: 18px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hero-amount-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hero-amount {
+    font-size: clamp(56px, 8vw, 88px);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: var(--ink-primary);
+  }
+  .hero-amount .unit {
+    font-size: clamp(20px, 3vw, 36px);
+    font-weight: 700;
+    color: var(--ink-muted);
+    margin-left: 8px;
+    letter-spacing: -0.02em;
+  }
+  .hero-percent {
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--accent-down);
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
+  }
+  .hero-percent.up { color: var(--accent-up); }
+  .hero-percent.down { color: var(--accent-down); }
+  .hero-sub {
+    margin-top: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-secondary);
+    letter-spacing: 0.02em;
+  }
+  .hero-sub .sep { color: var(--ink-muted); margin: 0 12px; }
+  .hero-stats-bar {
+    display: flex;
+    gap: 40px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--border);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .hero-stat-key {
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .hero-stat-val {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .hero-stat-val.up { color: var(--accent-up); }
+  .hero-stat-val.down { color: var(--accent-down); }
+
+  /* ============ SECTION DIVIDER (engraved rule + fleuron) ============ */
+  .divider {
+    margin: 44px 0 28px;
+    color: var(--accent-engrave);
+    display: block;
+  }
+  .divider-ornament {
+    width: 100%;
+    height: 24px;
+    display: block;
+  }
+
+  /* ============ SECTION TITLE ============ */
+  .section-title {
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .section-title .count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ THREE-SEGMENT P&L (with denominator 副行) ============ */
+  .three-seg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    overflow: hidden;
+  }
+  .seg {
+    padding: 28px 24px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .seg:last-child { border-right: none; }
+  .seg-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 14px;
+  }
+  .seg-amount {
+    font-size: clamp(26px, 3.5vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  .seg-amount .unit {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    margin-left: 4px;
+  }
+  .seg-percent {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 8px;
+  }
+  .seg-denominator {
+    font-size: 10px;
+    color: var(--ink-muted);
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+  .up { color: var(--accent-up); }
+  .down { color: var(--accent-down); }
+  .neutral { color: var(--ink-muted); }
+
+  /* ============ HOLDINGS GRID ============ */
+  .holdings-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .holdings-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    /* ===== 布局 (现有) ===== */
+    .holdings-grid { grid-template-columns: 1fr; }
+    .three-seg { grid-template-columns: 1fr; }
+    .seg { border-right: none; border-bottom: 1px solid var(--border); }
+    .seg:last-child { border-bottom: none; }
+    header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    nav.tabs { gap: 20px; }
+
+    /* ===== 装饰重排布 ===== */
+
+    /* Hero padding 缩, meta/label margin 缩, 给 4 边花纹带 + 数字留位 */
+    .hero { padding: 36px 28px 28px; margin-bottom: 36px; }
+    .hero-meta-top { margin-bottom: 14px; }
+    .hero-label { margin-bottom: 12px; }
+
+    /* 顶部/底部铜版画花纹 mobile 缩 (20px) */
+    .hero-edge { height: 20px; }
+    /* 4 角小纹章 mobile 缩 (10px) */
+    .hero-corner { width: 10px; height: 10px; }
+    .hero-corner-tl { top: 8px;    left: 8px;   }
+    .hero-corner-tr { top: 8px;    right: 8px;  transform: scaleX(-1); }
+    .hero-corner-bl { bottom: 8px; left: 8px;   transform: scaleY(-1); }
+    .hero-corner-br { bottom: 8px; right: 8px;  transform: scale(-1, -1); }
+
+    /* Hero 数字 B 档 48-56 */
+    .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
+    .hero-amount .unit { font-size: 16px; margin-left: 4px; }
+    .hero-percent { font-size: clamp(18px, 5vw, 22px); padding-left: 12px; }
+    .hero-amount-row { gap: 12px; flex-wrap: wrap; }
+    .hero-sub { margin-top: 18px; font-size: 11px; }
+    .hero-sub .sep { margin: 0 6px; }
+    .hero-stats-bar { gap: 24px; padding-top: 18px; margin-top: 24px; flex-wrap: wrap; }
+    .hero-stat-val { font-size: 14px; }
+
+    /* Holding 卡装饰: 保留 5px 多层 banknote 结构 (不弱化) */
+    .holding-card { padding: 22px 20px 20px 30px; }
+    .holding-card::before { left: 12px; top: 20px; bottom: 20px; width: 5px; }
+  }
+
+  .holding-card {
+    position: relative;
+    background: var(--bg-card);
+    padding: 24px 22px 22px 32px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .holding-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  /* 铜版画卡左边框 (banknote-style 多层叠加) */
+  .holding-card::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 24px;
+    bottom: 24px;
+    width: 6px;
+    background-image:
+      linear-gradient(180deg, var(--accent-engrave) 0, var(--accent-engrave) 2px, transparent 2px, transparent 4px),
+      linear-gradient(180deg, var(--accent-engrave) 0, var(--accent-engrave) 0.5px, transparent 0.5px, transparent 2px),
+      linear-gradient(180deg, var(--accent-engrave) 0, var(--accent-engrave) 0.5px, transparent 0.5px, transparent 3px),
+      radial-gradient(circle at 50% 1.5px, var(--accent-engrave) 0.4px, transparent 0.6px);
+    background-size: 100% 4px, 100% 2px, 100% 3px, 100% 3px;
+    background-position: 0 0, 1px 0, 3px 0, 2px 0;
+    background-repeat: repeat-y;
+    opacity: 0.85;
+  }
+  .holding-card.loss::before {
+    background-image:
+      linear-gradient(180deg, var(--accent-down) 0, var(--accent-down) 2px, transparent 2px, transparent 4px),
+      linear-gradient(180deg, var(--accent-down) 0, var(--accent-down) 0.5px, transparent 0.5px, transparent 2px),
+      linear-gradient(180deg, var(--accent-down) 0, var(--accent-down) 0.5px, transparent 0.5px, transparent 3px),
+      radial-gradient(circle at 50% 1.5px, var(--accent-down) 0.4px, transparent 0.6px);
+  }
+  .holding-card.gain::before {
+    background-image:
+      linear-gradient(180deg, var(--accent-up) 0, var(--accent-up) 2px, transparent 2px, transparent 4px),
+      linear-gradient(180deg, var(--accent-up) 0, var(--accent-up) 0.5px, transparent 0.5px, transparent 2px),
+      linear-gradient(180deg, var(--accent-up) 0, var(--accent-up) 0.5px, transparent 0.5px, transparent 3px),
+      radial-gradient(circle at 50% 1.5px, var(--accent-up) 0.4px, transparent 0.6px);
+  }
+  .closed-card { opacity: 0.78; }
+  .closed-card::before {
+    background-image:
+      linear-gradient(180deg, var(--ink-muted) 0, var(--ink-muted) 2px, transparent 2px, transparent 4px),
+      linear-gradient(180deg, var(--ink-muted) 0, var(--ink-muted) 0.5px, transparent 0.5px, transparent 2px) !important;
+    opacity: 0.6;
+  }
+
+  .holding-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .holding-name {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .holding-code {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .holding-status {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .holding-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+  .holding-key {
+    color: var(--ink-secondary);
+  }
+  .holding-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .holding-pnl {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .holding-pnl-key {
+    font-size: 10px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .holding-pnl-val {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.01em;
+  }
+
+  /* ============ TRADE SUMMARY ============ */
+  .trade-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (min-width: 700px) {
+    .trade-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .trade-cell {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+  }
+  .trade-cell-key {
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 6px;
+  }
+  .trade-cell-val {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ============ CHART CARD ============ */
+  .chart-card {
+    background: var(--bg-card);
+    padding: 28px 24px 20px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .chart-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .chart-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-primary);
+  }
+  .chart-sub {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .chart-canvas-wrap {
+    position: relative;
+    height: 280px;
+  }
+  .chart-loading {
+    color: var(--ink-muted);
+    font-size: 12px;
+    text-align: center;
+    padding: 24px;
+  }
+  .chart-legend {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .chart-legend-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-mark {
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    border-top: 1px dashed var(--ink-muted);
+  }
+
+  /* ============ TRANSACTIONS TABLE ============ */
+  .tx-table-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px;
+    overflow-x: auto;
+  }
+  table.tx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.tx-table th, table.tx-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  table.tx-table th {
+    color: var(--ink-muted);
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  table.tx-table td {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  table.tx-table td.name-cell {
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    font-weight: 500;
+  }
+  table.tx-table td.num { text-align: right; }
+  table.tx-table tr:last-child td { border-bottom: none; }
+
+  /* ============ SKELETON ============ */
   .skeleton {
-    background: linear-gradient(90deg, #1f1f1f 0%, #2a2a2a 50%, #1f1f1f 100%);
+    background: linear-gradient(90deg, #ECEAE3 0%, #F0EEEA 50%, #ECEAE3 100%);
     background-size: 200% 100%;
     animation: skeleton 1.4s ease-in-out infinite;
     border-radius: 4px;
@@ -78,50 +607,148 @@
     100% { background-position: -200% 0; }
   }
 
-  /* 刷新按钮 */
+  /* ============ REFRESH FAB ============ */
   .refresh-fab {
     position: fixed; bottom: 24px; right: 24px; z-index: 999;
     width: 56px; height: 56px; border-radius: 50%;
-    background: linear-gradient(135deg, #1e3a8a, #312e81);
-    color: #fff; border: none; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
+    background: var(--ink-primary);
+    color: var(--bg); border: 1px solid var(--border); cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px; transition: all 0.2s;
+    font-size: 22px; transition: all 0.2s;
   }
   .refresh-fab:hover { transform: scale(1.05); }
   .refresh-fab:active { transform: scale(0.95); }
   .refresh-fab.loading {
-    background: #6b7280; cursor: wait;
+    background: var(--ink-muted); cursor: wait;
     animation: spin 1s linear infinite;
   }
-  .refresh-fab.success { background: #047857; }
-  .refresh-fab.error { background: #b91c1c; }
+  .refresh-fab.success { background: var(--accent-down); color: white; }
+  .refresh-fab.error { background: var(--accent-up); color: white; }
   @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
   .refresh-toast {
     position: fixed; bottom: 92px; right: 24px; z-index: 999;
-    background: #1f2937; color: #fff; padding: 10px 14px;
-    border-radius: 8px; font-size: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    background: var(--ink-primary); color: var(--bg); padding: 10px 14px;
+    border-radius: 6px; font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     opacity: 0; transition: opacity 0.3s; pointer-events: none;
-    max-width: 240px; line-height: 1.5;
+    max-width: 280px; line-height: 1.5;
   }
   .refresh-toast.show { opacity: 1; }
 
-  .footer {
-    text-align: center; color: #6b7280; font-size: 11px;
-    padding: 20px 0 40px;
+  /* ============ FOOTER ============ */
+  footer {
+    margin-top: 64px;
+    padding: 20px 0 0;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
   }
-  .footer a { color: #9ca3af; text-decoration: none; }
+  footer a {
+    color: var(--ink-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--ink-muted);
+  }
+  footer a:hover { color: var(--ink-primary); }
 </style>
+
+<!-- SVG defs: shared symbols for 4 corners + 4 dividers -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Hero 4 角小纹章 (邮票式精致前卫: 钻石 cluster + 微细线 + 4 角光芒) -->
+    <symbol id="corner-emblem" viewBox="0 0 16 16">
+      <!-- 中央菱形 cluster -->
+      <path d="M8 4 L11 8 L8 12 L5 8 Z" stroke="currentColor" stroke-width="0.7" fill="none"/>
+      <path d="M8 6 L10 8 L8 10 L6 8 Z" stroke="currentColor" stroke-width="0.4" fill="currentColor"/>
+      <!-- 4 角微光芒 -->
+      <line x1="8" y1="2" x2="8" y2="3.2" stroke="currentColor" stroke-width="0.5"/>
+      <line x1="8" y1="12.8" x2="8" y2="14" stroke="currentColor" stroke-width="0.5"/>
+      <line x1="2" y1="8" x2="3.2" y2="8" stroke="currentColor" stroke-width="0.5"/>
+      <line x1="12.8" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="0.5"/>
+      <!-- 4 角端点 micro dot -->
+      <circle cx="8" cy="2" r="0.6" fill="currentColor"/>
+      <circle cx="14" cy="8" r="0.6" fill="currentColor"/>
+      <circle cx="8" cy="14" r="0.6" fill="currentColor"/>
+      <circle cx="2" cy="8" r="0.6" fill="currentColor"/>
+    </symbol>
+    <!-- Victorian/Edwardian corner ornament (Morris/Beardsley vine scrollwork) -->
+    <symbol id="corner-pattern" viewBox="0 0 96 96">
+      <path d="M0 0 L82 0 M0 0 L0 82" stroke="currentColor" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+      <path d="M4 4 L78 4 M4 4 L4 78" stroke="currentColor" stroke-width="0.3" fill="none"/>
+      <path d="M12 12 C12 7, 20 5, 28 8 C40 12, 50 22, 56 36 C60 46, 68 54, 78 60"
+            stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <path d="M20 20 C20 16, 26 16, 30 20 C34 26, 30 32, 24 32 C20 32, 18 28, 20 24"
+            stroke="currentColor" stroke-width="0.7" fill="none"/>
+      <path d="M50 32 C52 36, 56 40, 60 42 C66 46, 70 44, 74 40"
+            stroke="currentColor" stroke-width="0.5" fill="none"/>
+      <path d="M40 26 C44 24, 48 26, 50 30" stroke="currentColor" stroke-width="0.4" fill="none"/>
+      <path d="M34 18 C42 14, 50 16, 52 22 C46 26, 38 24, 34 20 Z" stroke="currentColor" stroke-width="0.6" fill="none"/>
+      <path d="M38 19 L48 22" stroke="currentColor" stroke-width="0.3"/>
+      <path d="M58 44 C64 42, 68 46, 66 50 C62 52, 58 46, 58 44 Z" stroke="currentColor" stroke-width="0.5" fill="none"/>
+      <path d="M60 46 L64 48" stroke="currentColor" stroke-width="0.25"/>
+      <path d="M72 38 C76 36, 78 40, 76 42 C74 44, 72 40, 72 38 Z" stroke="currentColor" stroke-width="0.4" fill="none"/>
+      <circle cx="14" cy="14" r="0.6" fill="currentColor"/>
+      <circle cx="30" cy="10" r="1.1" fill="currentColor"/>
+      <circle cx="62" cy="50" r="1" fill="currentColor"/>
+      <circle cx="48" cy="34" r="0.5" fill="currentColor"/>
+      <circle cx="44" cy="28" r="0.4" fill="currentColor"/>
+      <g fill="currentColor" opacity="0.55">
+        <circle cx="16" cy="20" r="0.25"/>
+        <circle cx="22" cy="14" r="0.25"/>
+        <circle cx="28" cy="14" r="0.25"/>
+        <circle cx="36" cy="14" r="0.25"/>
+        <circle cx="44" cy="30" r="0.25"/>
+        <circle cx="56" cy="36" r="0.25"/>
+        <circle cx="64" cy="44" r="0.25"/>
+        <circle cx="68" cy="46" r="0.25"/>
+        <circle cx="74" cy="48" r="0.25"/>
+      </g>
+      <path d="M78 60 Q82 62 82 66" stroke="currentColor" stroke-width="0.4" fill="none" stroke-linecap="round"/>
+    </symbol>
+
+    <!-- Engraved rule divider with central fleuron (Kelmscott Press style) -->
+    <symbol id="divider-pattern" viewBox="0 0 600 24" preserveAspectRatio="xMidYMid meet">
+      <g transform="translate(8 12)">
+        <path d="M0 0 C4 -5, 12 -5, 14 0 C16 5, 10 8, 4 6 C0 5, 0 2, 0 0 Z" stroke="currentColor" stroke-width="0.7" fill="none"/>
+        <circle cx="2" cy="3" r="0.6" fill="currentColor"/>
+        <circle cx="9" cy="-1" r="0.4" fill="currentColor"/>
+      </g>
+      <line x1="28" y1="12" x2="270" y2="12" stroke="currentColor" stroke-width="0.4"/>
+      <g transform="translate(300 12)">
+        <path d="M0 -7 L9 0 L0 7 L-9 0 Z" stroke="currentColor" stroke-width="0.7" fill="none"/>
+        <path d="M0 -4 L5 0 L0 4 L-5 0 Z" stroke="currentColor" stroke-width="0.4" fill="none"/>
+        <circle cx="0" cy="0" r="1.1" fill="currentColor"/>
+        <path d="M-12 0 C-10 -3, -8 -3, -7 0 C-8 3, -10 3, -12 0 Z" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <path d="M12 0 C10 -3, 8 -3, 7 0 C8 3, 10 3, 12 0 Z" stroke="currentColor" stroke-width="0.5" fill="none"/>
+        <path d="M-16 0 L-14 -2" stroke="currentColor" stroke-width="0.3"/>
+        <path d="M16 0 L14 -2" stroke="currentColor" stroke-width="0.3"/>
+      </g>
+      <line x1="330" y1="12" x2="572" y2="12" stroke="currentColor" stroke-width="0.4"/>
+      <g transform="translate(592 12) scale(-1 1)">
+        <path d="M0 0 C4 -5, 12 -5, 14 0 C16 5, 10 8, 4 6 C0 5, 0 2, 0 0 Z" stroke="currentColor" stroke-width="0.7" fill="none"/>
+        <circle cx="2" cy="3" r="0.6" fill="currentColor"/>
+        <circle cx="9" cy="-1" r="0.4" fill="currentColor"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1e3a8a">
+<meta name="theme-color" content="#F7F7F5">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" default>
 <meta name="apple-mobile-web-app-title" content="持仓 Dashboard">
 <link rel="apple-touch-icon" href="images/icon-192.svg">
 
@@ -130,117 +757,174 @@
 </head>
 <body>
 
-<div class="header">
-  <h1 data-i18n="title">📊 持仓 Dashboard</h1>
-  <div class="date" id="header-date">加载中…</div>
-</div>
+<!-- ============ HEADER ============ -->
+<header class="app-header">
+  <div class="logo-mark">
+    <div class="logo-square"></div>
+    <span class="logo-text">持仓</span>
+  </div>
+  <nav class="tabs">
+    <a href="#" class="active">今日</a>
+    <a href="#">分析</a>
+    <a href="#">设置</a>
+  </nav>
+  <div class="header-meta">
+    <span id="header-date">加载中…</span>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </div>
+</header>
 
-<!-- 三段式盈亏 (Hero) -->
-<div class="hero-pnl" id="hero-pnl" style="--hero-bg: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);">
-  <div style="font-size:12px;color:#9ca3af;margin-bottom:8px;text-align:left">📊 三段式盈亏 (今日)</div>
+<!-- ============ HERO (顶部+底部 AI 铜版画花纹 no-repeat 居中 + 4 角纹章 + 浮雕内阴影) ============ -->
+<section class="hero">
+  <div class="hero-edge hero-edge-top"></div>
+  <div class="hero-edge hero-edge-bottom"></div>
 
-  <div class="hero-row">
-    <div class="hero-label">
-      <div style="font-size:11px;color:#ffffffaa">① 持仓盈亏</div>
-      <div style="font-size:11px;color:#9ca3af">(持仓浮盈/亏)</div>
-    </div>
-    <div class="hero-value">
-      <div class="hero-money" id="floating-abs">—</div>
-      <div class="hero-pct" id="floating-pct">—</div>
-    </div>
+  <svg class="hero-corner hero-corner-tl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <svg class="hero-corner hero-corner-tr" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <svg class="hero-corner hero-corner-bl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <svg class="hero-corner hero-corner-br" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+
+  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
+  <div class="hero-label">总投资盈亏 · 总览</div>
+
+  <div class="hero-amount-row">
+    <div class="hero-amount" id="hero-amount">—</div>
+    <div class="hero-percent" id="hero-percent">—</div>
   </div>
 
-  <div class="hero-row">
-    <div class="hero-label">
-      <div style="font-size:11px;color:#ffffffaa">② 已实现盈亏</div>
-      <div style="font-size:11px;color:#9ca3af">(已落袋)</div>
-    </div>
-    <div class="hero-value">
-      <div class="hero-money" id="realized-abs">—</div>
-      <div class="hero-pct" id="realized-pct">—</div>
-    </div>
-  </div>
+  <div class="hero-sub" id="hero-sub">加载中…</div>
 
-  <div class="hero-row">
-    <div class="hero-label">
-      <div style="font-size:11px;color:#ffffffaa">③ 总投资盈亏 <span style="color:#9ca3af">(①+②)</span></div>
-      <div style="font-size:11px;color:#9ca3af">总% vs 初始总投入</div>
+  <div class="hero-stats-bar">
+    <div>
+      <div class="hero-stat-key">跑赢沪深 300</div>
+      <div class="hero-stat-val" id="excess-csi300-val">—</div>
     </div>
-    <div class="hero-value">
-      <div class="hero-money" id="total-abs">—</div>
-      <div class="hero-pct" id="total-pct">—</div>
+    <div>
+      <div class="hero-stat-key">跑赢上证指数</div>
+      <div class="hero-stat-val" id="excess-sh-val">—</div>
+    </div>
+    <div>
+      <div class="hero-stat-key">初始总投入</div>
+      <div class="hero-stat-val" id="initial-principal-val">—</div>
     </div>
   </div>
+</section>
+
+<!-- ============ 三段式盈亏 (含分母副行, Round 2 Option A) ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
 </div>
 
-<div style="font-size:11px;color:#9ca3af;text-align:center;margin-bottom:12px" id="initial-principal-line">
-    初始总投入 <b id="initial-principal">—</b> 元
-</div>
+<h2 class="section-title">三段式盈亏 <span class="count">3 segments</span></h2>
 
-<div class="excess" id="excess-box" style="display:none">
-    <b id="excess-csi300">—</b> 跑赢沪深 300<br>
-    <b id="excess-sh">—</b> 跑赢上证指数
-</div>
-
-<!-- 当前持仓 -->
-<div class="section">
-  <h2>💼 当前持仓 (<span id="holdings-count">0</span> 只)</h2>
-  <div id="holdings-list"></div>
-</div>
-
-<!-- 已清仓 -->
-<div class="section" id="closed-section" style="display:none">
-  <h2>🚪 已清仓 (<span id="closed-count">0</span> 只)</h2>
-  <div style="font-size:11px;color:#9ca3af;margin-bottom:8px" id="closed-summary"></div>
-  <div id="closed-list"></div>
-</div>
-
-<!-- 交易汇总 -->
-<div class="section">
-  <h2>💱 交易汇总</h2>
-  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px" id="trade-summary-grid"></div>
-</div>
-
-<!-- 累计盈亏趋势 (Chart.js) -->
-<div class="section">
-  <h2>📈 累计盈亏趋势</h2>
-  <div class="chart-wrap"><canvas id="chart-pnl-trend"></canvas></div>
-</div>
-
-<!-- 累计收益率 vs 大盘 (Chart.js) -->
-<div class="section">
-  <h2>🏆 累计收益率 vs 大盘</h2>
-  <div class="chart-wrap"><canvas id="chart-benchmark"></canvas></div>
-  <div style="font-size:11px;color:#9ca3af;margin-top:8px;text-align:center">
-    以首日为基线 0% · 三条线对比
+<div class="three-seg">
+  <div class="seg">
+    <div class="seg-label">① 持仓盈亏 · 浮盈</div>
+    <div class="seg-amount" id="floating-amount">—</div>
+    <div class="seg-percent" id="floating-pct">—</div>
+    <div class="seg-denominator">vs 当前持仓成本</div>
+  </div>
+  <div class="seg">
+    <div class="seg-label">② 已实现盈亏</div>
+    <div class="seg-amount" id="realized-amount">—</div>
+    <div class="seg-percent" id="realized-pct">—</div>
+    <div class="seg-denominator">vs 历史消耗本金</div>
+  </div>
+  <div class="seg">
+    <div class="seg-label">③ 总投资盈亏</div>
+    <div class="seg-amount" id="total-amount">—</div>
+    <div class="seg-percent" id="total-pct">—</div>
+    <div class="seg-denominator">vs 初始总投入</div>
   </div>
 </div>
 
-<!-- 交易记录 (近 10 笔) -->
-<div class="section">
-  <h2>📋 交易记录 (近 <span id="tx-count">0</span> 笔)</h2>
-  <table>
+<!-- ============ 当前持仓 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">当前持仓 <span class="count"><span id="holdings-count">0</span> 只</span></h2>
+
+<div class="holdings-grid" id="holdings-list"></div>
+
+<!-- ============ 已清仓 ============ -->
+<div id="closed-section" style="display:none">
+  <div class="divider">
+    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+  </div>
+  <h2 class="section-title">已清仓 <span class="count" id="closed-summary"></span></h2>
+  <div class="holdings-grid" id="closed-list"></div>
+</div>
+
+<!-- ============ 交易汇总 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">交易汇总</h2>
+
+<div class="trade-grid" id="trade-summary-grid"></div>
+
+<!-- ============ 累计盈亏趋势 (含 carry_forward 文字注释, Round 3 Option D) ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">累计盈亏趋势 <span class="count">近 <span id="pnl-days-count">30</span> 天</span></h2>
+
+<div class="chart-card">
+  <div class="chart-header">
+    <div class="chart-title">总 P&L · 累计</div>
+    <div class="chart-sub" id="pnl-range">—</div>
+  </div>
+  <div class="chart-canvas-wrap">
+    <canvas id="chart-pnl-trend"></canvas>
+  </div>
+  <div class="chart-legend">
+    <div class="chart-legend-note" id="carry-forward-note">
+      <span class="legend-mark"></span>
+      前 3 天为假设性回填
+    </div>
+    <div>数据来源: Supabase · Q4 决策 统一到云端</div>
+  </div>
+</div>
+
+<!-- ============ 累计收益率 vs 大盘 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">累计收益率 vs 大盘</h2>
+
+<div class="chart-card">
+  <div class="chart-header">
+    <div class="chart-title">我的持仓 vs 上证指数 vs 沪深 300</div>
+    <div class="chart-sub">以首日为基线 0%</div>
+  </div>
+  <div class="chart-canvas-wrap">
+    <canvas id="chart-benchmark"></canvas>
+  </div>
+</div>
+
+<!-- ============ 交易记录 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">交易记录 <span class="count">近 <span id="tx-count">0</span> 笔</span></h2>
+
+<div class="tx-table-wrap">
+  <table class="tx-table">
     <thead><tr><th>日期</th><th>方向</th><th>标的</th><th class="num">数量</th><th class="num">价格</th></tr></thead>
     <tbody id="tx-tbody"></tbody>
   </table>
 </div>
 
-<style>
-.hero-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 0;
-}
-.hero-row + .hero-row { border-top: 1px solid rgba(255,255,255,0.1); }
-.hero-value { text-align: right; }
-.hero-money { font-size: 18px; font-weight: 700; color: #fff; }
-.hero-pct { font-size: 12px; color: #ffffffee; }
-.hero-row:nth-child(4) .hero-money { font-size: 22px; font-weight: 800; }
-.hero-row:nth-child(4) .hero-pct { font-size: 13px; }
-</style>
-
-<div class="footer">
-  数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">JSON</a>
-</div>
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
+  <div>PORTFOLIO DASHBOARD · v16 · 2026-09-17 · ELSEWHERE 母题 · AI 铜版画 (top+bottom 单 motif, jsdelivr CDN)</div>
+</footer>
 
 <!-- 刷新按钮 -->
 <button class="refresh-fab" id="refresh-fab" onclick="DashboardApp.refresh()" aria-label="刷新">↻</button>
