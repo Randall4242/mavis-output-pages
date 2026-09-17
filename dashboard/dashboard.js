@@ -364,7 +364,7 @@
       }
       const labels = series.map(s => s.trade_date.substring(5)); // MM-DD
       const pnls = series.map(s => s.total_pnl);
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const isMobile = window.matchMedia('(max-width: 600px)').matches;
       const maxTicks = isMobile ? 5 : 10;
 
       // sub line: date range
@@ -410,12 +410,14 @@
               backgroundColor: '#1A1A1A',
               titleColor: '#F7F7F5',
               bodyColor: '#F7F7F5',
-              titleFont: { family: 'JetBrains Mono', size: 11, weight: 600 },
-              bodyFont: { family: 'JetBrains Mono', size: 12 },
-              padding: 10,
+              titleFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 11, weight: 600 },
+              bodyFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 12 },
+              padding: isMobile ? 8 : 10,
               borderColor: '#3A2E26',
               borderWidth: 1,
               displayColors: false,
+              yAlign: isMobile ? 'bottom' : undefined,
+              xAlign: isMobile ? 'center' : undefined,
               callbacks: {
                 title: (ctx) => {
                   const i = ctx[0].dataIndex;
@@ -482,7 +484,7 @@
         return csiMap[fullDate] ?? null;
       });
 
-      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const isMobile = window.matchMedia('(max-width: 600px)').matches;
       const maxTicks = isMobile ? 5 : 10;
 
       const datasets = [
@@ -546,11 +548,13 @@
               backgroundColor: '#1A1A1A',
               titleColor: '#F7F7F5',
               bodyColor: '#F7F7F5',
-              titleFont: { family: 'JetBrains Mono', size: 11, weight: 600 },
-              bodyFont: { family: 'JetBrains Mono', size: 12 },
-              padding: 10,
+              titleFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 11, weight: 600 },
+              bodyFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 12 },
+              padding: isMobile ? 8 : 10,
               borderColor: '#3A2E26',
               borderWidth: 1,
+              yAlign: isMobile ? 'bottom' : undefined,
+              xAlign: isMobile ? 'center' : undefined,
               callbacks: {
                 label: (ctx) => `${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`,
               },
