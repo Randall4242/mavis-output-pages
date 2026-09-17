@@ -99,22 +99,23 @@
   /* ============ HERO ============ */
   .hero {
     position: relative;
-    padding: 56px 40px;
+    padding: 56px 48px;
     margin-bottom: 48px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
   }
-  .corner {
+  /* 4 边细密花纹带 (替代 4 角藤蔓) */
+  .hero-edge {
     position: absolute;
-    width: 96px;
-    height: 96px;
     color: var(--accent-engrave);
     pointer-events: none;
+    opacity: 0.9;
   }
-  .corner-tl { top: 24px; left: 24px; }
-  .corner-tr { top: 24px; right: 24px; transform: scaleX(-1); }
-  .corner-bl { bottom: 24px; left: 24px; transform: scaleY(-1); }
-  .corner-br { bottom: 24px; right: 24px; transform: scale(-1, -1); }
+  .hero-edge-top    { top: 10px;    left: 14px; right: 14px; height: 10px; }
+  .hero-edge-bottom { bottom: 10px; left: 14px; right: 14px; height: 10px; }
+  .hero-edge-left   { top: 14px; bottom: 14px; left: 10px; width: 10px; }
+  .hero-edge-right  { top: 14px; bottom: 14px; right: 10px; width: 10px; }
 
   .hero-meta-top {
     font-family: 'JetBrains Mono', monospace;
@@ -297,21 +298,19 @@
     .seg:last-child { border-bottom: none; }
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
-    .hero { padding: 40px 24px; }
 
-    /* ===== 装饰重排布 (装饰元素不减少, 只调尺寸/位置) ===== */
+    /* ===== 装饰重排布 ===== */
 
-    /* Hero 4 角 vine: 96→64, 距 24→16 (装饰保留完整结构, 缩小不弱化) */
-    .corner { width: 64px; height: 64px; }
-    .corner-tl { top: 16px; left: 16px; }
-    .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
-    .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
-    .corner-br { bottom: 16px; right: 16px; transform: scale(-1, -1); }
-
-    /* Hero padding 缩 + meta/label margin 缩, 给装饰留呼吸空间 */
-    .hero { padding: 32px 24px 24px; margin-bottom: 36px; }
+    /* Hero padding 缩, meta/label margin 缩, 给 4 边花纹带 + 数字留位 */
+    .hero { padding: 36px 28px 28px; margin-bottom: 36px; }
     .hero-meta-top { margin-bottom: 14px; }
     .hero-label { margin-bottom: 12px; }
+
+    /* 4 边花纹带 mobile 缩 (8px 距 + 8px 高/宽) */
+    .hero-edge-top    { top: 8px;    left: 12px; right: 12px; height: 8px; }
+    .hero-edge-bottom { bottom: 8px; left: 12px; right: 12px; height: 8px; }
+    .hero-edge-left   { top: 12px; bottom: 12px; left: 8px; width: 8px; }
+    .hero-edge-right  { top: 12px; bottom: 12px; right: 8px; width: 8px; }
 
     /* Hero 数字 B 档 48-56 */
     .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
@@ -323,7 +322,7 @@
     .hero-stats-bar { gap: 24px; padding-top: 18px; margin-top: 24px; flex-wrap: wrap; }
     .hero-stat-val { font-size: 14px; }
 
-    /* Holding 卡装饰重排布: 保留 6px 多层 banknote 结构 (不弱化), 调位置让出空间 */
+    /* Holding 卡装饰: 保留 5px 多层 banknote 结构 (不弱化) */
     .holding-card { padding: 22px 20px 20px 30px; }
     .holding-card::before { left: 12px; top: 20px; bottom: 20px; width: 5px; }
   }
@@ -675,6 +674,56 @@
       <path d="M78 60 Q82 62 82 66" stroke="currentColor" stroke-width="0.4" fill="none" stroke-linecap="round"/>
     </symbol>
 
+    <!-- Hero 4 边花纹带 (horizontal edge pattern: 双 hairline + dots + small diamond) -->
+    <pattern id="hero-edge-h" width="24" height="10" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="1.5" x2="24" y2="1.5" stroke="currentColor" stroke-width="0.3"/>
+      <line x1="0" y1="8.5" x2="24" y2="8.5" stroke="currentColor" stroke-width="0.3"/>
+      <circle cx="6" cy="5" r="0.5" fill="currentColor"/>
+      <path d="M12 3 L13.5 5 L12 7 L10.5 5 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+      <circle cx="18" cy="5" r="0.5" fill="currentColor"/>
+      <path d="M0 5 L2 3.5 M24 5 L22 3.5 M0 5 L2 6.5 M24 5 L22 6.5" stroke="currentColor" stroke-width="0.2" fill="none"/>
+    </pattern>
+
+    <!-- Hero 4 边花纹带 (vertical edge pattern) -->
+    <pattern id="hero-edge-v" width="10" height="24" patternUnits="userSpaceOnUse">
+      <line x1="1.5" y1="0" x2="1.5" y2="24" stroke="currentColor" stroke-width="0.3"/>
+      <line x1="8.5" y1="0" x2="8.5" y2="24" stroke="currentColor" stroke-width="0.3"/>
+      <circle cx="5" cy="6" r="0.5" fill="currentColor"/>
+      <path d="M3 12 L5 13.5 L7 12 L5 10.5 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+      <circle cx="5" cy="18" r="0.5" fill="currentColor"/>
+      <path d="M5 0 L3.5 2 M5 24 L3.5 22 M5 0 L6.5 2 M5 24 L6.5 22" stroke="currentColor" stroke-width="0.2" fill="none"/>
+    </pattern>
+
+    <!-- Hero 顶/底边中央 motif (chapter heading 风格菱形 cluster) -->
+    <symbol id="hero-center-h" viewBox="0 0 80 10" preserveAspectRatio="xMidYMid meet">
+      <g transform="translate(40 5)">
+        <path d="M-30 0 L-25 -1.5 L-20 0 L-25 1.5 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+        <circle cx="-18" cy="0" r="0.4" fill="currentColor"/>
+        <path d="M-16 0 L-12 -1.5 L-8 0 L-12 1.5 Z" stroke="currentColor" stroke-width="0.3" fill="currentColor"/>
+        <path d="M-6 0 L-3 -2 L0 0 L-3 2 Z" stroke="currentColor" stroke-width="0.4" fill="currentColor"/>
+        <circle cx="0" cy="0" r="1" fill="currentColor"/>
+        <path d="M0 0 L3 -2 L6 0 L3 2 Z" stroke="currentColor" stroke-width="0.4" fill="currentColor"/>
+        <path d="M8 0 L12 -1.5 L16 0 L12 1.5 Z" stroke="currentColor" stroke-width="0.3" fill="currentColor"/>
+        <circle cx="18" cy="0" r="0.4" fill="currentColor"/>
+        <path d="M20 0 L25 -1.5 L30 0 L25 1.5 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+      </g>
+    </symbol>
+
+    <!-- Hero 左/右边中央 motif -->
+    <symbol id="hero-center-v" viewBox="0 0 10 80" preserveAspectRatio="xMidYMid meet">
+      <g transform="translate(5 40)">
+        <path d="M0 -30 L-1.5 -25 L0 -20 L1.5 -25 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+        <circle cx="0" cy="-18" r="0.4" fill="currentColor"/>
+        <path d="M0 -16 L-1.5 -12 L0 -8 L1.5 -12 Z" stroke="currentColor" stroke-width="0.3" fill="currentColor"/>
+        <path d="M0 -6 L-2 -3 L0 0 L2 -3 Z" stroke="currentColor" stroke-width="0.4" fill="currentColor"/>
+        <circle cx="0" cy="0" r="1" fill="currentColor"/>
+        <path d="M0 0 L-2 3 L0 6 L2 3 Z" stroke="currentColor" stroke-width="0.4" fill="currentColor"/>
+        <path d="M0 8 L-1.5 12 L0 16 L1.5 12 Z" stroke="currentColor" stroke-width="0.3" fill="currentColor"/>
+        <circle cx="0" cy="18" r="0.4" fill="currentColor"/>
+        <path d="M0 20 L-1.5 25 L0 30 L1.5 25 Z" stroke="currentColor" stroke-width="0.3" fill="none"/>
+      </g>
+    </symbol>
+
     <!-- Engraved rule divider with central fleuron (Kelmscott Press style) -->
     <symbol id="divider-pattern" viewBox="0 0 600 24" preserveAspectRatio="xMidYMid meet">
       <g transform="translate(8 12)">
@@ -732,12 +781,12 @@
   </div>
 </header>
 
-<!-- ============ HERO (4 corner ornaments + big amount) ============ -->
+<!-- ============ HERO (4-edge 花纹带 + 大字 amount) ============ -->
 <section class="hero">
-  <svg class="corner corner-tl" viewBox="0 0 96 96" fill="none"><use href="#corner-pattern"/></svg>
-  <svg class="corner corner-tr" viewBox="0 0 96 96" fill="none"><use href="#corner-pattern"/></svg>
-  <svg class="corner corner-bl" viewBox="0 0 96 96" fill="none"><use href="#corner-pattern"/></svg>
-  <svg class="corner corner-br" viewBox="0 0 96 96" fill="none"><use href="#corner-pattern"/></svg>
+  <svg class="hero-edge hero-edge-top" viewBox="0 0 600 10" preserveAspectRatio="none"><rect width="600" height="10" fill="url(#hero-edge-h)"/><use href="#hero-center-h"/></svg>
+  <svg class="hero-edge hero-edge-bottom" viewBox="0 0 600 10" preserveAspectRatio="none"><rect width="600" height="10" fill="url(#hero-edge-h)"/><use href="#hero-center-h"/></svg>
+  <svg class="hero-edge hero-edge-left" viewBox="0 0 10 600" preserveAspectRatio="none"><rect width="10" height="600" fill="url(#hero-edge-v)"/><use href="#hero-center-v"/></svg>
+  <svg class="hero-edge hero-edge-right" viewBox="0 0 10 600" preserveAspectRatio="none"><rect width="10" height="600" fill="url(#hero-edge-v)"/><use href="#hero-center-v"/></svg>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
   <div class="hero-label">总投资盈亏 · 总览</div>
@@ -878,7 +927,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v8 · 2026-09-17 · ELSEWHERE 母题 · mobile 装饰重排布</div>
+  <div>PORTFOLIO DASHBOARD · v9 · 2026-09-17 · ELSEWHERE 母题 · 4 边花纹带</div>
 </footer>
 
 <!-- 刷新按钮 -->
