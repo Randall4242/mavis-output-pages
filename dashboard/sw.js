@@ -1,14 +1,9 @@
-// Mavis Stock Tracker - Service Worker (v12)
+// Mavis Stock Tracker - Service Worker (v5)
 // 缓存策略: stale-while-revalidate (优先缓存, 后台更新)
-// v5-v10: 见前议
-// v11: 装饰从 SVG 几何花纹换成 AI 绘制铜版画 PNG
-// v12: 花纹缩小 + opacity 0.62 + 角过渡 smooth + PNG 压缩
-// v13: 微调再缩 (top/bottom 22, left/right 22, opacity 0.5, mask 22)
-// v14: 删 4 边 PNG 花纹带 → 4 角 SVG 小纹章 (corner-emblem)
-// v15: fallback — 用 v11 浓密铜版画 PNG, 改 layout: top+bottom 各 1 张 no-repeat 居中, opacity 0.38, 保留 4 角纹章
-// v16: 修 PNG 不显示 (GitHub Pages CDN 卡住 404), 换 jsdelivr CDN (https://cdn.jsdelivr.net/gh/Randall4242/mavis-output-pages@main/.../hero-border-h.png)
+// v5: 缓存策略升级 — 缓存 dashboard.js + chart.umd.min.js + dashboard.json
+//     不再缓存 PNG (改 client-rendered chart)
 
-const CACHE_NAME = 'mavis-dashboard-v16';
+const CACHE_NAME = 'mavis-dashboard-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -17,8 +12,6 @@ const ASSETS = [
   './vendor/chart.umd.min.js',
   './data/dashboard.json',
   './images/icon-192.svg',
-  './images/hero-border-h.png',
-  './images/hero-border-v.png',
 ];
 
 self.addEventListener('install', event => {
