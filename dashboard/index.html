@@ -106,24 +106,40 @@
     border-radius: 2px;
     /* 浮雕感: 外细线 + 内淡阴影 + 外淡阴影 (像压印印刷品) */
     box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.6),       /* 内浅高光 (纸张感) */
-      inset 0 1px 24px rgba(58,46,38,0.04),         /* 内淡阴影 (压印感) */
-      0 1px 0 rgba(58,46,38,0.06);                  /* 外 1px 微浮起 */
+      inset 0 0 0 1px rgba(255,255,255,0.6),
+      inset 0 1px 24px rgba(58,46,38,0.04),
+      0 1px 0 rgba(58,46,38,0.06);
   }
-  /* 4 角 SVG 小纹章 (取代 4 边花纹带, 不再是死板边框, 是"邮票角装饰" 设计感) */
-  .hero-corner {
+  /* 顶部 + 底部 AI 铜版画花纹 (单张 no-repeat 居中, 不死板边框, 是"卡片装饰边") */
+  .hero-edge {
     position: absolute;
-    width: 16px;
-    height: 16px;
-    color: var(--accent-engrave);
     pointer-events: none;
     z-index: 1;
-    opacity: 0.55;  /* subtle 但看得见 */
+    left: 0;
+    right: 0;
+    height: 28px;
+    background-image: url(images/hero-border-h.png);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: center center;
+    opacity: 0.38;  /* subtle: 浓密保留 + 真铜版画质感, 但降低存在感 */
   }
-  .hero-corner-tl { top: 12px;    left: 12px;   }
-  .hero-corner-tr { top: 12px;    right: 12px;  transform: scaleX(-1); }
-  .hero-corner-bl { bottom: 12px; left: 12px;   transform: scaleY(-1); }
-  .hero-corner-br { bottom: 12px; right: 12px;  transform: scale(-1, -1); }
+  .hero-edge-top    { top: 8px;    }
+  .hero-edge-bottom { bottom: 8px; }
+  /* 4 角小纹章 (保留: 给装饰加设计锚点) */
+  .hero-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    color: var(--accent-engrave);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.45;
+  }
+  .hero-corner-tl { top: 10px;    left: 10px;   }
+  .hero-corner-tr { top: 10px;    right: 10px;  transform: scaleX(-1); }
+  .hero-corner-bl { bottom: 10px; left: 10px;   transform: scaleY(-1); }
+  .hero-corner-br { bottom: 10px; right: 10px;  transform: scale(-1, -1); }
 
   .hero-meta-top {
     font-family: 'JetBrains Mono', monospace;
@@ -314,12 +330,14 @@
     .hero-meta-top { margin-bottom: 14px; }
     .hero-label { margin-bottom: 12px; }
 
-    /* 4 角小纹章 mobile 缩 (12px) */
-    .hero-corner { width: 12px; height: 12px; }
-    .hero-corner-tl { top: 10px;    left: 10px;   }
-    .hero-corner-tr { top: 10px;    right: 10px;  transform: scaleX(-1); }
-    .hero-corner-bl { bottom: 10px; left: 10px;   transform: scaleY(-1); }
-    .hero-corner-br { bottom: 10px; right: 10px;  transform: scale(-1, -1); }
+    /* 顶部/底部铜版画花纹 mobile 缩 (20px) */
+    .hero-edge { height: 20px; }
+    /* 4 角小纹章 mobile 缩 (10px) */
+    .hero-corner { width: 10px; height: 10px; }
+    .hero-corner-tl { top: 8px;    left: 8px;   }
+    .hero-corner-tr { top: 8px;    right: 8px;  transform: scaleX(-1); }
+    .hero-corner-bl { bottom: 8px; left: 8px;   transform: scaleY(-1); }
+    .hero-corner-br { bottom: 8px; right: 8px;  transform: scale(-1, -1); }
 
     /* Hero 数字 B 档 48-56 */
     .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
@@ -756,8 +774,11 @@
   </div>
 </header>
 
-<!-- ============ HERO (4 角邮票式 SVG 小纹章 + 浮雕内阴影, 不用 4 边花纹带) ============ -->
+<!-- ============ HERO (顶部+底部 AI 铜版画花纹 no-repeat 居中 + 4 角纹章 + 浮雕内阴影) ============ -->
 <section class="hero">
+  <div class="hero-edge hero-edge-top"></div>
+  <div class="hero-edge hero-edge-bottom"></div>
+
   <svg class="hero-corner hero-corner-tl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
   <svg class="hero-corner hero-corner-tr" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
   <svg class="hero-corner hero-corner-bl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
@@ -902,7 +923,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v14 · 2026-09-17 · ELSEWHERE 母题 · 4 角纹章 + 浮雕内阴影</div>
+  <div>PORTFOLIO DASHBOARD · v15 · 2026-09-17 · ELSEWHERE 母题 · AI 铜版画 (top+bottom 单 motif 居中)</div>
 </footer>
 
 <!-- 刷新按钮 -->
