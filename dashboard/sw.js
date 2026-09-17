@@ -2,9 +2,10 @@
 // 缓存策略: stale-while-revalidate (优先缓存, 后台更新)
 // v5-v10: 见前议
 // v11: 装饰从 SVG 几何花纹换成 AI 绘制铜版画 PNG
-// v12: 花纹缩小 (top/bottom 56→36, left/right 64→40) + 淡观感 (opacity 0.62) + 角过渡 smooth (CSS mask 边缘 fade out) + PNG 压缩 (1MB→334KB, 2.4MB→820KB)
+// v12: 花纹缩小 + opacity 0.62 + 角过渡 smooth + PNG 压缩
+// v13: 微调 — 再缩 (top/bottom 36→22, left/right 40→22) + opacity 0.62→0.5 + mask fade 14→22 + 浓密保留只调尺寸
 
-const CACHE_NAME = 'mavis-dashboard-v12';
+const CACHE_NAME = 'mavis-dashboard-v13';
 const ASSETS = [
   './',
   './index.html',
