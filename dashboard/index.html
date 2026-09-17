@@ -290,152 +290,13 @@
     .holdings-grid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 600px) {
-    /* ===== 基础响应式 ===== */
-    body { padding: 14px 12px 80px; }
-    header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 32px; padding: 12px 0 18px; }
-    nav.tabs { gap: 20px; }
     .holdings-grid { grid-template-columns: 1fr; }
     .three-seg { grid-template-columns: 1fr; }
-    .seg { border-right: none; border-bottom: 1px solid var(--border); padding: 18px 18px; }
+    .seg { border-right: none; border-bottom: 1px solid var(--border); }
     .seg:last-child { border-bottom: none; }
-    .section-title { font-size: 20px; margin-bottom: 16px; }
-    .chart-canvas-wrap { height: 220px; }
-    .chart-card { padding: 20px 16px 16px; }
-    table.tx-table { font-size: 11px; }
-    table.tx-table th, table.tx-table td { padding: 8px 6px; }
-    .holding-card { padding: 24px 18px 18px 22px; }
-    .holding-card:hover { transform: none; }
-    footer { flex-direction: column; align-items: flex-start; font-size: 10px; gap: 6px; }
-    .refresh-fab { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 18px; }
-    .refresh-toast { bottom: 76px; right: 16px; max-width: 220px; font-size: 11px; }
-
-    /* ===== 装饰重设计 (mobile, 不弱化 = 重画更精细) ===== */
-
-    /* Hero 4 角 vine 纹完全去掉, 改为边框 2px + 顶部中央 ◆ 印章 + 上下双 hairline */
-    .corner { display: none; }
-    .hero {
-      padding: 30px 18px 22px;
-      margin-bottom: 36px;
-      border-top: 2px solid var(--accent-engrave);
-      border-bottom: 1px solid var(--accent-engrave);
-      position: relative;
-    }
-    .hero::before {
-      /* 顶部中央 ◆ 印章 (压在上边框, 像钱币/信封封蜡) */
-      content: '◆';
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg);
-      color: var(--accent-engrave);
-      font-size: 16px;
-      padding: 0 8px;
-      line-height: 1;
-    }
-    .hero::after {
-      /* 底部细 hairline + 中央 ◆ */
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 16px;
-      right: 16px;
-      height: 1px;
-      background: linear-gradient(90deg,
-        transparent 0%, transparent 38%,
-        var(--accent-engrave) 38%, var(--accent-engrave) 62%,
-        transparent 62%, transparent 100%);
-      opacity: 0.45;
-    }
-
-    /* Hero 内: meta-top 缩小, amount 缩, percent 缩, stats bar 改 column stack */
-    .hero-meta-top { font-size: 10px; margin-bottom: 14px; }
-    .hero-label { font-size: 11px; margin-bottom: 12px; }
-    .hero-amount {
-      font-size: clamp(36px, 10vw, 52px);
-      letter-spacing: -0.03em;
-    }
-    .hero-amount .unit { font-size: 16px; margin-left: 4px; }
-    .hero-percent {
-      font-size: clamp(16px, 5vw, 22px);
-      padding-left: 12px;
-    }
-    .hero-amount-row { gap: 10px; }
-    .hero-sub { margin-top: 18px; font-size: 11px; line-height: 1.7; }
-    .hero-sub .sep { margin: 0 6px; }
-    .hero-stats-bar {
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 22px;
-      padding-top: 16px;
-    }
-
-    /* Divider 重设计: 中央 16×16 ◆ + 两侧 hairline (mobile 不再 full-width) */
-    .divider {
-      margin: 26px 0 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--accent-engrave);
-      opacity: 0.35;
-    }
-    .divider-ornament {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
-
-    /* Holding card 装饰重设计: 顶部 hairline + 中央 ◆ 印章 (从左垂直 → 顶水平) */
-    .holding-card::before {
-      left: 18px;
-      right: 18px;
-      top: 14px;
-      bottom: auto;
-      width: auto;
-      height: 1.5px;
-      background-image: linear-gradient(90deg,
-        currentColor 0, currentColor 1.5px,
-        transparent 1.5px, transparent 4px);
-      background-size: 4px 1.5px;
-      background-position: 0 0;
-      background-repeat: repeat-x;
-      opacity: 0.85;
-    }
-    .holding-card::after {
-      /* 中央 ◆ 印章 (压在上 hairline 上) */
-      content: '◆';
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg-card);
-      color: inherit;
-      font-size: 10px;
-      padding: 0 5px;
-      line-height: 1;
-    }
-
-    /* 字号缩 */
-    .seg-amount { font-size: 22px; letter-spacing: -0.02em; }
-    .seg-percent { font-size: 14px; margin-top: 6px; }
-    .seg-label { font-size: 10px; margin-bottom: 10px; }
-    .seg-denominator { font-size: 9px; margin-top: 10px; }
-    .trade-cell { padding: 14px 12px; }
-    .trade-cell-key { font-size: 10px; margin-bottom: 4px; }
-    .trade-cell-val { font-size: 17px; }
-    .holding-head { margin-bottom: 12px; }
-    .holding-name { font-size: 15px; }
-    .holding-row { font-size: 11px; padding: 3px 0; }
-    .holding-pnl-val { font-size: 13px; }
-    .chart-title { font-size: 12px; }
-    .chart-sub { font-size: 9px; }
-    .chart-legend { font-size: 9px; gap: 8px; }
-    .legend-mark { width: 14px; }
+    header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    nav.tabs { gap: 20px; }
+    .hero { padding: 40px 24px; }
   }
 
   .holding-card {
@@ -988,7 +849,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v7 · 2026-09-17 · ELSEWHERE 母题 · mobile 装饰重设计</div>
+  <div>PORTFOLIO DASHBOARD · v6 · 2026-09-17 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
