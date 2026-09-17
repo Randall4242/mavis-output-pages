@@ -290,6 +290,7 @@
     .holdings-grid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 600px) {
+    /* ===== 布局 (现有) ===== */
     .holdings-grid { grid-template-columns: 1fr; }
     .three-seg { grid-template-columns: 1fr; }
     .seg { border-right: none; border-bottom: 1px solid var(--border); }
@@ -297,6 +298,34 @@
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
     .hero { padding: 40px 24px; }
+
+    /* ===== 装饰重排布 (装饰元素不减少, 只调尺寸/位置) ===== */
+
+    /* Hero 4 角 vine: 96→64, 距 24→16 (装饰保留完整结构, 缩小不弱化) */
+    .corner { width: 64px; height: 64px; }
+    .corner-tl { top: 16px; left: 16px; }
+    .corner-tr { top: 16px; right: 16px; transform: scaleX(-1); }
+    .corner-bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+    .corner-br { bottom: 16px; right: 16px; transform: scale(-1, -1); }
+
+    /* Hero padding 缩 + meta/label margin 缩, 给装饰留呼吸空间 */
+    .hero { padding: 32px 24px 24px; margin-bottom: 36px; }
+    .hero-meta-top { margin-bottom: 14px; }
+    .hero-label { margin-bottom: 12px; }
+
+    /* Hero 数字 B 档 48-56 */
+    .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
+    .hero-amount .unit { font-size: 16px; margin-left: 4px; }
+    .hero-percent { font-size: clamp(18px, 5vw, 22px); padding-left: 12px; }
+    .hero-amount-row { gap: 12px; flex-wrap: wrap; }
+    .hero-sub { margin-top: 18px; font-size: 11px; }
+    .hero-sub .sep { margin: 0 6px; }
+    .hero-stats-bar { gap: 24px; padding-top: 18px; margin-top: 24px; flex-wrap: wrap; }
+    .hero-stat-val { font-size: 14px; }
+
+    /* Holding 卡装饰重排布: 保留 6px 多层 banknote 结构 (不弱化), 调位置让出空间 */
+    .holding-card { padding: 22px 20px 20px 30px; }
+    .holding-card::before { left: 12px; top: 20px; bottom: 20px; width: 5px; }
   }
 
   .holding-card {
@@ -849,7 +878,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v6 · 2026-09-17 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v8 · 2026-09-17 · ELSEWHERE 母题 · mobile 装饰重排布</div>
 </footer>
 
 <!-- 刷新按钮 -->
