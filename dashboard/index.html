@@ -96,6 +96,12 @@
   }
   .header-meta svg { color: var(--ink-secondary); cursor: pointer; }
 
+  
+  /* Tab 切换 (2026-09-18 v22.4): 今日 / 分析 / 设置 */
+  .tab-pane[hidden] { display: none !important; }
+  nav.tabs a { cursor: pointer; transition: color 0.2s; }
+  nav.tabs a.settings-soon { color: var(--ink-muted); cursor: not-allowed; opacity: 0.5; }
+
   /* ============ HERO ============ */
   .hero {
     position: relative;
@@ -753,9 +759,9 @@
     <span class="logo-text">持仓</span>
   </div>
   <nav class="tabs">
-    <a href="#" class="active">今日</a>
-    <a href="#">分析</a>
-    <a href="#">设置</a>
+    <a href="#" class="active" data-tab="today">今日</a>
+    <a href="#" data-tab="analysis">分析</a>
+    <a href="#" data-tab="settings">设置</a>
   </nav>
   <div class="header-meta">
     <span id="header-date">加载中…</span>
@@ -764,7 +770,7 @@
 </header>
 
 <!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============ -->
-<section class="hero">
+<section class="hero tab-pane" id="tab-today">
   <div class="hero-frame"></div>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
@@ -830,7 +836,9 @@
 
 <div class="holdings-grid" id="holdings-list"></div>
 
-<!-- ============ 已清仓 ============ -->
+</section>
+
+  <!-- ============ 已清仓 ============ -->
 <div id="closed-section" style="display:none">
   <div class="divider">
     <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
@@ -848,7 +856,8 @@
 
 <div class="trade-grid" id="trade-summary-grid"></div>
 
-<!-- ============ 累计盈亏趋势 (含 carry_forward 文字注释, Round 3 Option D) ============ -->
+<section class="tab-pane" id="tab-analysis" hidden>
+  <!-- ============ 累计盈亏趋势 (含 carry_forward 文字注释, Round 3 Option D) ============ -->
 <div class="divider">
   <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
 </div>
@@ -889,7 +898,9 @@
   </div>
 </div>
 
-<!-- ============ 交易记录 ============ -->
+</section>
+
+  <!-- ============ 交易记录 ============ -->
 <div class="divider">
   <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
 </div>
