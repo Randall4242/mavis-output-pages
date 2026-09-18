@@ -44,6 +44,7 @@
           console.warn('[dashboard] schema_version 不匹配, 当前=' + data.meta.schema_version);
         }
         this.render(data);
+        this.initTabs();
         return data;
       } catch (e) {
         this.showError('数据加载失败: ' + e.message);
@@ -68,6 +69,31 @@
       el.textContent = msg;
       el.classList.add('show');
       setTimeout(() => el.classList.remove('show'), 3000);
+    },
+
+    initTabs() {
+      const tabs = document.querySelectorAll('nav.tabs a[data-tab]');
+      tabs.forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = a.dataset.tab;
+          if (target === 'settings') {
+            // 占位 tab, 暂时只 toast
+            this.toast('设置: 即将上线');
+            return;
+          }
+          // 切换 active class
+          tabs.forEach(x => x.classList.toggle('active', x === a));
+          // 切换 pane visibility
+          document.querySelectorAll('.tab-pane').forEach(p => {
+            p.hidden = (p.id !== 'tab-' + target);
+          });
+          // 切到分析时重新 resize chart (Chart.js 在 hidden 时 width=0, 切回来要 resize)
+          if (target === 'analysis') {
+            Object.values(this.charts).forEach(c => c && c.resize && c.resize());
+          }
+        });
+      });
     },
 
     render(data) {
