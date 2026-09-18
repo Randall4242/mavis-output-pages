@@ -105,17 +105,18 @@
     border: 1px solid var(--border);
     border-radius: 2px;
   }
-  /* Hero 4 角斜切花纹边框 (老商标风: chamfered 4 角 + 细密双线 + 4 角圆印 + 沿边 guilloche 痕迹) */
+  /* Guilloche 编织花纹沿 4 边 (老银票风, 2 条 sine 互相缠绕).
+     4 角不画 — 端点 stroke-linecap=round 自然圆头收尾 (丝滑过渡, 不与卡片直角冲突). */
   .hero-frame {
     position: absolute;
     pointer-events: none;
     z-index: 1;
-    top: 8px;
-    right: 8px;
-    bottom: 8px;
-    left: 8px;
+    top: 6px;
+    right: 6px;
+    bottom: 6px;
+    left: 6px;
     color: var(--accent-engrave);
-    opacity: 0.42;  /* subtle: 纤细 + 占用小 */
+    opacity: 0.42;
   }
   .hero-frame svg { display: block; width: 100%; height: 100%; }
 
@@ -308,8 +309,8 @@
     .hero-meta-top { margin-bottom: 14px; }
     .hero-label { margin-bottom: 12px; }
 
-    /* Hero frame mobile: 4 角斜切 + 细线 (占用面积小) */
-    .hero-frame { top: 6px; right: 6px; bottom: 6px; left: 6px; opacity: 0.45; }
+    /* Hero frame mobile: guilloche 微缩 (4 边 5px 高, 距角 4px 空白) */
+    .hero-frame { top: 4px; right: 4px; bottom: 4px; left: 4px; opacity: 0.45; }
 
     /* Hero 数字 B 档 48-56 */
     .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
@@ -746,59 +747,27 @@
   </div>
 </header>
 
-<!-- ============ HERO (老商标风: 4 角斜切 + 细密双线 + 4 角圆印 + guilloche 痕迹) ============ -->
+<!-- ============ HERO (guilloche 沿 4 边, 端点圆头丝滑, 不画 4 角) ============ -->
 <section class="hero">
   <div class="hero-frame">
-    <svg viewBox="0 0 200 100" preserveAspectRatio="none">
-      <!-- Outer chamfered frame: 4 角 12px 斜切 -->
-      <path d="M 6 0 L 194 0 L 200 6 L 200 94 L 194 100 L 6 100 L 0 94 L 0 6 Z"
-            fill="none" stroke="currentColor" stroke-width="0.4" stroke-linejoin="miter"/>
-      <!-- Inner chamfered frame: 内缩 4px -->
-      <path d="M 10 2 L 190 2 L 198 10 L 198 90 L 190 98 L 10 98 L 2 90 L 2 10 Z"
-            fill="none" stroke="currentColor" stroke-width="0.3" stroke-linejoin="miter"/>
-      <!-- Top edge: 细密短线 (guilloche 痕迹) -->
-      <g opacity="0.8">
-        <line x1="20" y1="4.5" x2="20" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="40" y1="4.5" x2="40" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="60" y1="4.5" x2="60" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="80" y1="4.5" x2="80" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="100" y1="4.5" x2="100" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="120" y1="4.5" x2="120" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="140" y1="4.5" x2="140" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="160" y1="4.5" x2="160" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="180" y1="4.5" x2="180" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
-      </g>
-      <!-- Bottom edge: 细密短线 -->
-      <g opacity="0.8">
-        <line x1="20" y1="95.5" x2="20" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="40" y1="95.5" x2="40" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="60" y1="95.5" x2="60" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="80" y1="95.5" x2="80" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="100" y1="95.5" x2="100" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="120" y1="95.5" x2="120" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="140" y1="95.5" x2="140" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="160" y1="95.5" x2="160" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="180" y1="95.5" x2="180" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
-      </g>
-      <!-- Left edge: 细密短线 -->
-      <g opacity="0.8">
-        <line x1="4.5" y1="20" x2="0.5" y2="20" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="4.5" y1="40" x2="0.5" y2="40" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="4.5" y1="60" x2="0.5" y2="60" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="4.5" y1="80" x2="0.5" y2="80" stroke="currentColor" stroke-width="0.25"/>
-      </g>
-      <!-- Right edge: 细密短线 -->
-      <g opacity="0.8">
-        <line x1="195.5" y1="20" x2="199.5" y2="20" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="195.5" y1="40" x2="199.5" y2="40" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="195.5" y1="60" x2="199.5" y2="60" stroke="currentColor" stroke-width="0.25"/>
-        <line x1="195.5" y1="80" x2="199.5" y2="80" stroke="currentColor" stroke-width="0.25"/>
-      </g>
-      <!-- 4 角小圆印 (老商标风格) -->
-      <circle cx="100" cy="6" r="1.6" fill="currentColor"/>
-      <circle cx="100" cy="94" r="1.6" fill="currentColor"/>
-      <circle cx="6" cy="50" r="1.6" fill="currentColor"/>
-      <circle cx="194" cy="50" r="1.6" fill="currentColor"/>
+    <svg viewBox="0 0 200 200" preserveAspectRatio="none">
+      <defs>
+        <!-- 横向 guilloche 编织: 2 条 sine 互绕 (上下边用) -->
+        <pattern id="braid-h" patternUnits="userSpaceOnUse" x="0" y="0" width="6" height="6">
+          <path d="M 0 3 Q 1.5 0 3 3 Q 4.5 6 6 3" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+          <path d="M 0 3 Q 1.5 6 3 3 Q 4.5 0 6 3" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+        </pattern>
+        <!-- 纵向 guilloche 编织: 2 条 sine 互绕 (左右边用) -->
+        <pattern id="braid-v" patternUnits="userSpaceOnUse" x="0" y="0" width="6" height="6">
+          <path d="M 3 0 Q 0 1.5 3 3 Q 6 4.5 3 6" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+          <path d="M 3 0 Q 6 1.5 3 3 Q 0 4.5 3 6" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+        </pattern>
+      </defs>
+      <!-- 4 边 rect, 端点延伸至距角 6px (留角空白做 breathing room). stroke-linecap=round 让端点圆头. -->
+      <rect x="6" y="2" width="188" height="6" fill="url(#braid-h)"/>
+      <rect x="6" y="192" width="188" height="6" fill="url(#braid-h)"/>
+      <rect x="2" y="6" width="6" height="188" fill="url(#braid-v)"/>
+      <rect x="192" y="6" width="6" height="188" fill="url(#braid-v)"/>
     </svg>
   </div>
 
