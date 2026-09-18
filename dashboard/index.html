@@ -72,6 +72,17 @@
     gap: 32px;
     font-size: 13px;
     font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding-top: 12px;
+    padding-bottom: 8px;
+    margin-top: -4px;  /* 抵消 padding-top 避免多余间距 */
+    /* backdrop-filter 让 tab 浮起来时背景有微妙模糊感 (支持 backdrop-filter 的浏览器) */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(247, 247, 245, 0.92);
   }
   nav.tabs a {
     color: var(--ink-muted);
