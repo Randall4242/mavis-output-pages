@@ -761,6 +761,7 @@
   <nav class="tabs">
     <a href="#" class="active" data-tab="today">今日</a>
     <a href="#" data-tab="analysis">分析</a>
+    <a href="#" data-tab="closed-trades">清仓&交易</a>
     <a href="#" data-tab="settings">设置</a>
   </nav>
   <div class="header-meta">
@@ -838,7 +839,10 @@
 
 </section>
 
-  <!-- ============ 已清仓 ============ -->
+<!-- ============ TAB: 清仓&交易 (已清仓 + 交易汇总 + 交易记录) ============ -->
+<section class="tab-pane" id="tab-closed-trades" hidden>
+
+<!-- ============ 已清仓 ============ -->
 <div id="closed-section" style="display:none">
   <div class="divider">
     <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
@@ -913,6 +917,17 @@
     <tbody id="tx-tbody"></tbody>
   </table>
 </div>
+
+</section>
+
+<!-- ============ TAB: 设置 (placeholder) ============ -->
+<section class="tab-pane" id="tab-settings" hidden>
+  <div style="padding: 80px 24px; text-align: center; color: var(--ink-muted);">
+    <div style="font-size: 32px; margin-bottom: 16px;">⚙️</div>
+    <div style="font-size: 16px; color: var(--ink-secondary);">设置: 即将上线</div>
+    <div style="font-size: 13px; margin-top: 8px;">(主题切换 / 数据源配置 / 提醒 — 暂未实现)</div>
+  </div>
+</section>
 
 <!-- ============ FOOTER ============ -->
 <footer>
