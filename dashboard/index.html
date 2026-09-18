@@ -106,7 +106,9 @@
     border-radius: 2px;
   }
   /* Guilloche 编织花纹沿 4 边 (老银票风, 2 条 sine 互相缠绕).
-     4 角不画 — 端点 stroke-linecap=round 自然圆头收尾 (丝滑过渡, 不与卡片直角冲突). */
+     2026-09-18 v22.2: SVG → PNG (PIL 程序生成, 无 AI). PNG 高 12px, 体积 513/578 bytes.
+     4 角不画 (留 6px 空白做 breathing room).
+     background-image 多层: top + bottom 两条横向 PNG, left + right 两条纵向 PNG. */
   .hero-frame {
     position: absolute;
     pointer-events: none;
@@ -115,10 +117,24 @@
     right: 6px;
     bottom: 6px;
     left: 6px;
-    color: var(--accent-engrave);
     opacity: 0.42;
+    background-repeat: no-repeat;
+    background-size:
+      calc(100% - 12px) 12px,   /* horizontal: 留 12px 两端 (6+6 角空白) */
+      calc(100% - 12px) 12px,
+      12px calc(100% - 12px),
+      12px calc(100% - 12px);
+    background-position:
+      6px 0,                    /* top */
+      6px 100%,                 /* bottom */
+      0 6px,                    /* left */
+      100% 6px;                 /* right */
+    background-image:
+      url("../images/hero-border-h.png"),
+      url("../images/hero-border-h.png"),
+      url("../images/hero-border-v.png"),
+      url("../images/hero-border-v.png");
   }
-  .hero-frame svg { display: block; width: 100%; height: 100%; }
 
   .hero-meta-top {
     font-family: 'JetBrains Mono', monospace;
@@ -747,29 +763,9 @@
   </div>
 </header>
 
-<!-- ============ HERO (guilloche 沿 4 边, 端点圆头丝滑, 不画 4 角) ============ -->
+<!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============ -->
 <section class="hero">
-  <div class="hero-frame">
-    <svg viewBox="0 0 200 200" preserveAspectRatio="none">
-      <defs>
-        <!-- 横向 guilloche 编织: 2 条 sine 互绕 (上下边用). 2026-09-18 v22.1: pattern 6→12px (密度减半), 振幅 3→4 (编织形态明显), stroke 0.4→0.5 (mobile fractional 渲染下"线"更清晰) -->
-        <pattern id="braid-h" patternUnits="userSpaceOnUse" x="0" y="0" width="12" height="6">
-          <path d="M 0 3 Q 3 0 6 3 T 12 3" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
-          <path d="M 0 3 Q 3 6 6 3 T 12 3" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
-        </pattern>
-        <!-- 纵向 guilloche 编织: 2 条 sine 互绕 (左右边用) -->
-        <pattern id="braid-v" patternUnits="userSpaceOnUse" x="0" y="0" width="6" height="12">
-          <path d="M 3 0 Q 0 3 3 6 T 3 12" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
-          <path d="M 3 0 Q 6 3 3 6 T 3 12" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
-        </pattern>
-      </defs>
-      <!-- 4 边 rect, 端点延伸至距角 6px (留角空白做 breathing room). stroke-linecap=round 让端点圆头. -->
-      <rect x="6" y="2" width="188" height="6" fill="url(#braid-h)"/>
-      <rect x="6" y="192" width="188" height="6" fill="url(#braid-h)"/>
-      <rect x="2" y="6" width="6" height="188" fill="url(#braid-v)"/>
-      <rect x="192" y="6" width="6" height="188" fill="url(#braid-v)"/>
-    </svg>
-  </div>
+  <div class="hero-frame"></div>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
   <div class="hero-label">总投资盈亏 · 总览</div>
