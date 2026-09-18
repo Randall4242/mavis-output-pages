@@ -752,15 +752,15 @@
   <div class="hero-frame">
     <svg viewBox="0 0 200 200" preserveAspectRatio="none">
       <defs>
-        <!-- 横向 guilloche 编织: 2 条 sine 互绕 (上下边用) -->
-        <pattern id="braid-h" patternUnits="userSpaceOnUse" x="0" y="0" width="6" height="6">
-          <path d="M 0 3 Q 1.5 0 3 3 Q 4.5 6 6 3" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
-          <path d="M 0 3 Q 1.5 6 3 3 Q 4.5 0 6 3" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+        <!-- 横向 guilloche 编织: 2 条 sine 互绕 (上下边用). 2026-09-18 v22.1: pattern 6→12px (密度减半), 振幅 3→4 (编织形态明显), stroke 0.4→0.5 (mobile fractional 渲染下"线"更清晰) -->
+        <pattern id="braid-h" patternUnits="userSpaceOnUse" x="0" y="0" width="12" height="6">
+          <path d="M 0 3 Q 3 0 6 3 T 12 3" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
+          <path d="M 0 3 Q 3 6 6 3 T 12 3" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
         </pattern>
         <!-- 纵向 guilloche 编织: 2 条 sine 互绕 (左右边用) -->
-        <pattern id="braid-v" patternUnits="userSpaceOnUse" x="0" y="0" width="6" height="6">
-          <path d="M 3 0 Q 0 1.5 3 3 Q 6 4.5 3 6" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
-          <path d="M 3 0 Q 6 1.5 3 3 Q 0 4.5 3 6" fill="none" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+        <pattern id="braid-v" patternUnits="userSpaceOnUse" x="0" y="0" width="6" height="12">
+          <path d="M 3 0 Q 0 3 3 6 T 3 12" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
+          <path d="M 3 0 Q 6 3 3 6 T 3 12" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
         </pattern>
       </defs>
       <!-- 4 边 rect, 端点延伸至距角 6px (留角空白做 breathing room). stroke-linecap=round 让端点圆头. -->
