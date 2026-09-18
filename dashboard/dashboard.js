@@ -43,6 +43,7 @@
         if (data.meta && data.meta.schema_version !== 2) {
           console.warn('[dashboard] schema_version 不匹配, 当前=' + data.meta.schema_version);
         }
+        this.data = data;  // 缓存: 切到分析 tab 时重新画图 (charts 在 hidden pane 里 width=0, resize 不够)
         this.render(data);
         this.initTabs();
         return data;
@@ -88,9 +89,9 @@
           document.querySelectorAll('.tab-pane').forEach(p => {
             p.hidden = (p.id !== 'tab-' + target);
           });
-          // 切到分析时重新 resize chart (Chart.js 在 hidden 时 width=0, 切回来要 resize)
-          if (target === 'analysis') {
-            Object.values(this.charts).forEach(c => c && c.resize && c.resize());
+          // 切到分析时重新 render charts (chart 在 hidden 时 width=0, resize 不够, 必须 destroy + 重画)
+          if (target === 'analysis' && this.data) {
+            this.renderCharts(this.data);
           }
         });
       });
