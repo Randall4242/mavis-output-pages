@@ -99,47 +99,25 @@
   /* ============ HERO ============ */
   .hero {
     position: relative;
-    padding: 48px 40px;
+    padding: 60px 44px;
     margin-bottom: 48px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 2px;
-    /* 浮雕感: 外细线 + 内淡阴影 + 外淡阴影 (像压印印刷品) */
-    box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,0.6),
-      inset 0 1px 24px rgba(58,46,38,0.04),
-      0 1px 0 rgba(58,46,38,0.06);
   }
-  /* 顶部 + 底部 AI 铜版画花纹 (单张 no-repeat 居中, 不死板边框, 是"卡片装饰边") */
-  .hero-edge {
+  /* Hero 4 角斜切花纹边框 (老商标风: chamfered 4 角 + 细密双线 + 4 角圆印 + 沿边 guilloche 痕迹) */
+  .hero-frame {
     position: absolute;
     pointer-events: none;
     z-index: 1;
-    left: 0;
-    right: 0;
-    height: 28px;
-    background-image: url('https://raw.githubusercontent.com/Randall4242/mavis-output-pages/main/dashboard/images/hero-border-h.png');
-    background-repeat: no-repeat;
-    background-size: auto 100%;
-    background-position: center center;
-    opacity: 0.38;  /* subtle: 浓密保留 + 真铜版画质感, 但降低存在感 */
-  }
-  .hero-edge-top    { top: 8px;    }
-  .hero-edge-bottom { bottom: 8px; }
-  /* 4 角小纹章 (保留: 给装饰加设计锚点) */
-  .hero-corner {
-    position: absolute;
-    width: 14px;
-    height: 14px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
     color: var(--accent-engrave);
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0.45;
+    opacity: 0.42;  /* subtle: 纤细 + 占用小 */
   }
-  .hero-corner-tl { top: 10px;    left: 10px;   }
-  .hero-corner-tr { top: 10px;    right: 10px;  transform: scaleX(-1); }
-  .hero-corner-bl { bottom: 10px; left: 10px;   transform: scaleY(-1); }
-  .hero-corner-br { bottom: 10px; right: 10px;  transform: scale(-1, -1); }
+  .hero-frame svg { display: block; width: 100%; height: 100%; }
 
   .hero-meta-top {
     font-family: 'JetBrains Mono', monospace;
@@ -330,14 +308,8 @@
     .hero-meta-top { margin-bottom: 14px; }
     .hero-label { margin-bottom: 12px; }
 
-    /* 顶部/底部铜版画花纹 mobile 缩 (20px) */
-    .hero-edge { height: 20px; }
-    /* 4 角小纹章 mobile 缩 (10px) */
-    .hero-corner { width: 10px; height: 10px; }
-    .hero-corner-tl { top: 8px;    left: 8px;   }
-    .hero-corner-tr { top: 8px;    right: 8px;  transform: scaleX(-1); }
-    .hero-corner-bl { bottom: 8px; left: 8px;   transform: scaleY(-1); }
-    .hero-corner-br { bottom: 8px; right: 8px;  transform: scale(-1, -1); }
+    /* Hero frame mobile: 4 角斜切 + 细线 (占用面积小) */
+    .hero-frame { top: 6px; right: 6px; bottom: 6px; left: 6px; opacity: 0.45; }
 
     /* Hero 数字 B 档 48-56 */
     .hero-amount { font-size: clamp(48px, 14vw, 56px); letter-spacing: -0.03em; }
@@ -774,15 +746,61 @@
   </div>
 </header>
 
-<!-- ============ HERO (顶部+底部 AI 铜版画花纹 no-repeat 居中 + 4 角纹章 + 浮雕内阴影) ============ -->
+<!-- ============ HERO (老商标风: 4 角斜切 + 细密双线 + 4 角圆印 + guilloche 痕迹) ============ -->
 <section class="hero">
-  <div class="hero-edge hero-edge-top"></div>
-  <div class="hero-edge hero-edge-bottom"></div>
-
-  <svg class="hero-corner hero-corner-tl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
-  <svg class="hero-corner hero-corner-tr" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
-  <svg class="hero-corner hero-corner-bl" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
-  <svg class="hero-corner hero-corner-br" viewBox="0 0 16 16" fill="none"><use href="#corner-emblem"/></svg>
+  <div class="hero-frame">
+    <svg viewBox="0 0 200 100" preserveAspectRatio="none">
+      <!-- Outer chamfered frame: 4 角 12px 斜切 -->
+      <path d="M 6 0 L 194 0 L 200 6 L 200 94 L 194 100 L 6 100 L 0 94 L 0 6 Z"
+            fill="none" stroke="currentColor" stroke-width="0.4" stroke-linejoin="miter"/>
+      <!-- Inner chamfered frame: 内缩 4px -->
+      <path d="M 10 2 L 190 2 L 198 10 L 198 90 L 190 98 L 10 98 L 2 90 L 2 10 Z"
+            fill="none" stroke="currentColor" stroke-width="0.3" stroke-linejoin="miter"/>
+      <!-- Top edge: 细密短线 (guilloche 痕迹) -->
+      <g opacity="0.8">
+        <line x1="20" y1="4.5" x2="20" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="40" y1="4.5" x2="40" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="60" y1="4.5" x2="60" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="80" y1="4.5" x2="80" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="100" y1="4.5" x2="100" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="120" y1="4.5" x2="120" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="140" y1="4.5" x2="140" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="160" y1="4.5" x2="160" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="180" y1="4.5" x2="180" y2="0.5" stroke="currentColor" stroke-width="0.25"/>
+      </g>
+      <!-- Bottom edge: 细密短线 -->
+      <g opacity="0.8">
+        <line x1="20" y1="95.5" x2="20" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="40" y1="95.5" x2="40" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="60" y1="95.5" x2="60" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="80" y1="95.5" x2="80" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="100" y1="95.5" x2="100" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="120" y1="95.5" x2="120" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="140" y1="95.5" x2="140" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="160" y1="95.5" x2="160" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="180" y1="95.5" x2="180" y2="99.5" stroke="currentColor" stroke-width="0.25"/>
+      </g>
+      <!-- Left edge: 细密短线 -->
+      <g opacity="0.8">
+        <line x1="4.5" y1="20" x2="0.5" y2="20" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="4.5" y1="40" x2="0.5" y2="40" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="4.5" y1="60" x2="0.5" y2="60" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="4.5" y1="80" x2="0.5" y2="80" stroke="currentColor" stroke-width="0.25"/>
+      </g>
+      <!-- Right edge: 细密短线 -->
+      <g opacity="0.8">
+        <line x1="195.5" y1="20" x2="199.5" y2="20" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="195.5" y1="40" x2="199.5" y2="40" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="195.5" y1="60" x2="199.5" y2="60" stroke="currentColor" stroke-width="0.25"/>
+        <line x1="195.5" y1="80" x2="199.5" y2="80" stroke="currentColor" stroke-width="0.25"/>
+      </g>
+      <!-- 4 角小圆印 (老商标风格) -->
+      <circle cx="100" cy="6" r="1.6" fill="currentColor"/>
+      <circle cx="100" cy="94" r="1.6" fill="currentColor"/>
+      <circle cx="6" cy="50" r="1.6" fill="currentColor"/>
+      <circle cx="194" cy="50" r="1.6" fill="currentColor"/>
+    </svg>
+  </div>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
   <div class="hero-label">总投资盈亏 · 总览</div>
