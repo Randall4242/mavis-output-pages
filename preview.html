@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v22.3 边框预览 (mockup)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0; padding: 24px;
+    background: #F7F7F5;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    color: #1A1A1A;
+    min-height: 100vh;
+  }
+  /* ===== 跟 dashboard 完全一致的 hero CSS ===== */
+  :root {
+    --bg: #F7F7F5;
+    --bg-card: #FFFFFF;
+    --bg-section: #F0EFEB;
+    --ink-primary: #1A1A1A;
+    --ink-secondary: #6B6B6B;
+    --ink-muted: #A8A8A8;
+    --border: #E8E6E1;
+    --accent-up: #C45C4F;
+    --accent-up-soft: #E8C9C5;
+    --accent-down: #7A8A76;
+    --accent-down-soft: #D4DAD0;
+    --accent-engrave: #3A2E26;
+    --accent-orange: #FF6B35;
+  }
+  .hero {
+    position: relative;
+    padding: 60px 44px;
+    margin-bottom: 48px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    max-width: 414px;
+    margin: 0 auto;
+  }
+  .hero-frame {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    top: 6px;
+    right: 6px;
+    bottom: 6px;
+    left: 6px;
+    opacity: 0.42;
+    background-repeat: no-repeat;
+    background-size:
+      calc(100% - 12px) 12px,
+      calc(100% - 12px) 12px,
+      12px calc(100% - 12px),
+      12px calc(100% - 12px);
+    background-position:
+      6px 0,
+      6px 100%,
+      0 6px,
+      100% 6px;
+    background-image:
+      url("/tmp/hero-border-h.png"),
+      url("/tmp/hero-border-h.png"),
+      url("/tmp/hero-border-v.png"),
+      url("/tmp/hero-border-v.png");
+  }
+  .hero-meta-top {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero-label {
+    font-size: 14px;
+    color: var(--ink-secondary);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .hero-amount-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .hero-amount {
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--accent-down);
+  }
+  .hero-percent {
+    font-size: 18px;
+    color: var(--accent-down);
+    font-weight: 600;
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
+  }
+  .hero-sub {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    margin-bottom: 24px;
+  }
+  .sep { color: var(--ink-muted); margin: 0 8px; }
+  hr { border: none; border-top: 1px dashed var(--border); margin: 24px 0; }
+  .excess-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+  .excess-stat {
+    flex: 1;
+  }
+  .stat-key { font-size: 12px; color: var(--ink-muted); margin-bottom: 4px; }
+  .stat-val { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .stat-val.down { color: var(--accent-down); }
+  .stat-val.up { color: var(--accent-up); }
+  .initial-principal { margin-top: 32px; }
+  .ip-key { font-size: 12px; color: var(--ink-muted); margin-bottom: 4px; }
+  .ip-val { font-size: 28px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-frame"></div>
+  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
+  <div class="hero-label">总投资盈亏 · 总览</div>
+  <div class="hero-amount-row">
+    <div class="hero-amount">-2,197</div>
+    <div class="hero-percent">-8.73%</div>
+  </div>
+  <div class="hero-sub">
+    持仓 -2,793 <span class="sep">·</span> 已实现 +596 <span class="sep">·</span> 初始总投入 48,064
+  </div>
+  <hr>
+  <div class="excess-row">
+    <div class="excess-stat">
+      <div class="stat-key">跑赢沪深 300</div>
+      <div class="stat-val down">▼ 跑输 -0.98%</div>
+    </div>
+    <div class="excess-stat">
+      <div class="stat-key">跑赢上证指数</div>
+      <div class="stat-val up">▲ 跑赢 +0.65%</div>
+    </div>
+  </div>
+  <div class="initial-principal">
+    <div class="ip-key">初始总投入</div>
+    <div class="ip-val">48,064 元</div>
+  </div>
+</div>
+
+<!-- 对照组: 没边框的版本 -->
+<h2 style="text-align:center; margin: 48px 0 16px; color: #6B6B6B; font-size: 14px;">对照组 (没边框):</h2>
+<div class="hero" style="margin: 0 auto;">
+  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
+  <div class="hero-label">总投资盈亏 · 总览</div>
+  <div class="hero-amount-row">
+    <div class="hero-amount">-2,197</div>
+    <div class="hero-percent">-8.73%</div>
+  </div>
+  <div class="hero-sub">
+    持仓 -2,793 <span class="sep">·</span> 已实现 +596 <span class="sep">·</span> 初始总投入 48,064
+  </div>
+  <hr>
+  <div class="excess-row">
+    <div class="excess-stat">
+      <div class="stat-key">跑赢沪深 300</div>
+      <div class="stat-val down">▼ 跑输 -0.98%</div>
+    </div>
+    <div class="excess-stat">
+      <div class="stat-key">跑赢上证指数</div>
+      <div class="stat-val up">▲ 跑赢 +0.65%</div>
+    </div>
+  </div>
+  <div class="initial-principal">
+    <div class="ip-key">初始总投入</div>
+    <div class="ip-val">48,064 元</div>
+  </div>
+</div>
+
+</body>
+</html>
