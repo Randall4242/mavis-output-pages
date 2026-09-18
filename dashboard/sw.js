@@ -6,9 +6,9 @@
 // v13: 微调再缩 (top/bottom 22, left/right 22, opacity 0.5, mask 22)
 // v14: 删 4 边 PNG 花纹带 → 4 角 SVG 小纹章 (corner-emblem)
 // v15: fallback — 用 v11 浓密铜版画 PNG, 改 layout: top+bottom 各 1 张 no-repeat 居中, opacity 0.38, 保留 4 角纹章
-// v16: 修 PNG 不显示 (GitHub Pages CDN 卡住 404), 换 jsdelivr CDN (https://cdn.jsdelivr.net/gh/Randall4242/mavis-output-pages@main/.../hero-border-h.png)
+// v19: 修 PNG 不显示 (GitHub Pages CDN 卡住 404), 换 jsdelivr CDN (https://cdn.jsdelivr.net/gh/Randall4242/mavis-output-pages@main/.../hero-border-h.png)
 
-const CACHE_NAME = 'mavis-dashboard-v16';
+const CACHE_NAME = 'mavis-dashboard-v19';
 const ASSETS = [
   './',
   './index.html',
