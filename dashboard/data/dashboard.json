@@ -1,17 +1,17 @@
 {
   "meta": {
-    "generated_at": "2026-09-18T13:53:00+08:00",
+    "generated_at": "2026-09-18T15:36:00+08:00",
     "trade_date": "2026-09-18",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -2793.0,
+    "floating_pnl_abs": -2793,
     "floating_pnl_pct": -11.09,
     "realized_pnl_abs": 596.2,
     "realized_pnl_pct": 2.61,
     "total_pnl_abs": -2196.8,
-    "total_pnl_pct": -4.57,
+    "total_pnl_pct": -8.73,
     "initial_principal": 48064.3,
     "excess_csi300_pct": -0.98,
     "excess_sh_pct": 0.65
@@ -26,8 +26,8 @@
       "prev_close": 11.19,
       "change_pct": -1.52,
       "change_amount": -0.17,
-      "daily_pnl": -221.0,
-      "pnl_abs": -2756.0,
+      "daily_pnl": -221,
+      "pnl_abs": -2756,
       "pnl_pct": -16.13
     },
     {
@@ -39,8 +39,8 @@
       "prev_close": 5.58,
       "change_pct": -1.25,
       "change_amount": -0.07,
-      "daily_pnl": -49.0,
-      "pnl_abs": -42.0,
+      "daily_pnl": -49,
+      "pnl_abs": -42,
       "pnl_pct": -1.08
     },
     {
@@ -59,20 +59,11 @@
   ],
   "closed_holdings": [
     {
-      "code": "601021",
-      "name": "春秋航空",
-      "closed_at": "2026-09-07",
-      "cost_total": 4419.0,
-      "recv_total": 4426.0,
-      "realized_abs": 2.0,
-      "realized_pct": 0.05
-    },
-    {
       "code": "600383",
       "name": "金地集团",
       "closed_at": "2026-09-03",
-      "cost_total": 0,
-      "recv_total": 1410.0,
+      "cost_total": 1319.4,
+      "recv_total": 1410,
       "realized_abs": 85.6,
       "realized_pct": 6.49
     },
@@ -80,8 +71,8 @@
       "code": "513780",
       "name": "港股创新药ETF",
       "closed_at": "2026-07-08",
-      "cost_total": 5924.0,
-      "recv_total": 11860.2,
+      "cost_total": 14927.9,
+      "recv_total": 15404.5,
       "realized_abs": 461.6,
       "realized_pct": 3.09
     }
@@ -171,39 +162,39 @@
   "trade_summary": {
     "buy_count": 6,
     "sell_count": 5,
-    "total_buy_amount": 37741.0,
+    "total_buy_amount": 37741,
     "total_sell_amount": 19968.2,
-    "total_fee": 35.0
+    "total_fee": 35
   },
   "pnl_series": [
     {
       "trade_date": "2026-03-02",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 0,
+      "total_mkt": 0,
+      "total_pnl": 0,
+      "total_pct": 0,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-03",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 0,
+      "total_mkt": 0,
+      "total_pnl": 0,
+      "total_pct": 0,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-04",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 0,
+      "total_mkt": 0,
+      "total_pnl": 0,
+      "total_pct": 0,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-05",
       "total_cost": 1336.5,
-      "total_mkt": 1332.0,
+      "total_mkt": 1332,
       "total_pnl": -4.5,
       "total_pct": -0.34,
       "cost_basis": "real"
@@ -300,7 +291,7 @@
       "trade_date": "2026-03-23",
       "total_cost": 3414.1,
       "total_mkt": 3259.1,
-      "total_pnl": -155.0,
+      "total_pnl": -155,
       "total_pct": -4.54,
       "cost_basis": "real"
     },
@@ -308,7 +299,7 @@
       "trade_date": "2026-03-24",
       "total_cost": 3414.1,
       "total_mkt": 3420.1,
-      "total_pnl": 6.0,
+      "total_pnl": 6,
       "total_pct": 0.18,
       "cost_basis": "real"
     },
@@ -330,497 +321,497 @@
     },
     {
       "trade_date": "2026-03-27",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 0,
+      "total_mkt": 0,
+      "total_pnl": 0,
+      "total_pct": 0,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-30",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 0,
+      "total_mkt": 0,
+      "total_pnl": 0,
+      "total_pct": 0,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-31",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 0,
+      "total_mkt": 0,
+      "total_pnl": 0,
+      "total_pct": 0,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-01",
-      "total_cost": 20981.0,
-      "total_mkt": 21801.0,
-      "total_pnl": 820.0,
+      "total_cost": 20981,
+      "total_mkt": 21801,
+      "total_pnl": 820,
       "total_pct": 3.91,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-02",
-      "total_cost": 20981.0,
-      "total_mkt": 21485.0,
-      "total_pnl": 504.0,
+      "total_cost": 20981,
+      "total_mkt": 21485,
+      "total_pnl": 504,
       "total_pct": 2.4,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-03",
-      "total_cost": 20981.0,
-      "total_mkt": 21267.0,
-      "total_pnl": 286.0,
+      "total_cost": 20981,
+      "total_mkt": 21267,
+      "total_pnl": 286,
       "total_pct": 1.36,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-07",
-      "total_cost": 20981.0,
-      "total_mkt": 21299.0,
-      "total_pnl": 318.0,
+      "total_cost": 20981,
+      "total_mkt": 21299,
+      "total_pnl": 318,
       "total_pct": 1.52,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-08",
-      "total_cost": 20981.0,
-      "total_mkt": 22230.0,
-      "total_pnl": 1249.0,
+      "total_cost": 20981,
+      "total_mkt": 22230,
+      "total_pnl": 1249,
       "total_pct": 5.95,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-09",
-      "total_cost": 20981.0,
-      "total_mkt": 22568.0,
-      "total_pnl": 1587.0,
+      "total_cost": 20981,
+      "total_mkt": 22568,
+      "total_pnl": 1587,
       "total_pct": 7.56,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-10",
-      "total_cost": 20981.0,
-      "total_mkt": 23628.0,
-      "total_pnl": 2647.0,
+      "total_cost": 20981,
+      "total_mkt": 23628,
+      "total_pnl": 2647,
       "total_pct": 12.62,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-13",
-      "total_cost": 20981.0,
-      "total_mkt": 24082.0,
-      "total_pnl": 3101.0,
+      "total_cost": 20981,
+      "total_mkt": 24082,
+      "total_pnl": 3101,
       "total_pct": 14.78,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-14",
-      "total_cost": 20981.0,
-      "total_mkt": 24413.0,
-      "total_pnl": 3432.0,
+      "total_cost": 20981,
+      "total_mkt": 24413,
+      "total_pnl": 3432,
       "total_pct": 16.36,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-15",
-      "total_cost": 20981.0,
-      "total_mkt": 24173.0,
-      "total_pnl": 3192.0,
+      "total_cost": 20981,
+      "total_mkt": 24173,
+      "total_pnl": 3192,
       "total_pct": 15.21,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-16",
-      "total_cost": 20981.0,
-      "total_mkt": 23543.0,
-      "total_pnl": 2562.0,
+      "total_cost": 20981,
+      "total_mkt": 23543,
+      "total_pnl": 2562,
       "total_pct": 12.21,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-17",
-      "total_cost": 20981.0,
-      "total_mkt": 23415.0,
-      "total_pnl": 2434.0,
+      "total_cost": 20981,
+      "total_mkt": 23415,
+      "total_pnl": 2434,
       "total_pct": 11.6,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-20",
-      "total_cost": 20981.0,
-      "total_mkt": 23096.0,
-      "total_pnl": 2115.0,
+      "total_cost": 20981,
+      "total_mkt": 23096,
+      "total_pnl": 2115,
       "total_pct": 10.08,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-21",
-      "total_cost": 20981.0,
-      "total_mkt": 23538.0,
-      "total_pnl": 2557.0,
+      "total_cost": 20981,
+      "total_mkt": 23538,
+      "total_pnl": 2557,
       "total_pct": 12.19,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-22",
-      "total_cost": 20981.0,
-      "total_mkt": 23992.0,
-      "total_pnl": 3011.0,
+      "total_cost": 20981,
+      "total_mkt": 23992,
+      "total_pnl": 3011,
       "total_pct": 14.35,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-23",
-      "total_cost": 20981.0,
-      "total_mkt": 23627.0,
-      "total_pnl": 2646.0,
+      "total_cost": 20981,
+      "total_mkt": 23627,
+      "total_pnl": 2646,
       "total_pct": 12.61,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-24",
-      "total_cost": 20981.0,
-      "total_mkt": 23807.0,
-      "total_pnl": 2826.0,
+      "total_cost": 20981,
+      "total_mkt": 23807,
+      "total_pnl": 2826,
       "total_pct": 13.47,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-27",
-      "total_cost": 20981.0,
-      "total_mkt": 24880.0,
-      "total_pnl": 3899.0,
+      "total_cost": 20981,
+      "total_mkt": 24880,
+      "total_pnl": 3899,
       "total_pct": 18.58,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-28",
-      "total_cost": 20981.0,
-      "total_mkt": 24674.0,
-      "total_pnl": 3693.0,
+      "total_cost": 20981,
+      "total_mkt": 24674,
+      "total_pnl": 3693,
       "total_pct": 17.6,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-29",
-      "total_cost": 20981.0,
-      "total_mkt": 26149.0,
-      "total_pnl": 5168.0,
+      "total_cost": 20981,
+      "total_mkt": 26149,
+      "total_pnl": 5168,
       "total_pct": 24.63,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-30",
-      "total_cost": 20981.0,
-      "total_mkt": 25894.0,
-      "total_pnl": 4913.0,
+      "total_cost": 20981,
+      "total_mkt": 25894,
+      "total_pnl": 4913,
       "total_pct": 23.42,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-06",
-      "total_cost": 20981.0,
-      "total_mkt": 27281.0,
-      "total_pnl": 6300.0,
+      "total_cost": 20981,
+      "total_mkt": 27281,
+      "total_pnl": 6300,
       "total_pct": 30.03,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-07",
-      "total_cost": 20981.0,
-      "total_mkt": 26364.0,
-      "total_pnl": 5383.0,
+      "total_cost": 20981,
+      "total_mkt": 26364,
+      "total_pnl": 5383,
       "total_pct": 25.66,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-08",
-      "total_cost": 20981.0,
-      "total_mkt": 26009.0,
-      "total_pnl": 5028.0,
+      "total_cost": 20981,
+      "total_mkt": 26009,
+      "total_pnl": 5028,
       "total_pct": 23.96,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-11",
-      "total_cost": 20981.0,
-      "total_mkt": 25823.0,
-      "total_pnl": 4842.0,
+      "total_cost": 20981,
+      "total_mkt": 25823,
+      "total_pnl": 4842,
       "total_pct": 23.08,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-12",
-      "total_cost": 20981.0,
-      "total_mkt": 25317.0,
-      "total_pnl": 4336.0,
+      "total_cost": 20981,
+      "total_mkt": 25317,
+      "total_pnl": 4336,
       "total_pct": 20.67,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-13",
-      "total_cost": 20981.0,
-      "total_mkt": 25355.0,
-      "total_pnl": 4374.0,
+      "total_cost": 20981,
+      "total_mkt": 25355,
+      "total_pnl": 4374,
       "total_pct": 20.85,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-14",
-      "total_cost": 20981.0,
-      "total_mkt": 24325.0,
-      "total_pnl": 3344.0,
+      "total_cost": 20981,
+      "total_mkt": 24325,
+      "total_pnl": 3344,
       "total_pct": 15.94,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-15",
-      "total_cost": 20981.0,
-      "total_mkt": 24091.0,
-      "total_pnl": 3110.0,
+      "total_cost": 20981,
+      "total_mkt": 24091,
+      "total_pnl": 3110,
       "total_pct": 14.82,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-18",
-      "total_cost": 20981.0,
-      "total_mkt": 23961.0,
-      "total_pnl": 2980.0,
+      "total_cost": 20981,
+      "total_mkt": 23961,
+      "total_pnl": 2980,
       "total_pct": 14.2,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-19",
-      "total_cost": 20981.0,
-      "total_mkt": 23710.0,
-      "total_pnl": 2729.0,
+      "total_cost": 20981,
+      "total_mkt": 23710,
+      "total_pnl": 2729,
       "total_pct": 13.01,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-20",
-      "total_cost": 20981.0,
-      "total_mkt": 24044.0,
-      "total_pnl": 3063.0,
+      "total_cost": 20981,
+      "total_mkt": 24044,
+      "total_pnl": 3063,
       "total_pct": 14.6,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-21",
-      "total_cost": 20981.0,
-      "total_mkt": 22935.0,
-      "total_pnl": 1954.0,
+      "total_cost": 20981,
+      "total_mkt": 22935,
+      "total_pnl": 1954,
       "total_pct": 9.31,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-22",
-      "total_cost": 20981.0,
-      "total_mkt": 23488.0,
-      "total_pnl": 2507.0,
+      "total_cost": 20981,
+      "total_mkt": 23488,
+      "total_pnl": 2507,
       "total_pct": 11.95,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-25",
-      "total_cost": 20981.0,
-      "total_mkt": 22974.0,
-      "total_pnl": 1993.0,
+      "total_cost": 20981,
+      "total_mkt": 22974,
+      "total_pnl": 1993,
       "total_pct": 9.5,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-26",
-      "total_cost": 20981.0,
-      "total_mkt": 23240.0,
-      "total_pnl": 2259.0,
+      "total_cost": 20981,
+      "total_mkt": 23240,
+      "total_pnl": 2259,
       "total_pct": 10.77,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-27",
-      "total_cost": 20981.0,
-      "total_mkt": 23349.0,
-      "total_pnl": 2368.0,
+      "total_cost": 20981,
+      "total_mkt": 23349,
+      "total_pnl": 2368,
       "total_pct": 11.29,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-28",
-      "total_cost": 20981.0,
-      "total_mkt": 23850.0,
-      "total_pnl": 2869.0,
+      "total_cost": 20981,
+      "total_mkt": 23850,
+      "total_pnl": 2869,
       "total_pct": 13.67,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-05-29",
-      "total_cost": 20981.0,
-      "total_mkt": 23112.0,
-      "total_pnl": 2131.0,
+      "total_cost": 20981,
+      "total_mkt": 23112,
+      "total_pnl": 2131,
       "total_pct": 10.16,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-01",
-      "total_cost": 20981.0,
-      "total_mkt": 22643.0,
-      "total_pnl": 1662.0,
+      "total_cost": 20981,
+      "total_mkt": 22643,
+      "total_pnl": 1662,
       "total_pct": 7.92,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-02",
-      "total_cost": 20981.0,
-      "total_mkt": 22385.0,
-      "total_pnl": 1404.0,
+      "total_cost": 20981,
+      "total_mkt": 22385,
+      "total_pnl": 1404,
       "total_pct": 6.69,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-03",
-      "total_cost": 20981.0,
-      "total_mkt": 22075.0,
-      "total_pnl": 1094.0,
+      "total_cost": 20981,
+      "total_mkt": 22075,
+      "total_pnl": 1094,
       "total_pct": 5.21,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-04",
-      "total_cost": 20981.0,
-      "total_mkt": 21602.0,
-      "total_pnl": 621.0,
+      "total_cost": 20981,
+      "total_mkt": 21602,
+      "total_pnl": 621,
       "total_pct": 2.96,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-05",
-      "total_cost": 20981.0,
-      "total_mkt": 21724.0,
-      "total_pnl": 743.0,
+      "total_cost": 20981,
+      "total_mkt": 21724,
+      "total_pnl": 743,
       "total_pct": 3.54,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-08",
-      "total_cost": 20981.0,
-      "total_mkt": 20819.0,
-      "total_pnl": -162.0,
+      "total_cost": 20981,
+      "total_mkt": 20819,
+      "total_pnl": -162,
       "total_pct": -0.77,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-09",
-      "total_cost": 20981.0,
-      "total_mkt": 21263.0,
-      "total_pnl": 282.0,
+      "total_cost": 20981,
+      "total_mkt": 21263,
+      "total_pnl": 282,
       "total_pct": 1.34,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-10",
-      "total_cost": 20981.0,
-      "total_mkt": 20840.0,
-      "total_pnl": -141.0,
+      "total_cost": 20981,
+      "total_mkt": 20840,
+      "total_pnl": -141,
       "total_pct": -0.67,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-11",
-      "total_cost": 20981.0,
-      "total_mkt": 20810.0,
-      "total_pnl": -171.0,
+      "total_cost": 20981,
+      "total_mkt": 20810,
+      "total_pnl": -171,
       "total_pct": -0.82,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-12",
-      "total_cost": 20981.0,
-      "total_mkt": 21542.0,
-      "total_pnl": 561.0,
+      "total_cost": 20981,
+      "total_mkt": 21542,
+      "total_pnl": 561,
       "total_pct": 2.67,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-15",
-      "total_cost": 20981.0,
-      "total_mkt": 21736.0,
-      "total_pnl": 755.0,
+      "total_cost": 20981,
+      "total_mkt": 21736,
+      "total_pnl": 755,
       "total_pct": 3.6,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-16",
-      "total_cost": 20981.0,
-      "total_mkt": 22176.0,
-      "total_pnl": 1195.0,
+      "total_cost": 20981,
+      "total_mkt": 22176,
+      "total_pnl": 1195,
       "total_pct": 5.7,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-17",
-      "total_cost": 20981.0,
-      "total_mkt": 22324.0,
-      "total_pnl": 1343.0,
+      "total_cost": 20981,
+      "total_mkt": 22324,
+      "total_pnl": 1343,
       "total_pct": 6.4,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-18",
-      "total_cost": 20981.0,
-      "total_mkt": 21883.0,
-      "total_pnl": 902.0,
+      "total_cost": 20981,
+      "total_mkt": 21883,
+      "total_pnl": 902,
       "total_pct": 4.3,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-22",
-      "total_cost": 20981.0,
-      "total_mkt": 22719.0,
-      "total_pnl": 1738.0,
+      "total_cost": 20981,
+      "total_mkt": 22719,
+      "total_pnl": 1738,
       "total_pct": 8.28,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-23",
-      "total_cost": 20981.0,
-      "total_mkt": 22856.0,
-      "total_pnl": 1875.0,
+      "total_cost": 20981,
+      "total_mkt": 22856,
+      "total_pnl": 1875,
       "total_pct": 8.94,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-24",
-      "total_cost": 20981.0,
-      "total_mkt": 22880.0,
-      "total_pnl": 1899.0,
+      "total_cost": 20981,
+      "total_mkt": 22880,
+      "total_pnl": 1899,
       "total_pct": 9.05,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-25",
-      "total_cost": 20981.0,
-      "total_mkt": 22226.0,
-      "total_pnl": 1245.0,
+      "total_cost": 20981,
+      "total_mkt": 22226,
+      "total_pnl": 1245,
       "total_pct": 5.93,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-26",
-      "total_cost": 20981.0,
-      "total_mkt": 20964.0,
-      "total_pnl": -17.0,
+      "total_cost": 20981,
+      "total_mkt": 20964,
+      "total_pnl": -17,
       "total_pct": -0.08,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-29",
-      "total_cost": 20981.0,
-      "total_mkt": 21060.0,
-      "total_pnl": 79.0,
+      "total_cost": 20981,
+      "total_mkt": 21060,
+      "total_pnl": 79,
       "total_pct": 0.38,
       "cost_basis": "carry_forward"
     },
@@ -828,7 +819,7 @@
       "trade_date": "2026-06-30",
       "total_cost": 9129.2,
       "total_mkt": 8598.2,
-      "total_pnl": -531.0,
+      "total_pnl": -531,
       "total_pct": -5.82,
       "cost_basis": "real"
     },
@@ -844,7 +835,7 @@
       "trade_date": "2026-07-02",
       "total_cost": 26211.2,
       "total_mkt": 26113.2,
-      "total_pnl": -98.0,
+      "total_pnl": -98,
       "total_pct": -0.37,
       "cost_basis": "real"
     },
@@ -859,15 +850,15 @@
     {
       "trade_date": "2026-07-06",
       "total_cost": 18401.4,
-      "total_mkt": 18402.0,
+      "total_mkt": 18402,
       "total_pnl": 0.6,
-      "total_pct": 0.0,
+      "total_pct": 0,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-07",
       "total_cost": 24325.4,
-      "total_mkt": 24531.0,
+      "total_mkt": 24531,
       "total_pnl": 205.6,
       "total_pct": 0.85,
       "cost_basis": "real"
@@ -875,7 +866,7 @@
     {
       "trade_date": "2026-07-08",
       "total_cost": 18401.4,
-      "total_mkt": 17541.0,
+      "total_mkt": 17541,
       "total_pnl": -860.4,
       "total_pct": -4.68,
       "cost_basis": "real"
@@ -883,7 +874,7 @@
     {
       "trade_date": "2026-07-09",
       "total_cost": 18401.4,
-      "total_mkt": 16794.0,
+      "total_mkt": 16794,
       "total_pnl": -1607.4,
       "total_pct": -8.74,
       "cost_basis": "real"
@@ -891,7 +882,7 @@
     {
       "trade_date": "2026-07-10",
       "total_cost": 18401.4,
-      "total_mkt": 16632.0,
+      "total_mkt": 16632,
       "total_pnl": -1769.4,
       "total_pct": -9.62,
       "cost_basis": "real"
@@ -899,7 +890,7 @@
     {
       "trade_date": "2026-07-13",
       "total_cost": 18401.4,
-      "total_mkt": 16897.0,
+      "total_mkt": 16897,
       "total_pnl": -1504.4,
       "total_pct": -8.18,
       "cost_basis": "real"
@@ -907,7 +898,7 @@
     {
       "trade_date": "2026-07-14",
       "total_cost": 18401.4,
-      "total_mkt": 17136.0,
+      "total_mkt": 17136,
       "total_pnl": -1265.4,
       "total_pct": -6.88,
       "cost_basis": "real"
@@ -915,7 +906,7 @@
     {
       "trade_date": "2026-07-15",
       "total_cost": 18401.4,
-      "total_mkt": 17126.0,
+      "total_mkt": 17126,
       "total_pnl": -1275.4,
       "total_pct": -6.93,
       "cost_basis": "real"
@@ -923,7 +914,7 @@
     {
       "trade_date": "2026-07-16",
       "total_cost": 18401.4,
-      "total_mkt": 17104.0,
+      "total_mkt": 17104,
       "total_pnl": -1297.4,
       "total_pct": -7.05,
       "cost_basis": "real"
@@ -931,7 +922,7 @@
     {
       "trade_date": "2026-07-17",
       "total_cost": 18401.4,
-      "total_mkt": 16615.0,
+      "total_mkt": 16615,
       "total_pnl": -1786.4,
       "total_pct": -9.71,
       "cost_basis": "real"
@@ -939,7 +930,7 @@
     {
       "trade_date": "2026-07-20",
       "total_cost": 18401.4,
-      "total_mkt": 16048.0,
+      "total_mkt": 16048,
       "total_pnl": -2353.4,
       "total_pct": -12.79,
       "cost_basis": "real"
@@ -947,7 +938,7 @@
     {
       "trade_date": "2026-07-21",
       "total_cost": 18401.4,
-      "total_mkt": 17499.0,
+      "total_mkt": 17499,
       "total_pnl": -902.4,
       "total_pct": -4.9,
       "cost_basis": "real"
@@ -955,7 +946,7 @@
     {
       "trade_date": "2026-07-22",
       "total_cost": 18401.4,
-      "total_mkt": 17633.0,
+      "total_mkt": 17633,
       "total_pnl": -768.4,
       "total_pct": -4.18,
       "cost_basis": "real"
@@ -963,7 +954,7 @@
     {
       "trade_date": "2026-07-23",
       "total_cost": 18401.4,
-      "total_mkt": 17925.0,
+      "total_mkt": 17925,
       "total_pnl": -476.4,
       "total_pct": -2.59,
       "cost_basis": "real"
@@ -971,7 +962,7 @@
     {
       "trade_date": "2026-07-24",
       "total_cost": 18401.4,
-      "total_mkt": 17293.0,
+      "total_mkt": 17293,
       "total_pnl": -1108.4,
       "total_pct": -6.02,
       "cost_basis": "real"
@@ -979,7 +970,7 @@
     {
       "trade_date": "2026-07-27",
       "total_cost": 18401.4,
-      "total_mkt": 17823.0,
+      "total_mkt": 17823,
       "total_pnl": -578.4,
       "total_pct": -3.14,
       "cost_basis": "real"
@@ -987,7 +978,7 @@
     {
       "trade_date": "2026-07-28",
       "total_cost": 18401.4,
-      "total_mkt": 17719.0,
+      "total_mkt": 17719,
       "total_pnl": -682.4,
       "total_pct": -3.71,
       "cost_basis": "real"
@@ -995,7 +986,7 @@
     {
       "trade_date": "2026-07-29",
       "total_cost": 18401.4,
-      "total_mkt": 18353.0,
+      "total_mkt": 18353,
       "total_pnl": -48.4,
       "total_pct": -0.26,
       "cost_basis": "real"
@@ -1003,7 +994,7 @@
     {
       "trade_date": "2026-08-19",
       "total_cost": 22820.4,
-      "total_mkt": 20912.0,
+      "total_mkt": 20912,
       "total_pnl": -1908.4,
       "total_pct": -8.36,
       "cost_basis": "real"
@@ -1011,7 +1002,7 @@
     {
       "trade_date": "2026-08-20",
       "total_cost": 22820.4,
-      "total_mkt": 20935.0,
+      "total_mkt": 20935,
       "total_pnl": -1885.4,
       "total_pct": -8.26,
       "cost_basis": "real"
@@ -1019,7 +1010,7 @@
     {
       "trade_date": "2026-08-21",
       "total_cost": 22820.4,
-      "total_mkt": 21194.0,
+      "total_mkt": 21194,
       "total_pnl": -1626.4,
       "total_pct": -7.13,
       "cost_basis": "real"
@@ -1027,7 +1018,7 @@
     {
       "trade_date": "2026-08-24",
       "total_cost": 22820.4,
-      "total_mkt": 21385.0,
+      "total_mkt": 21385,
       "total_pnl": -1435.4,
       "total_pct": -6.29,
       "cost_basis": "real"
@@ -1035,7 +1026,7 @@
     {
       "trade_date": "2026-08-25",
       "total_cost": 22820.4,
-      "total_mkt": 21367.0,
+      "total_mkt": 21367,
       "total_pnl": -1453.4,
       "total_pct": -6.37,
       "cost_basis": "real"
@@ -1043,7 +1034,7 @@
     {
       "trade_date": "2026-08-26",
       "total_cost": 22820.4,
-      "total_mkt": 21633.0,
+      "total_mkt": 21633,
       "total_pnl": -1187.4,
       "total_pct": -5.2,
       "cost_basis": "real"
@@ -1051,7 +1042,7 @@
     {
       "trade_date": "2026-08-27",
       "total_cost": 22820.4,
-      "total_mkt": 21556.0,
+      "total_mkt": 21556,
       "total_pnl": -1264.4,
       "total_pct": -5.54,
       "cost_basis": "real"
@@ -1059,7 +1050,7 @@
     {
       "trade_date": "2026-08-28",
       "total_cost": 22820.4,
-      "total_mkt": 21446.0,
+      "total_mkt": 21446,
       "total_pnl": -1374.4,
       "total_pct": -6.02,
       "cost_basis": "real"
@@ -1067,7 +1058,7 @@
     {
       "trade_date": "2026-08-31",
       "total_cost": 22820.4,
-      "total_mkt": 21210.0,
+      "total_mkt": 21210,
       "total_pnl": -1610.4,
       "total_pct": -7.06,
       "cost_basis": "real"
@@ -1075,7 +1066,7 @@
     {
       "trade_date": "2026-09-01",
       "total_cost": 22820.4,
-      "total_mkt": 21230.0,
+      "total_mkt": 21230,
       "total_pnl": -1590.4,
       "total_pct": -6.97,
       "cost_basis": "real"
@@ -1083,104 +1074,104 @@
     {
       "trade_date": "2026-09-02",
       "total_cost": 22820.4,
-      "total_mkt": 20859.0,
+      "total_mkt": 20859,
       "total_pnl": -1961.4,
       "total_pct": -8.59,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-03",
-      "total_cost": 21501.0,
-      "total_mkt": 19516.0,
-      "total_pnl": -1985.0,
+      "total_cost": 21501,
+      "total_mkt": 19516,
+      "total_pnl": -1985,
       "total_pct": -9.23,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-04",
-      "total_cost": 21501.0,
-      "total_mkt": 19404.0,
-      "total_pnl": -2097.0,
+      "total_cost": 21501,
+      "total_mkt": 19404,
+      "total_pnl": -2097,
       "total_pct": -9.75,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-07",
-      "total_cost": 17082.0,
-      "total_mkt": 15015.0,
-      "total_pnl": -2067.0,
+      "total_cost": 17082,
+      "total_mkt": 15015,
+      "total_pnl": -2067,
       "total_pct": -12.1,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-08",
-      "total_cost": 17082.0,
-      "total_mkt": 15106.0,
-      "total_pnl": -1976.0,
+      "total_cost": 17082,
+      "total_mkt": 15106,
+      "total_pnl": -1976,
       "total_pct": -11.57,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-09",
-      "total_cost": 17082.0,
-      "total_mkt": 15015.0,
-      "total_pnl": -2067.0,
+      "total_cost": 17082,
+      "total_mkt": 15015,
+      "total_pnl": -2067,
       "total_pct": -12.1,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-10",
-      "total_cost": 17082.0,
-      "total_mkt": 14885.0,
-      "total_pnl": -2197.0,
+      "total_cost": 17082,
+      "total_mkt": 14885,
+      "total_pnl": -2197,
       "total_pct": -12.86,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-11",
-      "total_cost": 17082.0,
-      "total_mkt": 14521.0,
-      "total_pnl": -2561.0,
+      "total_cost": 17082,
+      "total_mkt": 14521,
+      "total_pnl": -2561,
       "total_pct": -14.99,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-14",
-      "total_cost": 17082.0,
-      "total_mkt": 14534.0,
-      "total_pnl": -2548.0,
+      "total_cost": 17082,
+      "total_mkt": 14534,
+      "total_pnl": -2548,
       "total_pct": -14.92,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-15",
-      "total_cost": 20981.0,
-      "total_mkt": 18425.0,
-      "total_pnl": -2556.0,
+      "total_cost": 20981,
+      "total_mkt": 18425,
+      "total_pnl": -2556,
       "total_pct": -12.18,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-16",
-      "total_cost": 20981.0,
-      "total_mkt": 18453.0,
-      "total_pnl": -2528.0,
+      "total_cost": 20981,
+      "total_mkt": 18453,
+      "total_pnl": -2528,
       "total_pct": -12.05,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-17",
-      "total_cost": 20981.0,
-      "total_mkt": 18183.0,
-      "total_pnl": -2798.0,
+      "total_cost": 20981,
+      "total_mkt": 18183,
+      "total_pnl": -2798,
       "total_pct": -13.34,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-18",
-      "total_cost": 25178.0,
-      "total_mkt": 22385.0,
-      "total_pnl": -2793.0,
+      "total_cost": 25178,
+      "total_mkt": 22385,
+      "total_pnl": -2793,
       "total_pct": -11.09,
       "cost_basis": "real"
     }
@@ -1666,7 +1657,7 @@
       },
       {
         "trade_date": "2026-09-10",
-        "cum_pct": -4.0
+        "cum_pct": -4
       },
       {
         "trade_date": "2026-09-11",
@@ -1704,7 +1695,7 @@
       },
       {
         "trade_date": "2026-03-05",
-        "pct_from_baseline": 0.0
+        "pct_from_baseline": 0
       },
       {
         "trade_date": "2026-03-06",
@@ -2122,7 +2113,7 @@
       },
       {
         "trade_date": "2026-03-05",
-        "pct_from_baseline": 0.0
+        "pct_from_baseline": 0
       },
       {
         "trade_date": "2026-03-06",
@@ -2540,7 +2531,7 @@
       },
       {
         "trade_date": "2026-03-05",
-        "pct_from_baseline": 0.0
+        "pct_from_baseline": 0
       },
       {
         "trade_date": "2026-03-06",
@@ -2732,7 +2723,7 @@
       },
       {
         "trade_date": "2026-05-18",
-        "pct_from_baseline": 4.0
+        "pct_from_baseline": 4
       },
       {
         "trade_date": "2026-05-19",
