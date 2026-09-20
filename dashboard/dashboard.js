@@ -90,10 +90,11 @@
             p.hidden = (p.id !== 'tab-' + target);
           });
           // 切到分析时画 charts (canvas 这时才 visible, width 正确, Chart.js 内部 layout 正常)
-          // 用 requestAnimationFrame 推到下一帧, 让浏览器先完成 layout 计算, canvas width 才会是真实值
-          // 双 raf 防御: chart.js 在 pane 刚 unhidden 时第一帧 layout 可能还没算完, 第二帧更稳
+          // rAF 单帧: tab-analysis 在 v22.12 提到 tab-closed-trades 之外做 body 直接子, 切 tab 时
+          // tab-closed-trades 仍是 hidden 不影响, tab-analysis 自身 hidden=false 后 wrap 立即有真实 clientWidth,
+          // 不需要任何 retry / layout-ready 检测
           if (target === 'analysis' && this.data) {
-            this.renderChartsWhenReady(this.data);
+            requestAnimationFrame(() => this.renderCharts(this.data));
           }
         });
       });
@@ -363,24 +364,6 @@
       } catch (e) {
         console.warn('[charts] carry_forward note update failed:', e);
       }
-    },
-
-    // v22.11 修复: 切到分析 tab 时, canvas 父容器可能还在 layout 中 (clientWidth=0)
-    // 如果 clientWidth=0 时调 new Chart(), Chart.js 会画在 0 像素 canvas 上, 之后即使 visible 也看不到
-    // 修法: 检测 clientWidth, 0 就 retry setTimeout(50ms), 最多 10 次 (500ms 总超时)
-    renderChartsWhenReady(data, attempt = 0) {
-      const el1 = $('chart-pnl-trend');
-      const el2 = $('chart-benchmark');
-      const w1 = el1 ? el1.parentElement.clientWidth : 0;
-      const w2 = el2 ? el2.parentElement.clientWidth : 0;
-      console.log(`[charts] renderChartsWhenReady attempt=${attempt}, w1=${w1}, w2=${w2}, pnl_series_len=${(data.pnl_series||[]).length}`);
-      // 至少有一个 canvas 父容器有真实宽度就画 (避免一个空就放弃)
-      if ((w1 > 0 || w2 > 0) || attempt >= 10) {
-        this.renderCharts(data);
-        return;
-      }
-      // 否则 retry
-      setTimeout(() => this.renderChartsWhenReady(data, attempt + 1), 50);
     },
 
     // 移动端检测兜底: 旧 WebView / 某些 Android 浏览器可能没 window.matchMedia, 之前 v22.8 在 raf 回调里抛错被吞

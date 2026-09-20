@@ -848,8 +848,6 @@
 
 <div class="holdings-grid" id="holdings-list"></div>
 
-</section>
-
 <!-- ============ TAB: 清仓&交易 (已清仓 + 交易汇总 + 交易记录) ============ -->
 <section class="tab-pane" id="tab-closed-trades" hidden>
 
@@ -871,6 +869,23 @@
 
 <div class="trade-grid" id="trade-summary-grid"></div>
 
+  <!-- ============ 交易记录 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">交易记录 <span class="count">近 <span id="tx-count">0</span> 笔</span></h2>
+
+<div class="tx-table-wrap">
+  <table class="tx-table">
+    <thead><tr><th>日期</th><th>方向</th><th>标的</th><th class="num">数量</th><th class="num">价格</th></tr></thead>
+    <tbody id="tx-tbody"></tbody>
+  </table>
+</div>
+
+</section>
+
+<!-- ============ TAB: 分析 (charts) ============ -->
 <section class="tab-pane" id="tab-analysis" hidden>
   <!-- ============ 累计盈亏趋势 (含 carry_forward 文字注释, Round 3 Option D) ============ -->
 <div class="divider">
@@ -912,23 +927,6 @@
     <canvas id="chart-benchmark"></canvas>
   </div>
 </div>
-
-</section>
-
-  <!-- ============ 交易记录 ============ -->
-<div class="divider">
-  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
-</div>
-
-<h2 class="section-title">交易记录 <span class="count">近 <span id="tx-count">0</span> 笔</span></h2>
-
-<div class="tx-table-wrap">
-  <table class="tx-table">
-    <thead><tr><th>日期</th><th>方向</th><th>标的</th><th class="num">数量</th><th class="num">价格</th></tr></thead>
-    <tbody id="tx-tbody"></tbody>
-  </table>
-</div>
-
 </section>
 
 <!-- ============ TAB: 设置 (placeholder) ============ -->
@@ -943,7 +941,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.11 · 2026-09-20 · ELSEWHERE 母题 · 4 tab + charts layout-ready retry (clientWidth 兜底)</div>
+  <div>PORTFOLIO DASHBOARD · v22.12 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · tab-analysis 平级修复 (HTML section 边界) · canvas 单帧 rAF</div>
 </footer>
 
 <!-- 刷新按钮 -->
