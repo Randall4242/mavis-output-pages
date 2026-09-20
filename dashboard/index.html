@@ -1204,7 +1204,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.23 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · 累计盘亏 chart 按 0 基准线分段面积 (y≥0 红高透明, y<0 绿高透明, 色调跟整体调性一致)</div>
+  <div>PORTFOLIO DASHBOARD · v22.24 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · SW fetch 改 network-first + dashboard.js cache-buster ?v=22.24 (修 S24 后台 SW 不激活, 旧 cache 一直 serve 旧 dashboard.js 问题)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1212,6 +1212,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js"></script>
+<script src="dashboard.js?v=22.24"></script>
 </body>
 </html>
