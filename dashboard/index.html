@@ -383,13 +383,13 @@
   .summary[data-tab-mode="analysis"] .three-seg .seg-amount { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-percent { font-size: 12px; margin-top: 2px; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-denominator { display: none; }
-  /* 中间 visual 隔离: 删 vertical separator + ::after 圆点 anchor (user 2026-09-20 反馈: 三件叠太丑, 纯 gap 即可) */
+  /* 中间 visual 隔离: 只删 vertical separator + ::after 圆点 anchor (user 2026-09-20 反馈: 三件叠太丑);
+     mini 卡自己的 banknote 装饰 (.holding-card::before) 保留, 那是持仓卡专属装饰线不是分隔线 */
   .summary[data-tab-mode="analysis"] .three-seg {
     border-right: none;  /* 取消 vertical separator */
   }
   .summary[data-tab-mode="analysis"] .three-seg::after { display: none; }  /* 取消 anchor 圆点 */
-  /* analysis mode 下 mini 卡左 banknote dashed border 也删 (跟 vertical separator 叠起来丑) */
-  .summary[data-tab-mode="analysis"] .holding-card::before { display: none; }
+  /* .holding-card::before 不删 — 保留 mini 卡左 banknote 装饰 */
   .summary[data-tab-mode="analysis"] .holdings-grid {
     display: flex;
     flex-direction: column;
@@ -1173,7 +1173,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.18 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece cartouche 居中装饰 · 3 段跟 mini 卡中间纯 gap (无 vertical separator, 无 anchor 圆), mobile 保持左右分栏</div>
+  <div>PORTFOLIO DASHBOARD · v22.19 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece cartouche 居中装饰 · 删 vertical separator + anchor 圆 (user 反馈太丑) · mini 卡 banknote 装饰保留</div>
 </footer>
 
 <!-- 刷新按钮 -->
