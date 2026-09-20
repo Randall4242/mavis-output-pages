@@ -445,30 +445,56 @@
       const daysEl = $('pnl-days-count');
       if (daysEl) daysEl.textContent = series.length;
 
-      // gradient fill (under curve, light red for down theme)
+      // 折线图按 0 基准线分段面积: y>=0 红 (accent-up #C45C4F), y<0 绿 (accent-down #7A8A76)
       const ctx = el.getContext('2d');
-      const gradient = ctx.createLinearGradient(0, 0, 0, 280);
-      gradient.addColorStop(0, 'rgba(122, 138, 118, 0.18)');
-      gradient.addColorStop(1, 'rgba(122, 138, 118, 0.00)');
+      // 用 3 datasets: 红 area + 绿 area + 主 line (line 不 fill)
+      // 红 area 只在 y>=0 时有值 (其余 null), 绿 area 只在 y<0 时有值
+      const redData = pnls.map(v => v >= 0 ? v : null);
+      const greenData = pnls.map(v => v < 0 ? v : null);
 
       this.charts.pnlTrend = new Chart(ctx, {
         type: 'line',
         data: {
           labels,
-          datasets: [{
-            label: '总 P&L',
-            data: pnls,
-            borderColor: '#1A1A1A',
-            backgroundColor: gradient,
-            borderWidth: 1.5,
-            fill: true,
-            tension: 0.3,
-            pointRadius: 0,
-            pointHoverRadius: 4,
-            pointHoverBackgroundColor: '#1A1A1A',
-            pointHoverBorderColor: '#FFFFFF',
-            pointHoverBorderWidth: 2,
-          }],
+          datasets: [
+            // 红 area (y>=0) — 高透明红
+            {
+              label: '正面积',
+              data: redData,
+              borderWidth: 0,
+              fill: { target: { value: 0 } },
+              backgroundColor: 'rgba(196, 92, 79, 0.16)',  // accent-up #C45C4F @ 16%
+              pointRadius: 0,
+              tension: 0.3,
+              order: 3,
+            },
+            // 绿 area (y<0) — 高透明绿
+            {
+              label: '负面积',
+              data: greenData,
+              borderWidth: 0,
+              fill: { target: { value: 0 } },
+              backgroundColor: 'rgba(122, 138, 118, 0.16)',  // accent-down #7A8A76 @ 16%
+              pointRadius: 0,
+              tension: 0.3,
+              order: 4,
+            },
+            // 主 line (line 不 fill, 跨 0 连续)
+            {
+              label: '总 P&L',
+              data: pnls,
+              borderColor: '#1A1A1A',
+              borderWidth: 1.5,
+              fill: false,
+              tension: 0.3,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: '#1A1A1A',
+              pointHoverBorderColor: '#FFFFFF',
+              pointHoverBorderWidth: 2,
+              order: 1,
+            },
+          ],
         },
         options: {
           responsive: true,
