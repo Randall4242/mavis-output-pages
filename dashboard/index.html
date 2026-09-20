@@ -540,17 +540,27 @@
     .holding-card { padding: 22px 20px 20px 30px; }
     .holding-card::before { left: 12px; top: 20px; bottom: 20px; width: 5px; }
 
-    /* Analysis 模式 mobile: 左右分栏 → 上下排, mini 卡不挤 */
+    /* Analysis 模式 mobile (≤600px): 左右分栏 → 上下排, mini 卡不挤; vertical separator → horizontal */
     .summary[data-tab-mode="analysis"] { grid-template-columns: 1fr; }
     .summary[data-tab-mode="analysis"] .three-seg {
-      border-right: none;
-      border-bottom: 1px solid var(--border);
+      border-right: none !important;  /* mobile 取消 desktop 的 vertical separator (override !important) */
+      border-bottom: 1px solid var(--accent-engrave);
+      position: relative;
     }
+    /* horizontal separator anchor 圆点 (mobile, 跟 desktop vertical anchor 同一思路) */
+    .summary[data-tab-mode="analysis"] .three-seg::after {
+      right: auto;
+      left: 50%;
+      top: auto;
+      bottom: -4px;
+      transform: translate(-50%, 50%);
+    }
+    /* 段间无灰线 (user 2026-09-20: 三段式内部无分割线) */
     .summary[data-tab-mode="analysis"] .three-seg .seg {
-      border-bottom: 1px solid var(--border);
+      border-bottom: none;
       padding: 10px 14px;
     }
-    .summary[data-tab-mode="analysis"] .three-seg .seg:last-child { border-bottom: 1px solid var(--border); }
+    .summary[data-tab-mode="analysis"] .three-seg .seg:last-child { border-bottom: none; }
   }
 
   .holding-card {
