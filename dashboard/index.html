@@ -317,38 +317,34 @@
   .down { color: var(--accent-down); }
   .neutral { color: var(--ink-muted); }
 
-  /* ============ HEADPIECE (文艺复兴官方文件头饰 — 分析/清仓&交易 tab 顶部装饰) ============ */
+  /* ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette, 居中装饰, 非分割线) ============ */
   .summary .headpiece {
     display: none;  /* 默认 hidden, JS / data-tab-mode 控制 */
     position: relative;
-    grid-column: 1 / -1;  /* 横跨 summary grid 全宽, 不抢左列位置 */
-    color: var(--accent-deep);
+    grid-column: 1 / -1;
+    color: var(--accent-engrave);
     margin: 0 0 14px;
-    height: 32px;
+    padding-top: 14px;
+    text-align: center;
   }
   .summary[data-tab-mode="analysis"] .headpiece,
   .summary[data-tab-mode="closed-trades"] .headpiece { display: block; }
   .headpiece-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
     display: block;
+    width: 360px;
+    max-width: 60%;
+    height: 50px;
+    margin: 0 auto;
   }
   .headpiece-text {
-    position: absolute;
-    top: 22px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--bg-card);
-    padding: 0 16px;
+    display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--ink-secondary);
-    white-space: nowrap;
+    margin-top: 4px;
   }
 
   /* ============ SUMMARY (按 tab 切换形态: today 完整 / analysis 合并卡片 / closed-trades 已实现单行) ============ */
@@ -379,14 +375,31 @@
   }
   .summary[data-tab-mode="analysis"] .three-seg .seg {
     border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 12px 16px;
+    border-bottom: none;  /* 三段式内部无分割线 (user 2026-09-20 反馈) */
+    padding: 14px 16px;
   }
   .summary[data-tab-mode="analysis"] .three-seg .seg:last-child { border-bottom: none; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-label { font-size: 10px; margin-bottom: 4px; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-amount { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-percent { font-size: 12px; margin-top: 2px; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-denominator { display: none; }
+  /* 中间 vertical separator: three-seg border-right 深棕 + 中央 anchor 圆点 (user 2026-09-20 反馈) */
+  .summary[data-tab-mode="analysis"] .three-seg {
+    border-right: 1px solid var(--accent-engrave) !important;
+    position: relative;
+  }
+  .summary[data-tab-mode="analysis"] .three-seg::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -4px;
+    transform: translate(50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-engrave);
+    box-shadow: 0 0 0 2px var(--bg-card);  /* 米白 ring, 让 anchor 浮在 vertical line 上 */
+  }
   .summary[data-tab-mode="analysis"] .holdings-grid {
     display: flex;
     flex-direction: column;
@@ -399,19 +412,19 @@
     border: none;
     border-bottom: 1px solid var(--border);
     border-radius: 0;
-    padding: 8px 12px 10px 12px;
+    padding: 6px 10px 8px 10px;
     background: transparent;
     box-shadow: none;
   }
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"]:last-child { border-bottom: none; }
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"]::before {
-    left: 0; width: 4px; top: 8px; bottom: 8px;
+    left: 0; width: 3px; top: 6px; bottom: 6px;
   }
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-head {
-    margin-bottom: 3px; gap: 8px;
+    margin-bottom: 2px; gap: 8px;
   }
-  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-name { font-size: 13px; }
-  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-code { font-size: 10px; }
+  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-name { font-size: 12px; }
+  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-code { font-size: 9px; }
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-status { font-size: 9px; }
   /* 持仓/成本/现价 3 行 (nth-child 2/3/4) 同行 inline-block, 隐藏 key, 加 · 分隔 */
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-row:nth-child(2),
@@ -420,7 +433,7 @@
     display: inline-block;
     margin: 0;
     padding: 0;
-    font-size: 11px;
+    font-size: 10px;
     vertical-align: baseline;
   }
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-row:nth-child(2) .holding-key,
@@ -432,7 +445,7 @@
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-row:nth-child(3)::after {
     content: "·";
     color: var(--ink-muted);
-    margin: 0 8px 0 8px;
+    margin: 0 7px 0 7px;
     font-weight: 400;
   }
   /* 今日涨跌/今日盈亏 hidden (nth-child 5/6) */
@@ -442,11 +455,11 @@
   }
   /* holding-pnl 缩 */
   .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl {
-    margin-top: 4px;
-    padding-top: 4px;
+    margin-top: 3px;
+    padding-top: 3px;
   }
-  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-key { font-size: 9px; }
-  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-val { font-size: 12px; }
+  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-key { font-size: 8px; }
+  .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-val { font-size: 11px; }
 
   /* closed-trades / settings 模式: holding-card hidden */
   .summary[data-tab-mode="closed-trades"] .holding-card,
@@ -994,41 +1007,35 @@
 <!-- ============ SUMMARY (按 tab 切换形态: today 完整 / analysis 合并卡片 / closed-trades 已实现单行) ============ -->
 <section class="summary" data-tab-mode="today">
 
-  <!-- ============ HEADPIECE (文艺复兴官方文件头饰 — 今日 tab 隐, 分析/清仓&交易 tab 显示) ============ -->
+  <!-- ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette + 两侧 scrollwork, 居中装饰非分割线) ============ -->
   <div class="headpiece">
-    <svg class="headpiece-svg" viewBox="0 0 600 32" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <!-- 顶边细线 -->
-      <line x1="40" y1="6" x2="560" y2="6" stroke="currentColor" stroke-width="0.5"/>
-      <!-- 左端 anchor: 圆形封蜡印 -->
-      <circle cx="40" cy="6" r="3.5" fill="none" stroke="currentColor" stroke-width="0.7"/>
-      <circle cx="40" cy="6" r="1.5" fill="currentColor"/>
-      <!-- 左月桂枝 (简化的椭圆叶) -->
-      <path d="M55 6 Q72 1 89 6 Q72 11 55 6 Z" fill="currentColor" opacity="0.25"/>
-      <path d="M55 6 Q72 1 89 6 Q72 11 55 6 Z" fill="none" stroke="currentColor" stroke-width="0.4"/>
-      <ellipse cx="65" cy="4" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <ellipse cx="80" cy="7" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <!-- 中央 8 瓣勋章 rosette -->
-      <g transform="translate(300 6)">
-        <ellipse cx="0" cy="-7" rx="2" ry="4" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="5" cy="-5" rx="2" ry="4" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
-        <ellipse cx="7" cy="0" rx="4" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="5" cy="5" rx="2" ry="4" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
-        <ellipse cx="0" cy="7" rx="2" ry="4" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="-5" cy="5" rx="2" ry="4" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
-        <ellipse cx="-7" cy="0" rx="4" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="-5" cy="-5" rx="2" ry="4" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
-        <circle r="1.8" fill="currentColor"/>
+    <svg class="headpiece-svg" viewBox="0 0 360 50" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <!-- 中央椭圆 cartouche (双层) -->
+      <ellipse cx="180" cy="22" rx="40" ry="16" fill="none" stroke="currentColor" stroke-width="0.8"/>
+      <ellipse cx="180" cy="22" rx="36" ry="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+      <!-- 中央 rosette 8 瓣 -->
+      <g transform="translate(180 22)">
+        <ellipse cx="0" cy="-9" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="6" cy="-6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
+        <ellipse cx="9" cy="0" rx="4.5" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="6" cy="6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
+        <ellipse cx="0" cy="9" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="-6" cy="6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
+        <ellipse cx="-9" cy="0" rx="4.5" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="-6" cy="-6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
+        <circle r="2" fill="currentColor"/>
       </g>
-      <!-- 右月桂枝 (mirror) -->
-      <path d="M545 6 Q528 11 511 6 Q528 1 545 6 Z" fill="currentColor" opacity="0.25"/>
-      <path d="M545 6 Q528 11 511 6 Q528 1 545 6 Z" fill="none" stroke="currentColor" stroke-width="0.4"/>
-      <ellipse cx="535" cy="4" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <ellipse cx="520" cy="7" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <!-- 右端 anchor -->
-      <circle cx="560" cy="6" r="3.5" fill="none" stroke="currentColor" stroke-width="0.7"/>
-      <circle cx="560" cy="6" r="1.5" fill="currentColor"/>
-      <!-- 下边短细线 (rosette 下方 anchor, 让中间文字盖在它上面) -->
-      <line x1="100" y1="22" x2="500" y2="22" stroke="currentColor" stroke-width="0.5"/>
+      <!-- 左 scrollwork (弧线+小椭圆叶) -->
+      <path d="M140 22 Q120 17 100 22 Q120 27 140 22 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="0.4"/>
+      <ellipse cx="115" cy="19" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <ellipse cx="130" cy="24" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <!-- 右 scrollwork (mirror) -->
+      <path d="M220 22 Q240 17 260 22 Q240 27 220 22 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="0.4"/>
+      <ellipse cx="245" cy="19" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <ellipse cx="230" cy="24" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <!-- 端点 anchor -->
+      <circle cx="85" cy="22" r="2.5" fill="currentColor"/>
+      <circle cx="275" cy="22" r="2.5" fill="currentColor"/>
     </svg>
     <div class="headpiece-text"></div>
   </div>
@@ -1166,7 +1173,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.14 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · summary 切形态 · headpiece 文艺复兴月桂+8瓣勋章 · mini 卡 compact (3行→1行)</div>
+  <div>PORTFOLIO DASHBOARD · v22.15 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece 椭圆 cartouche+rosette 居中装饰 · 三段式无内分割 · mini 卡 compact 加 middle vertical separator (深棕 + anchor 圆)</div>
 </footer>
 
 <!-- 刷新按钮 -->
