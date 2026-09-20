@@ -89,9 +89,10 @@
           document.querySelectorAll('.tab-pane').forEach(p => {
             p.hidden = (p.id !== 'tab-' + target);
           });
-          // 切到分析时重新 render charts (chart 在 hidden 时 width=0, resize 不够, 必须 destroy + 重画)
+          // 切到分析时画 charts (canvas 这时才 visible, width 正确, Chart.js 内部 layout 正常)
+          // 用 requestAnimationFrame 推到下一帧, 让浏览器先完成 layout 计算, canvas width 才会是真实值
           if (target === 'analysis' && this.data) {
-            this.renderCharts(this.data);
+            requestAnimationFrame(() => this.renderCharts(this.data));
           }
         });
       });
@@ -106,7 +107,8 @@
       this.renderClosed(data);
       this.renderTradeSummary(data);
       this.renderTransactions(data);
-      this.renderCharts(data);
+      // 不在 load() 里 renderCharts — canvas 在 hidden pane 时 width=0, Chart.js 内部 layout 坏了, 后续 destroy + 重画也救不回来
+      // charts 改在 initTabs 切到分析 tab 时画 (pane visible, width 正确)
     },
 
     renderHeader(data) {
