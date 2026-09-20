@@ -540,27 +540,33 @@
     .holding-card { padding: 22px 20px 20px 30px; }
     .holding-card::before { left: 12px; top: 20px; bottom: 20px; width: 5px; }
 
-    /* Analysis 模式 mobile (≤600px): 左右分栏 → 上下排, mini 卡不挤; vertical separator → horizontal */
-    .summary[data-tab-mode="analysis"] { grid-template-columns: 1fr; }
+    /* Analysis 模式 mobile (≤600px): 保持左右分栏 (user 2026-09-20 反馈: 持仓要在三段式右边, 跟 desktop 一致); 缩字号让 360px hold 住 */
+    .summary[data-tab-mode="analysis"] { grid-template-columns: 38% 62%; }
+    /* 保留 vertical separator (不取消 border-right); ::after 圆点改到 vertical 中央 */
     .summary[data-tab-mode="analysis"] .three-seg {
-      border-right: none !important;  /* mobile 取消 desktop 的 vertical separator (override !important) */
-      border-bottom: 1px solid var(--accent-engrave);
-      position: relative;
+      border-right: 1px solid var(--accent-engrave) !important;
     }
-    /* horizontal separator anchor 圆点 (mobile, 跟 desktop vertical anchor 同一思路) */
     .summary[data-tab-mode="analysis"] .three-seg::after {
-      right: auto;
-      left: 50%;
-      top: auto;
-      bottom: -4px;
-      transform: translate(-50%, 50%);
+      /* 保留 desktop 圆点位置 (right: -4px; top: 50%), 不重写 */
     }
-    /* 段间无灰线 (user 2026-09-20: 三段式内部无分割线) */
-    .summary[data-tab-mode="analysis"] .three-seg .seg {
-      border-bottom: none;
-      padding: 10px 14px;
-    }
-    .summary[data-tab-mode="analysis"] .three-seg .seg:last-child { border-bottom: none; }
+    /* 3 段 mobile 字号缩 */
+    .summary[data-tab-mode="analysis"] .three-seg .seg { padding: 8px 10px; }
+    .summary[data-tab-mode="analysis"] .three-seg .seg-label { font-size: 8px; margin-bottom: 3px; }
+    .summary[data-tab-mode="analysis"] .three-seg .seg-amount { font-size: 13px; font-weight: 800; letter-spacing: -0.01em; }
+    .summary[data-tab-mode="analysis"] .three-seg .seg-percent { font-size: 10px; margin-top: 1px; }
+    /* mini 卡 mobile 字号缩 */
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] { padding: 4px 6px 5px 10px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"]::before { left: 0; width: 2px; top: 4px; bottom: 4px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-head { margin-bottom: 1px; gap: 4px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-name { font-size: 10px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-code { font-size: 8px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-status { font-size: 8px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-row { font-size: 9px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-row:nth-child(2)::after,
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-row:nth-child(3)::after { margin: 0 4px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl { margin-top: 2px; padding-top: 2px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-key { font-size: 7px; }
+    .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-val { font-size: 10px; }
   }
 
   .holding-card {
@@ -1183,7 +1189,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.16 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece 椭圆 cartouche+rosette 居中装饰 · 三段式无内分割 · middle separator (desktop vertical / mobile horizontal) + anchor 圆</div>
+  <div>PORTFOLIO DASHBOARD · v22.17 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece cartouche 居中装饰 · middle vertical separator + anchor 圆 · mobile 保持左右分栏 (持仓在三段式右边, 字号缩到 hold 360px)</div>
 </footer>
 
 <!-- 刷新按钮 -->
