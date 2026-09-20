@@ -458,17 +458,23 @@
   /* closed-trades: 只显示②已实现盈亏 单行 */
   .summary[data-tab-mode="closed-trades"] .summary-divider,
   .summary[data-tab-mode="closed-trades"] .summary-h2 { display: none; }
+  /* closed-trades: headpiece 做 summary 卡片内部顶部装饰 (跟 ② seg 共用 summary 卡片 border, headpiece = header, ② seg = body) */
+  .summary[data-tab-mode="closed-trades"] .headpiece {
+    margin: 0;
+    padding: 14px 0 12px;
+  }
   .summary[data-tab-mode="closed-trades"] .three-seg {
     display: block;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: var(--bg-card);
+    background: transparent;  /* 跟 summary 卡片共用 bg, 不再独立卡片 */
+    border: none;
+    border-radius: 0;
     padding: 0;
-    overflow: hidden;
+    margin: 0;
+    overflow: visible;
   }
   .summary[data-tab-mode="closed-trades"] .three-seg .seg {
     border: none; border-right: none; border-bottom: none;
-    padding: 18px 22px;
+    padding: 14px 22px 18px;  /* padding-top 14 跟 headpiece 紧贴, padding-bottom 18 跟 summary bottom 留点 */
   }
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(1),
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) { display: none; }
@@ -1173,7 +1179,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.19 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece cartouche 居中装饰 · 删 vertical separator + anchor 圆 (user 反馈太丑) · mini 卡 banknote 装饰保留</div>
+  <div>PORTFOLIO DASHBOARD · v22.20 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece 嵌进 summary 卡片内部顶部 (closed-trades 跟 ② seg 共用卡片 border, headpiece = header, ② = body)</div>
 </footer>
 
 <!-- 刷新按钮 -->
