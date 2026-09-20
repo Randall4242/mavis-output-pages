@@ -317,6 +317,103 @@
   .down { color: var(--accent-down); }
   .neutral { color: var(--ink-muted); }
 
+  /* ============ SUMMARY (按 tab 切换形态: today 完整 / analysis 合并卡片 / closed-trades 已实现单行) ============ */
+  /* today: 现状完整 — 三段式 + 当前持仓各自独立 */
+  .summary[data-tab-mode="today"] .summary-divider,
+  .summary[data-tab-mode="today"] .summary-h2 { display: revert; }
+
+  /* analysis: 左右分栏合并卡片 (左 3 段紧凑, 右当前持仓 mini 卡 1 列竖排, N 只自适应) */
+  .summary[data-tab-mode="analysis"] .summary-divider,
+  .summary[data-tab-mode="analysis"] .summary-h2 { display: none; }
+  .summary[data-tab-mode="analysis"] {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 1.6fr;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    overflow: hidden;
+  }
+  .summary[data-tab-mode="analysis"] .three-seg {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  .summary[data-tab-mode="analysis"] .three-seg .seg {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+  .summary[data-tab-mode="analysis"] .three-seg .seg:last-child { border-bottom: none; }
+  .summary[data-tab-mode="analysis"] .three-seg .seg-label { font-size: 10px; margin-bottom: 4px; }
+  .summary[data-tab-mode="analysis"] .three-seg .seg-amount { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+  .summary[data-tab-mode="analysis"] .three-seg .seg-percent { font-size: 12px; margin-top: 2px; }
+  .summary[data-tab-mode="analysis"] .three-seg .seg-denominator { display: none; }
+  .summary[data-tab-mode="analysis"] .holdings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    background: transparent;
+  }
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    padding: 10px 14px 10px 22px;
+    background: transparent;
+    box-shadow: none;
+  }
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card:last-child { border-bottom: none; }
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card::before {
+    left: 0; width: 4px; top: 10px; bottom: 10px;
+  }
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card .holding-head { margin-bottom: 4px; }
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card .holding-row { font-size: 12px; padding: 1px 0; }
+  /* mini 卡简化: 隐藏「今日涨跌」+「今日盈亏」行, 保留 持仓/成本/现价 + 累计 */
+/* holding-card 子序: 1=head 2=持仓 3=成本 4=现价 5=今日涨跌(opt) 6=今日盈亏(opt) 7=holding-pnl */
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card .holding-row:nth-child(5),
+  .summary[data-tab-mode="analysis"] .holdings-grid .holding-card .holding-row:nth-child(6) {
+    display: none;
+  }
+
+  /* closed-trades: 只显示②已实现盈亏 单行 */
+  .summary[data-tab-mode="closed-trades"] .summary-divider,
+  .summary[data-tab-mode="closed-trades"] .summary-h2 { display: none; }
+  .summary[data-tab-mode="closed-trades"] .three-seg {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    padding: 0;
+    overflow: hidden;
+  }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg {
+    border: none; border-right: none; border-bottom: none;
+    padding: 18px 22px;
+  }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(1),
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) { display: none; }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(2) {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg-label {
+    margin-bottom: 0; min-width: 100px; flex-shrink: 0;
+  }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg-amount { font-size: 26px; }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg-percent { font-size: 16px; margin-top: 0; }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg-denominator {
+    font-size: 10px; margin-top: 0; flex-basis: 100%;
+  }
+  .summary[data-tab-mode="closed-trades"] .holdings-grid { display: none; }
+
+  /* settings: 全部隐藏 */
+  .summary[data-tab-mode="settings"] { display: none; }
+
   /* ============ HOLDINGS GRID ============ */
   .holdings-grid {
     display: grid;
@@ -358,6 +455,18 @@
     /* Holding 卡装饰: 保留 5px 多层 banknote 结构 (不弱化) */
     .holding-card { padding: 22px 20px 20px 30px; }
     .holding-card::before { left: 12px; top: 20px; bottom: 20px; width: 5px; }
+
+    /* Analysis 模式 mobile: 左右分栏 → 上下排, mini 卡不挤 */
+    .summary[data-tab-mode="analysis"] { grid-template-columns: 1fr; }
+    .summary[data-tab-mode="analysis"] .three-seg {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary[data-tab-mode="analysis"] .three-seg .seg {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+    }
+    .summary[data-tab-mode="analysis"] .three-seg .seg:last-child { border-bottom: 1px solid var(--border); }
   }
 
   .holding-card {
@@ -811,42 +920,48 @@
   </div>
 </section>
 
-<!-- ============ 三段式盈亏 (含分母副行, Round 2 Option A) ============ -->
-<div class="divider">
-  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
-</div>
+<!-- ============ SUMMARY (按 tab 切换形态: today 完整 / analysis 合并卡片 / closed-trades 已实现单行) ============ -->
+<section class="summary" data-tab-mode="today">
 
-<h2 class="section-title">三段式盈亏 <span class="count">3 segments</span></h2>
-
-<div class="three-seg">
-  <div class="seg">
-    <div class="seg-label">① 持仓盈亏 · 浮盈</div>
-    <div class="seg-amount" id="floating-amount">—</div>
-    <div class="seg-percent" id="floating-pct">—</div>
-    <div class="seg-denominator">vs 当前持仓成本</div>
+  <!-- ============ 三段式盈亏 (含分母副行, Round 2 Option A) ============ -->
+  <div class="divider summary-divider summary-divider-three">
+    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
   </div>
-  <div class="seg">
-    <div class="seg-label">② 已实现盈亏</div>
-    <div class="seg-amount" id="realized-amount">—</div>
-    <div class="seg-percent" id="realized-pct">—</div>
-    <div class="seg-denominator">vs 历史消耗本金</div>
+
+  <h2 class="section-title summary-h2 summary-h2-three">三段式盈亏 <span class="count">3 segments</span></h2>
+
+  <div class="three-seg">
+    <div class="seg">
+      <div class="seg-label">① 持仓盈亏 · 浮盈</div>
+      <div class="seg-amount" id="floating-amount">—</div>
+      <div class="seg-percent" id="floating-pct">—</div>
+      <div class="seg-denominator">vs 当前持仓成本</div>
+    </div>
+    <div class="seg">
+      <div class="seg-label">② 已实现盈亏</div>
+      <div class="seg-amount" id="realized-amount">—</div>
+      <div class="seg-percent" id="realized-pct">—</div>
+      <div class="seg-denominator">vs 历史消耗本金</div>
+    </div>
+    <div class="seg">
+      <div class="seg-label">③ 总投资盈亏</div>
+      <div class="seg-amount" id="total-amount">—</div>
+      <div class="seg-percent" id="total-pct">—</div>
+      <div class="seg-denominator">vs 初始总投入</div>
+    </div>
   </div>
-  <div class="seg">
-    <div class="seg-label">③ 总投资盈亏</div>
-    <div class="seg-amount" id="total-amount">—</div>
-    <div class="seg-percent" id="total-pct">—</div>
-    <div class="seg-denominator">vs 初始总投入</div>
+
+  <!-- ============ 当前持仓 ============ -->
+  <div class="divider summary-divider summary-divider-holdings">
+    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
   </div>
-</div>
 
-<!-- ============ 当前持仓 ============ -->
-<div class="divider">
-  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
-</div>
+  <h2 class="section-title summary-h2 summary-h2-holdings">当前持仓 <span class="count"><span id="holdings-count">0</span> 只</span></h2>
 
-<h2 class="section-title">当前持仓 <span class="count"><span id="holdings-count">0</span> 只</span></h2>
+  <div class="holdings-grid" id="holdings-list"></div>
 
-<div class="holdings-grid" id="holdings-list"></div>
+</section>
+<!-- ============ / SUMMARY ============ -->
 
 <!-- ============ TAB: 清仓&交易 (已清仓 + 交易汇总 + 交易记录) ============ -->
 <section class="tab-pane" id="tab-closed-trades" hidden>
@@ -941,7 +1056,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.12 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · tab-analysis 平级修复 (HTML section 边界) · canvas 单帧 rAF</div>
+  <div>PORTFOLIO DASHBOARD · v22.13 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · tab-analysis 平级修复 · summary 按 tab 切换形态 (today 完整 / analysis 合并卡片 / closed-trades 已实现单行)</div>
 </footer>
 
 <!-- 刷新按钮 -->

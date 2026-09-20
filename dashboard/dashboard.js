@@ -78,6 +78,9 @@
         a.addEventListener('click', (e) => {
           e.preventDefault();
           const target = a.dataset.tab;
+          // 切 tab 时改 summary 形态 (today 完整 / analysis 合并卡片 / closed-trades 已实现单行 / settings 隐藏)
+          const summaryEl = document.querySelector('.summary');
+          if (summaryEl) summaryEl.dataset.tabMode = target;
           if (target === 'settings') {
             // 占位 tab, 暂时只 toast
             this.toast('设置: 即将上线');
