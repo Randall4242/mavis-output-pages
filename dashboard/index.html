@@ -383,23 +383,13 @@
   .summary[data-tab-mode="analysis"] .three-seg .seg-amount { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-percent { font-size: 12px; margin-top: 2px; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-denominator { display: none; }
-  /* 中间 vertical separator: three-seg border-right 深棕 + 中央 anchor 圆点 (user 2026-09-20 反馈) */
+  /* 中间 visual 隔离: 删 vertical separator + ::after 圆点 anchor (user 2026-09-20 反馈: 三件叠太丑, 纯 gap 即可) */
   .summary[data-tab-mode="analysis"] .three-seg {
-    border-right: 1px solid var(--accent-engrave) !important;
-    position: relative;
+    border-right: none;  /* 取消 vertical separator */
   }
-  .summary[data-tab-mode="analysis"] .three-seg::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: -4px;
-    transform: translate(50%, -50%);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent-engrave);
-    box-shadow: 0 0 0 2px var(--bg-card);  /* 米白 ring, 让 anchor 浮在 vertical line 上 */
-  }
+  .summary[data-tab-mode="analysis"] .three-seg::after { display: none; }  /* 取消 anchor 圆点 */
+  /* analysis mode 下 mini 卡左 banknote dashed border 也删 (跟 vertical separator 叠起来丑) */
+  .summary[data-tab-mode="analysis"] .holding-card::before { display: none; }
   .summary[data-tab-mode="analysis"] .holdings-grid {
     display: flex;
     flex-direction: column;
@@ -542,13 +532,7 @@
 
     /* Analysis 模式 mobile (≤600px): 保持左右分栏 (user 2026-09-20 反馈: 持仓要在三段式右边, 跟 desktop 一致); 缩字号让 360px hold 住 */
     .summary[data-tab-mode="analysis"] { grid-template-columns: 38% 62%; }
-    /* 保留 vertical separator (不取消 border-right); ::after 圆点改到 vertical 中央 */
-    .summary[data-tab-mode="analysis"] .three-seg {
-      border-right: 1px solid var(--accent-engrave) !important;
-    }
-    .summary[data-tab-mode="analysis"] .three-seg::after {
-      /* 保留 desktop 圆点位置 (right: -4px; top: 50%), 不重写 */
-    }
+    /* vertical separator + 圆点 anchor 都已删 (user 2026-09-20 反馈太丑), mobile 沿用 desktop 即可, 不用再重写 */
     /* 3 段 mobile 字号缩 */
     .summary[data-tab-mode="analysis"] .three-seg .seg { padding: 8px 10px; }
     .summary[data-tab-mode="analysis"] .three-seg .seg-label { font-size: 8px; margin-bottom: 3px; }
@@ -1189,7 +1173,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.17 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece cartouche 居中装饰 · middle vertical separator + anchor 圆 · mobile 保持左右分栏 (持仓在三段式右边, 字号缩到 hold 360px)</div>
+  <div>PORTFOLIO DASHBOARD · v22.18 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece cartouche 居中装饰 · 3 段跟 mini 卡中间纯 gap (无 vertical separator, 无 anchor 圆), mobile 保持左右分栏</div>
 </footer>
 
 <!-- 刷新按钮 -->
