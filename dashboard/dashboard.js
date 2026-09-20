@@ -91,8 +91,9 @@
           });
           // 切到分析时画 charts (canvas 这时才 visible, width 正确, Chart.js 内部 layout 正常)
           // 用 requestAnimationFrame 推到下一帧, 让浏览器先完成 layout 计算, canvas width 才会是真实值
+          // 双 raf 防御: chart.js 在 pane 刚 unhidden 时第一帧 layout 可能还没算完, 第二帧更稳
           if (target === 'analysis' && this.data) {
-            requestAnimationFrame(() => this.renderCharts(this.data));
+            requestAnimationFrame(() => requestAnimationFrame(() => this.renderCharts(this.data)));
           }
         });
       });
@@ -343,10 +344,34 @@
     },
 
     renderCharts(data) {
-      this.renderPnlTrendChart(data.pnl_series || []);
-      this.renderBenchmarkChart(data.benchmark || {});
+      // try/catch: 让 charts 失败时错误能 toast 出来, 不被吞成无声失败 (之前 v22.8 user 报"分析 tab 没 chart"但 console 看不到错就是这个坑)
+      try {
+        this.renderPnlTrendChart(data.pnl_series || []);
+      } catch (e) {
+        console.error('[charts] PnL trend render failed:', e);
+        this.toast('P&L 图表加载失败: ' + (e.message || 'unknown'));
+      }
+      try {
+        this.renderBenchmarkChart(data.benchmark || {});
+      } catch (e) {
+        console.error('[charts] benchmark render failed:', e);
+        this.toast('基准对比图表加载失败: ' + (e.message || 'unknown'));
+      }
       // 动态更新 carry_forward 注释
-      this.updateCarryForwardNote(data.pnl_series || []);
+      try {
+        this.updateCarryForwardNote(data.pnl_series || []);
+      } catch (e) {
+        console.warn('[charts] carry_forward note update failed:', e);
+      }
+    },
+
+    // 移动端检测兜底: 旧 WebView / 某些 Android 浏览器可能没 window.matchMedia, 之前 v22.8 在 raf 回调里抛错被吞
+    _isMobile() {
+      try {
+        return !!(window.matchMedia && window.matchMedia('(max-width: 600px)').matches);
+      } catch (e) {
+        return false; // 默认 desktop
+      }
     },
 
     // Round 3 Option D: 纯文字注释 "X 天为假设性回填" (动态范围)
@@ -393,7 +418,7 @@
       }
       const labels = series.map(s => s.trade_date.substring(5)); // MM-DD
       const pnls = series.map(s => s.total_pnl);
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+      const isMobile = this._isMobile();
       const maxTicks = isMobile ? 5 : 10;
 
       // sub line: date range
@@ -513,7 +538,7 @@
         return csiMap[fullDate] ?? null;
       });
 
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+      const isMobile = this._isMobile();
       const maxTicks = isMobile ? 5 : 10;
 
       const datasets = [
