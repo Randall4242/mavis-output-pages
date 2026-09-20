@@ -78,9 +78,21 @@
         a.addEventListener('click', (e) => {
           e.preventDefault();
           const target = a.dataset.tab;
-          // 切 tab 时改 summary 形态 (today 完整 / analysis 合并卡片 / closed-trades 已实现单行 / settings 隐藏)
+          // 切 tab 时改 summary 形态 + headpiece text + holding-card data-mode
+          // (today 标准 / analysis 紧凑 / closed-trades 已实现单行 + holding 隐藏 / settings 全隐)
           const summaryEl = document.querySelector('.summary');
-          if (summaryEl) summaryEl.dataset.tabMode = target;
+          if (summaryEl) {
+            summaryEl.dataset.tabMode = target;
+            const headpieceText = summaryEl.querySelector('.headpiece-text');
+            if (headpieceText) {
+              headpieceText.textContent = ({
+                'analysis': 'PORTFOLIO SNAPSHOT · 投资速览',
+                'closed-trades': 'REALIZED P&L · 已实现盈亏',
+              })[target] || '';
+            }
+            const cardMode = ({ 'today':'standard', 'analysis':'compact', 'closed-trades':'hidden', 'settings':'hidden' })[target] || 'standard';
+            summaryEl.querySelectorAll('.holding-card').forEach(c => { c.dataset.mode = cardMode; });
+          }
           if (target === 'settings') {
             // 占位 tab, 暂时只 toast
             this.toast('设置: 即将上线');
@@ -261,7 +273,7 @@
         const statusClass = pnlClass(h.pnl_abs);
 
         return `
-          <div class="holding-card ${cls}">
+          <div class="holding-card ${cls}" data-mode="standard">
             <div class="holding-head">
               <span class="holding-name">${escapeHtml(h.name)}</span>
               <span class="holding-code">${h.code}.SH</span>
