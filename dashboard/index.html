@@ -459,6 +459,12 @@
   .summary[data-tab-mode="closed-trades"] .summary-divider,
   .summary[data-tab-mode="closed-trades"] .summary-h2 { display: none; }
   /* closed-trades: headpiece 做 summary 卡片内部顶部装饰 (跟 ② seg 共用 summary 卡片 border, headpiece = header, ② seg = body) */
+  .summary[data-tab-mode="closed-trades"] {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    overflow: hidden;
+  }
   .summary[data-tab-mode="closed-trades"] .headpiece {
     margin: 0;
     padding: 14px 0 12px;
@@ -1179,7 +1185,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.20 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece 嵌进 summary 卡片内部顶部 (closed-trades 跟 ② seg 共用卡片 border, headpiece = header, ② = body)</div>
+  <div>PORTFOLIO DASHBOARD · v22.21 · 2026-09-20 · ELSEWHERE 母题 · 4 tab · headpiece 嵌进 summary 卡片内部顶部 · closed-trades 补 summary 卡片 border + bg-card (跟 analysis 一致)</div>
 </footer>
 
 <!-- 刷新按钮 -->
