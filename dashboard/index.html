@@ -626,7 +626,16 @@
       margin-top: 0;
       letter-spacing: -0.01em;
     }
-    .seg-denominator { display: none; }  /* mobile 不够空间, vs 注释隐藏 */
+    .seg-denominator {
+      display: block;  /* v22.32: user 反馈分母也要保留, 字号缩到 7px 让 mobile 65px 列宽塞得下 (6 字中文 ≈ 42px) */
+      font-size: 7px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+    }
     /* mobile 运算符: 跟数字同字号, baseline 对齐 */
     .seg-op {
       padding: 0 2px;
@@ -1309,7 +1318,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.31 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 三段式也横排 5 列 (column 模式改回 1fr auto 1fr auto 1fr, 字号缩到 16px, 隐藏 label/denominator 省空间, 算式一气呵成)</div>
+  <div>PORTFOLIO DASHBOARD · v22.32 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 分母 vs 注释保留 (字号缩 7px + monospace, 65px 列宽塞得下, 不再隐藏)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1317,6 +1326,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.31"></script>
+<script src="dashboard.js?v=22.32"></script>
 </body>
 </html>
