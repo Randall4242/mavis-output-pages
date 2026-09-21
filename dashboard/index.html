@@ -336,13 +336,9 @@
     overflow: hidden;
   }
   .seg {
-    padding: 24px 22px;
+    padding: 28px 24px;
     border-right: 1px solid var(--border);
     position: relative;
-    /* v22.34: flex column 统一间距 + gap, 跟 mobile 一致的 layout 模型 (mobile 缩 gap 4px, desktop 6px) */
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
   }
   .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
   .seg-op + .seg { border-right: 1px solid var(--border); }
@@ -1340,7 +1336,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.34 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 三段式 layout 整齐化: .seg flex column + gap 4px(mobile)/6px(desktop), label/数字/百分比/分母 4 层 gap 一致, 数字+元 baseline 对齐</div>
+  <div>PORTFOLIO DASHBOARD · v22.35 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 撤回桌面 .seg 改动 (user 只用手机, 桌面布局不动), 只 mobile @media 整理 layout</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1348,6 +1344,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.34"></script>
+<script src="dashboard.js?v=22.35"></script>
 </body>
 </html>
