@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v23.0 (2026-09-21)
+ * Mavis Stock Tracker — Dashboard.js v24.0 (2026-09-21)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -10,6 +10,10 @@
  *   - P1-B carry-forward 兜底: HTML hardcode 改 "数据加载中…", 异常路径不显示过期值
  *   - P1-C Hero 跨 tab 永久: hero 从 tab-pane#tab-today 抽出, 4 tab 都可见
  *   - P1-D 港股后缀契约: holdings/closed_holdings 支持可选 market 字段 (兜底 .SH)
+ * v24.0 反馈调整 (用户 9-21 验证后反馈):
+ *   - P1-C 反悔: hero 回归 tab-pane#tab-today, 只在今日 tab 显示 (跨 tab 撤掉)
+ *   - closed-trades nth-child(3) → nth-child(5): 修 CSS 选错 bug, 卡片数字从总投改回已实现
+ *   - analysis tab 关 .seg-op (不需要 + = 符号) + 两列 stretch 对齐
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
