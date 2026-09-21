@@ -477,6 +477,12 @@
   .summary[data-tab-mode="analysis"] .three-seg .seg-amount { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-percent { font-size: 12px; margin-top: 2px; }
   .summary[data-tab-mode="analysis"] .three-seg .seg-denominator { display: none; }
+  /* v24.0: analysis tab 关掉算式运算符 + 让左三段跟右持仓 stretch 同高度对齐 */
+  .summary[data-tab-mode="analysis"] .three-seg .seg-op { display: none; }
+  .summary[data-tab-mode="analysis"] .three-seg { align-self: stretch; }
+  .summary[data-tab-mode="analysis"] .holdings-grid { align-self: stretch; }
+  /* 让三段等分 column 高度 (跟 right 多张 mini 卡 总高对齐), seg 内部 content center 垂直居中 */
+  .summary[data-tab-mode="analysis"] .three-seg .seg { flex: 1; display: flex; flex-direction: column; justify-content: center; }
   /* 中间 visual 隔离: 只删 vertical separator + ::after 圆点 anchor (user 2026-09-20 反馈: 三件叠太丑);
      mini 卡自己的 banknote 装饰 (.holding-card::before) 保留, 那是持仓卡专属装饰线不是分隔线 */
   .summary[data-tab-mode="analysis"] .three-seg {
@@ -576,11 +582,17 @@
     border: none; border-right: none; border-bottom: none;
     padding: 14px 22px 18px;  /* padding-top 14 跟 headpiece 紧贴, padding-bottom 18 跟 summary bottom 留点 */
   }
-  /* closed-trades 只显示中段 (已实现盈亏), 隐藏头尾 seg + 算式运算符 */
+  /* closed-trades 只显示中段 (已实现盈亏), 隐藏头尾 seg + 算式运算符
+     v24.0: 修 nth-child 选错 bug — .three-seg DOM 子元素顺序是 seg(①) + seg-op(+) + seg(②) + seg-op(=) + seg(③),
+     所以 nth-child(1)=持仓 seg, nth-child(3)=已实现 seg, nth-child(5)=总投资 seg.
+     之前写 nth-child(3) 错误关掉了 已实现 seg, 导致 closed-trades tab 卡片显示的
+     是 总投资 seg 数字 (③total_pnl_abs), 不是 已实现 seg 数字 (②realized_pnl_abs).
+     修法: nth-child(3) → nth-child(5); 下面 nth-child(2) 死代码 → nth-child(3) 让
+     flex 布局精确应用到已实现 seg */
   .summary[data-tab-mode="closed-trades"] .three-seg .seg-op,
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(1),
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) { display: none; }
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(2) {
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(5) { display: none; }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) {
     display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
   }
   .summary[data-tab-mode="closed-trades"] .three-seg .seg-label {
@@ -1158,9 +1170,9 @@
 </header>
 
 <!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============
-     v23.0: hero 从 tab-pane#tab-today 抽出, 跨 4 个 tab 永久显示 — 用户切到
-     分析/清仓&交易/设置 都能看到总投资盈亏 -X 元 + 跑赢沪深 300 + 跑赢上证指数 + 初始总投入 -->
-<section class="hero">
+     v24.0: 回滚 v23.0 P1-C 跨 tab 永久决定 — 用户反馈 hero portfolio dashboard 卡片
+     只需要在今日 tab 里展示, 其他 tab (分析/清仓&交易/设置) 不需要此卡片 -->
+<section class="hero tab-pane" id="tab-today">
   <div class="hero-frame"></div>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
@@ -1360,7 +1372,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v23.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · Phase 1 必修 (settings 视觉 / carry-forward 兜底 / hero 跨 tab 永久 / 港股后缀契约)</div>
+  <div>PORTFOLIO DASHBOARD · v24.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · Phase 1 必修 + 反馈调整 (P1-C 反悔 hero 只在今日 tab / 修 closed-trades nth-child 选错 bug / analysis tab 关算式符号 + 两列 stretch 对齐)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1368,6 +1380,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=23.0"></script>
+<script src="dashboard.js?v=24.0"></script>
 </body>
 </html>
