@@ -34,6 +34,8 @@
 
   const App = {
     charts: {},
+    dataCache: null,  // 上次 load 的 JSON, 用于 diff 增量更新 charts
+    lastPnlLabels: null,  // pnl_series 头部指纹, diff 用来判断是否历史改动
 
     async load() {
       try {
@@ -43,14 +45,56 @@
         if (data.meta && data.meta.schema_version !== 2) {
           console.warn('[dashboard] schema_version 不匹配, 当前=' + data.meta.schema_version);
         }
-        this.data = data;  // 缓存: 切到分析 tab 时重新画图 (charts 在 hidden pane 里 width=0, resize 不够)
+        this.data = data;
+
+        const isFirstLoad = !this.dataCache;
+        const diff = isFirstLoad ? { kind: 'full' } : this.diffData(this.dataCache, data);
+        this.dataCache = data;
+
+        // 文字部分: 全量重画 (DOM 替换原子, 没有增量需求)
         this.render(data);
-        this.initTabs();
+
+        if (isFirstLoad) {
+          // 首次: 只 initTabs, chart 等切到分析 tab 时 ensureCharts 创建
+          this.initTabs();
+        } else {
+          // 后续 load: 文字已重画, chart 用 diff 增量/full
+          if (diff.kind === 'append') {
+            this.appendChartsWith(diff.newDays);
+          } else if (diff.kind === 'full') {
+            // chart 存在 → 重设 data + update('none'); 不存在 → 等切 tab 时 ensure
+            if (this.charts.pnlTrend) this.updatePnlTrendChartFull(data.pnl_series || []);
+            if (this.charts.benchmark) this.updateBenchmarkChartFull(data.benchmark || {});
+          }
+          // 'noop' 啥都不干
+          console.log('[load] diff=' + diff.kind + (diff.newDays ? `, newDays=${diff.newDays.length}` : ''));
+        }
         return data;
       } catch (e) {
         this.showError('数据加载失败: ' + e.message);
         throw e;
       }
+    },
+
+    // diff 两个 dashboard.json, 看 pnl_series 是 noop / append / full
+    diffData(oldData, newData) {
+      const oldPnl = (oldData && oldData.pnl_series) || [];
+      const newPnl = (newData && newData.pnl_series) || [];
+      if (newPnl.length === 0) return { kind: 'noop' };
+
+      // 头部 (旧长度) 完全相同 → append
+      if (newPnl.length >= oldPnl.length && oldPnl.length > 0) {
+        let headSame = true;
+        for (let i = 0; i < oldPnl.length; i++) {
+          if (oldPnl[i].trade_date !== newPnl[i].trade_date) { headSame = false; break; }
+        }
+        if (headSame) {
+          if (newPnl.length === oldPnl.length) return { kind: 'noop' };
+          return { kind: 'append', newDays: newPnl.slice(oldPnl.length) };
+        }
+      }
+      // 长度相同但日期变了, 或头部不同 → full
+      return { kind: 'full' };
     },
 
     showError(msg) {
@@ -360,18 +404,13 @@
     },
 
     renderCharts(data) {
-      // try/catch: 让 charts 失败时错误能 toast 出来, 不被吞成无声失败 (之前 v22.8 user 报"分析 tab 没 chart"但 console 看不到错就是这个坑)
+      // v22.26: 改为 ensureCharts — chart 已存在就不 destroy (Excel-like 增量更新),
+      // 不存在才 new Chart 初始化. 切 tab / 后续 load 都走这条路, chart 实例跨刷新活着.
       try {
-        this.renderPnlTrendChart(data.pnl_series || []);
+        this.ensureCharts(data);
       } catch (e) {
-        console.error('[charts] PnL trend render failed:', e);
-        this.toast('P&L 图表加载失败: ' + (e.message || 'unknown'));
-      }
-      try {
-        this.renderBenchmarkChart(data.benchmark || {});
-      } catch (e) {
-        console.error('[charts] benchmark render failed:', e);
-        this.toast('基准对比图表加载失败: ' + (e.message || 'unknown'));
+        console.error('[charts] ensureCharts failed:', e);
+        this.toast('图表加载失败: ' + (e.message || 'unknown'));
       }
       // 动态更新 carry_forward 注释
       try {
@@ -379,6 +418,98 @@
       } catch (e) {
         console.warn('[charts] carry_forward note update failed:', e);
       }
+    },
+
+    // v22.26: chart 已存在 → updateChartsFull 重设 data + update('none');
+    // 不存在 → renderXxxChart 走 new Chart. 这样 chart 跨刷新活着.
+    ensureCharts(data) {
+      if (!this.charts.pnlTrend) {
+        try {
+          this.renderPnlTrendChart(data.pnl_series || []);
+        } catch (e) {
+          console.error('[charts] PnL trend render failed:', e);
+          this.toast('P&L 图表加载失败: ' + (e.message || 'unknown'));
+        }
+      } else {
+        this.updatePnlTrendChartFull(data.pnl_series || []);
+      }
+      if (!this.charts.benchmark) {
+        try {
+          this.renderBenchmarkChart(data.benchmark || {});
+        } catch (e) {
+          console.error('[charts] benchmark render failed:', e);
+          this.toast('基准对比图表加载失败: ' + (e.message || 'unknown'));
+        }
+      } else {
+        this.updateBenchmarkChartFull(data.benchmark || {});
+      }
+    },
+
+    // v22.26: 增量 push 新一天 + update('none'), 不 destroy 不 recreate
+    appendChartsWith(newDays) {
+      if (!newDays || newDays.length === 0) return;
+
+      // pnlTrend: 3 datasets (红 area / 绿 area / 主 line)
+      const c1 = this.charts.pnlTrend;
+      if (c1) {
+        newDays.forEach(r => {
+          const v = r.total_pnl;
+          c1.data.labels.push(r.trade_date.substring(5));
+          c1.data.datasets[0].data.push(v >= 0 ? v : null);  // 红 area
+          c1.data.datasets[1].data.push(v < 0 ? v : null);   // 绿 area
+          c1.data.datasets[2].data.push(v);                    // 主 line
+        });
+        c1.update('none');  // 'none' = 不带动画
+        console.log(`[charts] pnlTrend append ${newDays.length} day(s), labels=${c1.data.labels.length}`);
+      }
+
+      // benchmark: 找 my_portfolio / sh / csi300 里对应 trade_date 的 cum_pct / pct_from_baseline
+      const c2 = this.charts.benchmark;
+      const bench = (this.dataCache && this.dataCache.benchmark) || {};
+      if (c2) {
+        newDays.forEach(r => {
+          const fullDate = r.trade_date;
+          const myR = (bench.my_portfolio || []).find(x => x.trade_date === fullDate);
+          const shR = (bench.sh || []).find(x => x.trade_date === fullDate);
+          const csiR = (bench.csi300 || []).find(x => x.trade_date === fullDate);
+          c2.data.labels.push(fullDate.substring(5));
+          // dataset 0: 我的持仓
+          c2.data.datasets[0].data.push(myR ? myR.cum_pct : null);
+          // dataset 1: 上证指数 (if exists)
+          if (c2.data.datasets[1]) c2.data.datasets[1].data.push(shR ? shR.pct_from_baseline : null);
+          // dataset 2: 沪深 300 (if exists)
+          if (c2.data.datasets[2]) c2.data.datasets[2].data.push(csiR ? csiR.pct_from_baseline : null);
+        });
+        c2.update('none');
+        console.log(`[charts] benchmark append ${newDays.length} day(s), labels=${c2.data.labels.length}`);
+      }
+    },
+
+    // v22.26: 全量重设 chart.data (历史改了时 fallback), 不 destroy
+    updatePnlTrendChartFull(series) {
+      const c = this.charts.pnlTrend;
+      if (!c) return;
+      c.data.labels = series.map(r => r.trade_date.substring(5));
+      c.data.datasets[0].data = series.map(r => r.total_pnl >= 0 ? r.total_pnl : null);
+      c.data.datasets[1].data = series.map(r => r.total_pnl < 0 ? r.total_pnl : null);
+      c.data.datasets[2].data = series.map(r => r.total_pnl);
+      c.update('none');
+      console.log(`[charts] pnlTrend full update, labels=${c.data.labels.length}`);
+    },
+
+    updateBenchmarkChartFull(bench) {
+      const c = this.charts.benchmark;
+      if (!c) return;
+      const my = bench.my_portfolio || [];
+      const labels = my.map(r => r.trade_date.substring(5));
+      const shMap = Object.fromEntries((bench.sh || []).map(r => [r.trade_date, r.pct_from_baseline]));
+      const csiMap = Object.fromEntries((bench.csi300 || []).map(r => [r.trade_date, r.pct_from_baseline]));
+      c.data.labels = labels;
+      c.data.datasets[0].data = my.map(r => r.cum_pct);
+      if (c.data.datasets[1]) c.data.datasets[1].data = labels.map((_, i) => shMap[my[i].trade_date] ?? null);
+      if (c.data.datasets[2]) c.data.datasets[2].data = labels.map((_, i) => csiMap[my[i].trade_date] ?? null);
+      c.update('none');
+      console.log(`[charts] benchmark full update, labels=${c.data.labels.length}`);
     },
 
     // 移动端检测兜底: 旧 WebView / 某些 Android 浏览器可能没 window.matchMedia, 之前 v22.8 在 raf 回调里抛错被吞

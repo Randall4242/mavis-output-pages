@@ -1204,7 +1204,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.25 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · benchmark chart 3 条线区分: 上证红虚线 + 沪深300棕点线 + 持仓黑实线, dash 风格也区分 (短虚 vs 点 vs 实)</div>
+  <div>PORTFOLIO DASHBOARD · v22.26 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · chart Excel-like 增量更新: dataCache diff (append / full / noop), 新一天 push+update(none), 历史改 full 重设, chart 跨刷新活着不 destroy</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1212,6 +1212,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.25"></script>
+<script src="dashboard.js?v=22.26"></script>
 </body>
 </html>
