@@ -606,10 +606,11 @@
       padding: 12px 4px 14px;
       border-right: 1px solid var(--border);
       border-bottom: none;
-      /* v22.34: flex column 统一间距 + gap, label / 数字 / 百分比 / vs 注释 整齐排 */
+      /* v22.36: flex column + align-items: center 让 4 层 (label/数字/百分比/vs) 各自在 cell 内水平居中 */
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       gap: 4px;
     }
     .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
@@ -1336,7 +1337,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.35 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 撤回桌面 .seg 改动 (user 只用手机, 桌面布局不动), 只 mobile @media 整理 layout</div>
+  <div>PORTFOLIO DASHBOARD · v22.36 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 三段式 4 层 cell 内居中 (label/数字/百分比/vs 各居中)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1344,6 +1345,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.35"></script>
+<script src="dashboard.js?v=22.36"></script>
 </body>
 </html>
