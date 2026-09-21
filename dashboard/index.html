@@ -345,7 +345,31 @@
     padding: 28px 24px;
     position: relative;
   }
-  .seg:not(:last-child) { border-right: 1px solid var(--border); }
+  /* v28.0: 改 .seg border-right → ::before 伪元素 (position: absolute 1px 宽), 然后用 mask-image
+     让 vertical 26-67% 范围 (symbol 高度区间) 透明, 实现"border 中段留空"镂空效果.
+     之前 v26.0 用 box-shadow 实现类似效果, 但 box-shadow 横向扩展让中段 / 右段白底比左段宽 60+ px
+     (破坏三段等宽). 现在用 ::before + mask, 三段 column 严格 1fr 1fr 1fr 等宽,
+     borders 在 symbol vertical range 透明 (symbol 看起来"嵌在 border 镂空处") */
+  .seg:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+    -webkit-mask-image: linear-gradient(to bottom,
+      rgba(0,0,0,1) 0%, rgba(0,0,0,1) 22%,
+      rgba(0,0,0,0) 26%, rgba(0,0,0,0) 67%,
+      rgba(0,0,0,1) 71%, rgba(0,0,0,1) 100%);
+    mask-image: linear-gradient(to bottom,
+      rgba(0,0,0,1) 0%, rgba(0,0,0,1) 22%,
+      rgba(0,0,0,0) 26%, rgba(0,0,0,0) 67%,
+      rgba(0,0,0,1) 71%, rgba(0,0,0,1) 100%);
+  }
+  /* closed-trades / analysis 模式: segs 不需要竖向 border, 关掉 ::before */
+  .summary[data-tab-mode="closed-trades"] .seg::before,
+  .summary[data-tab-mode="analysis"] .seg::before { display: none; }
   /* 算式运算符: + 和 = 跟数字同字号, baseline 对齐, + 红 / = 深棕, editorial 透感
      v25.0: 改 align-self center → flex-start + margin-top, 让符号跟 .seg 内部数字行
      (seg-amount) baseline 对齐
@@ -361,7 +385,7 @@
     font-size: clamp(22px, 2.8vw, 32px);
     font-weight: 700;
     line-height: 1;
-    top: 54px;  /* 跟 seg-amount 数字行 vertical 对齐 (seg top + padding 28 + label 11 + margin 14 + half seg-amount 16 = 69, top + font-half = 54 + 16 = 70 ≈ 69) */
+    top: 64px;  /* v28.0: 下移到 .seg visual Y 轴中心 (seg top + half seg-height ≈ 78.5, top + half font = 64 + 16 = 80 ≈ 78.5) */
     user-select: none;
     letter-spacing: 0;
     background: transparent;
@@ -699,7 +723,7 @@
       font-size: 18px;
       font-weight: 700;
       border-bottom: none;
-      top: 22px;  /* mobile seg-amount 中心对齐 (seg top + padding 12 + label 7 + gap 4 + half seg-amount 7.5 = 30.5, top + font-half = 22 + 9 = 31 ≈ 30.5) */
+      top: 30px;  /* v28.0: 下移到 mobile .seg visual Y 轴中心 (seg top + half seg-height ≈ 38.5, top + half font = 30 + 9 = 39 ≈ 38.5) */
       background: transparent;
       box-shadow: none;
     }
@@ -1379,7 +1403,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v27.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 4 (三段 column 白底面积真正等宽: grid 1fr 1fr 1fr, .seg-op 改 absolute 浮动在 border 上, 背景透明 + 无 box-shadow, 不再视觉扩展相邻 block)</div>
+  <div>PORTFOLIO DASHBOARD · v28.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 5 (两条竖向分割线中段留空: .seg border 改 ::before + mask-image 让 symbol vertical range 26-67% 透明 + symbol 下移到 .seg 视觉 Y 轴中心: top 54→64 desktop / 22→30 mobile)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1387,6 +1411,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=27.0"></script>
+<script src="dashboard.js?v=28.0"></script>
 </body>
 </html>
