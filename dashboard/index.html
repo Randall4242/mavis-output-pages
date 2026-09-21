@@ -674,9 +674,10 @@
       border-bottom: none;
       align-self: center;
       background: var(--bg-card);
+      /* v22.41: spread 3px 让阴影实际覆盖 .seg border-right 1px (mobile @media 重写也同步改, 之前 v22.40 default 改了 mobile 没改, user 看不到效果) */
       box-shadow:
-        -1px 0 0 1px var(--bg-card),
-        1px 0 0 1px var(--bg-card);
+        -1px 0 0 3px var(--bg-card),
+        1px 0 0 3px var(--bg-card);
       position: relative;
       z-index: 1;
     }
@@ -1354,7 +1355,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.40 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 算式符号真嵌分割线 (spread 3px + 取消 three-seg overflow:hidden + mobile .seg-op 重写保留 box-shadow)</div>
+  <div>PORTFOLIO DASHBOARD · v22.41 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile .seg-op spread 同步 3px (default 改了 mobile 没改, user 看不到效果, 第 3 次踩同坑)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1362,6 +1363,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.40"></script>
+<script src="dashboard.js?v=22.41"></script>
 </body>
 </html>
