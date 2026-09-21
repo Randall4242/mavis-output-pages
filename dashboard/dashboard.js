@@ -599,12 +599,12 @@
         datasets.push({
           label: `上证指数 (${fmtPct(shData[shData.length - 1] || 0)})`,
           data: shData,
-          borderColor: '#7A8A76',  // 跌色 (冷灰绿)
-          backgroundColor: 'rgba(122,138,118,0.06)',
+          borderColor: '#C45C4F',  // accent-up 暖红
+          backgroundColor: 'rgba(196, 92, 79, 0.05)',
           pointRadius: 0,
           pointHoverRadius: 4,
           borderWidth: 1.5,
-          borderDash: [4, 3],
+          borderDash: [5, 3],  // 短虚线 (跟沪深 300 [2,4] 点线区分)
           tension: 0.25,
           spanGaps: true,
         });
@@ -613,12 +613,12 @@
         datasets.push({
           label: `沪深 300 (${fmtPct(csiData[csiData.length - 1] || 0)})`,
           data: csiData,
-          borderColor: '#6B6B6B',
-          backgroundColor: 'rgba(107,107,107,0.06)',
+          borderColor: '#3A2E26',  // accent-engrave 深棕铜版画
+          backgroundColor: 'rgba(58, 46, 38, 0.05)',
           pointRadius: 0,
           pointHoverRadius: 4,
           borderWidth: 1.5,
-          borderDash: [4, 3],
+          borderDash: [2, 4],  // 点线 (跟上证指数 [5,3] 短虚线区分)
           tension: 0.25,
           spanGaps: true,
         });
@@ -636,8 +636,10 @@
               labels: {
                 color: '#1A1A1A',
                 font: { family: 'JetBrains Mono', size: isMobile ? 10 : 11 },
-                boxWidth: 16,
-                boxHeight: 1
+                boxWidth: 28,
+                boxHeight: 2,
+                usePointStyle: false,
+                padding: 12,
               }
             },
             tooltip: {
