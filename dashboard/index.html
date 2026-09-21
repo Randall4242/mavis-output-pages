@@ -327,7 +327,8 @@
   /* ============ THREE-SEGMENT P&L (with denominator 副行) ============ */
   .three-seg {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* v22.30: 算式表达法 — 持仓 + 已实现 = 总投, 中间塞两个运营商列 (auto) */
+    grid-template-columns: 1fr auto 1fr auto 1fr;
     gap: 0;
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -339,7 +340,25 @@
     border-right: 1px solid var(--border);
     position: relative;
   }
-  .seg:last-child { border-right: none; }
+  .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
+  .seg-op + .seg { border-right: 1px solid var(--border); }
+  .seg:nth-child(5) { border-right: none; }
+  /* 算式运算符: + 和 = 跟数字同字号, baseline 对齐, + 红 / = 深棕, editorial 透感 */
+  .seg-op {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 700;
+    line-height: 1;
+    align-self: center;  /* grid 卡片内垂直居中, 跟数字 baseline 对齐 */
+    user-select: none;
+    letter-spacing: 0;
+  }
+  .seg-op-plus { color: var(--accent-up); }
+  .seg-op-equals { color: var(--accent-engrave); }
   .seg-label {
     font-size: 11px;
     font-weight: 600;
@@ -544,6 +563,8 @@
     border: none; border-right: none; border-bottom: none;
     padding: 14px 22px 18px;  /* padding-top 14 跟 headpiece 紧贴, padding-bottom 18 跟 summary bottom 留点 */
   }
+  /* closed-trades 只显示中段 (已实现盈亏), 隐藏头尾 seg + 算式运算符 */
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg-op,
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(1),
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) { display: none; }
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(2) {
@@ -574,9 +595,17 @@
   @media (max-width: 600px) {
     /* ===== 布局 (现有) ===== */
     .holdings-grid { grid-template-columns: 1fr; }
+    /* v22.30: mobile 算式表达法 — column 模式让 seg + op 各占一行, 视觉依然清晰 */
     .three-seg { grid-template-columns: 1fr; }
     .seg { border-right: none; border-bottom: 1px solid var(--border); }
-    .seg:last-child { border-bottom: none; }
+    .seg:nth-child(5) { border-bottom: none; }
+    /* mobile 运算符: column 模式 fallback 居中单行 (不再 padding 0 4px) */
+    .seg-op {
+      padding: 6px 0;
+      font-size: 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .seg-op-equals { border-bottom: 1px solid var(--border); }
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
 
@@ -1130,12 +1159,14 @@
       <div class="seg-percent" id="floating-pct">—</div>
       <div class="seg-denominator">vs 当前持仓成本</div>
     </div>
+    <div class="seg-op seg-op-plus" aria-hidden="true">+</div>
     <div class="seg">
       <div class="seg-label">② 已实现盈亏</div>
       <div class="seg-amount" id="realized-amount">—</div>
       <div class="seg-percent" id="realized-pct">—</div>
       <div class="seg-denominator">vs 历史消耗本金</div>
     </div>
+    <div class="seg-op seg-op-equals" aria-hidden="true">=</div>
     <div class="seg">
       <div class="seg-label">③ 总投资盈亏</div>
       <div class="seg-amount" id="total-amount">—</div>
@@ -1249,7 +1280,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.29 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · logo+meta 同排 (meta 在 logo 右边), tab 独立下一行 (mobile 紧贴, desktop 推到右)</div>
+  <div>PORTFOLIO DASHBOARD · v22.30 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 三段式算式表达法 (持仓 + 已实现 = 总投, 中间塞运营商 + 和 =, + 红 / = 深棕, editorial 风)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1257,6 +1288,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.29"></script>
+<script src="dashboard.js?v=22.30"></script>
 </body>
 </html>
