@@ -52,26 +52,25 @@
     margin-bottom: 56px;
   }
   /* Mobile (≤600px) header sticky 上浮: 滚动时保持 tab 栏在顶部, 随时切 tab
-     v22.27: Apple Liquid Glass 风 — blur+saturate+inset 高光+浮起阴影 */
+     v22.28: 整条 header liquid glass 化 — logo + tab + meta 平铺在一个玻璃底板上,
+     不再让 tab 栏单独浮起成 "玻璃卡". 视觉过度自然, 跟周围一体 */
   @media (max-width: 600px) {
     header.app-header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(247, 247, 245, 0.55);  /* 玻璃半透 (比 v22.22 0.92 低, 玻璃感更明显) */
-      backdrop-filter: blur(24px) saturate(180%);  /* 大模糊 + 提升饱和度 (iOS 26 liquid glass) */
+      background: rgba(247, 247, 245, 0.55);  /* 整条玻璃半透 */
+      backdrop-filter: blur(24px) saturate(180%);
       -webkit-backdrop-filter: blur(24px) saturate(180%);
-      padding: 12px 16px 10px;
+      padding: 12px 16px 14px;
       margin-bottom: 0;
       gap: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.4);  /* 微妙白色边 (玻璃质感) */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.7),  /* 顶部白色高光 (玻璃边缘反光) */
-        inset 0 -1px 0 rgba(58, 46, 38, 0.05),    /* 底部暗边 (深棕色调, 跟 ELSEWHERE 母题一致) */
-        0 2px 14px rgba(58, 46, 38, 0.06);        /* 浮起阴影 (深棕, 不是纯黑, 跟调性一致) */
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        inset 0 -1px 0 rgba(58, 46, 38, 0.05),
+        0 4px 16px rgba(58, 46, 38, 0.08);
     }
-    /* mobile sticky 时让 tab 之间更紧凑, 单行能 hold 4 个 tab */
-    nav.tabs { gap: 18px; }
     /* sticky header 占用空间不再在 layout flow, 给 body 顶部 padding 避免内容被盖 */
     body { padding-top: 8px; }
   }
@@ -134,6 +133,22 @@
     letter-spacing: 0.04em;
   }
   .header-meta svg { color: var(--ink-secondary); cursor: pointer; }
+
+  /* v22.28: mobile 下让 nav.tabs 在 header 内部平铺, 不再独立浮起成"玻璃卡".
+     整条 header 已经是 liquid glass (mobile @media 块里设过), nav.tabs 透明 + 不要 border + 不要 shadow. */
+  @media (max-width: 600px) {
+    nav.tabs {
+      position: static;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: none;
+      box-shadow: none;
+      padding: 0;
+      margin-top: 0;
+      gap: 18px;
+    }
+  }
 
   
   /* Tab 切换 (2026-09-18 v22.4): 今日 / 分析 / 设置 */
@@ -1213,7 +1228,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.27 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · sticky header liquid glass 风 (blur 24px+saturate 180%, 米白半透 + 玻璃高光 + 深棕浮起阴影, iOS 26 风)</div>
+  <div>PORTFOLIO DASHBOARD · v22.28 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 整条 header 统一 liquid glass (logo+tab+meta 平铺), 不再让 tab 栏单独浮起成卡</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1221,6 +1236,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.27"></script>
+<script src="dashboard.js?v=22.28"></script>
 </body>
 </html>
