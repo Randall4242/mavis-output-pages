@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v27.0 (2026-09-21)
+ * Mavis Stock Tracker — Dashboard.js v28.0 (2026-09-21)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -36,6 +36,14 @@
  *     差异 64 px), 三段白底面积不等.
  *   - closed-trades 模式 nth-child 同步更新 (grid 5 列 → 3 列, 已实现从
  *     nth-child(3) 变 nth-child(2)).
+ * v28.0 反馈调整 round 5 (用户 9-21 反馈 borders 中段需要留空 + symbol 下移到视觉 Y 轴中心):
+ *   - .seg border-right 改用 ::before 伪元素 (position: absolute 1px 宽) 模拟,
+ *     然后用 mask-image (linear-gradient to bottom, alpha 0 at 26-67% vertical)
+ *     让 symbol 高度范围内的 border 透明, 形成"border 中段留空"镂空效果.
+ *     (之前 v26.0 box-shadow 也能做, 但 box-shadow 横向扩展会破坏三段白底等宽.
+ *     用 mask 让 border 本身在某 vertical range 透明, 不影响横向宽度)
+ *   - symbol 下移到 .seg visual Y 轴中心 (从 v27.0 跟 seg-amount 数字行对齐,
+ *     改成跟 .seg 整体 vertical center 对齐): top: 54→64 desktop, 22→30 mobile.
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
