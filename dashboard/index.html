@@ -610,7 +610,17 @@
     .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
     .seg-op + .seg { border-right: 1px solid var(--border); }
     .seg:nth-child(5) { border-right: none; }
-    .seg-label { display: none; }  /* mobile 不够空间, label 隐藏 */
+    .seg-label {
+      display: block;  /* v22.33: user 反馈每个数字是什么也得标出, mobile 也显示 seg-label (字号缩 7px + 紧凑, 65px 列宽塞得下) */
+      font-size: 7px;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .seg-amount {
       font-size: 16px;
       letter-spacing: -0.02em;
@@ -1318,7 +1328,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.32 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 分母 vs 注释保留 (字号缩 7px + monospace, 65px 列宽塞得下, 不再隐藏)</div>
+  <div>PORTFOLIO DASHBOARD · v22.33 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile seg-label 段名也显示 (7px monospace + nowrap + ellipsis, 65px 列塞得下, 每个数字归属清晰)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1326,6 +1336,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.32"></script>
+<script src="dashboard.js?v=22.33"></script>
 </body>
 </html>
