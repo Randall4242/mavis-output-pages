@@ -170,10 +170,31 @@
   }
 
   
-  /* Tab 切换 (2026-09-18 v22.4): 今日 / 分析 / 设置 */
+  /* Tab 切换 (2026-09-18 v22.4): 今日 / 分析 / 设置
+     v31.0: 撤销 .tab-pane[hidden] 控制 visibility, 改用 .tab-drawer + .tab-page 横排 +  drawer translateX
+     控制显示哪个 page (native iOS page swipe 体验, 整个 drawer 跟手 peek 下一 page).
+     .tab-pane 不再有 hidden 属性, 全部默认 display:block 在各自 page 内 */
   .tab-pane[hidden] { display: none !important; }
   nav.tabs a { cursor: pointer; transition: color 0.2s; }
   nav.tabs a.settings-soon { color: var(--ink-muted); cursor: not-allowed; opacity: 0.5; }
+
+  /* v31.0: tab-drawer flex 横排, 4 page 各 100vw, overflow hidden, drawer transform 控制
+     显示哪个 page (swipe 时整个 drawer 跟手 translateX) */
+  .tab-drawer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    touch-action: pan-y;  /* 允许 vertical scroll, horizontal swipe 走 JS */
+    will-change: transform;
+  }
+  .tab-page {
+    flex: 0 0 100%;
+    min-width: 100%;
+    width: 100%;
+    flex-shrink: 0;
+  }
 
   /* ============ HERO ============ */
   .hero {
@@ -1186,6 +1207,14 @@
   </nav>
 </header>
 
+<!-- ============ TAB DRAWER (v31.0: 4 个 page 横排, drawer translateX 控制显示哪个, swipe 整个 drawer 跟手) ============
+     结构: .tab-drawer (overflow:hidden + flex 横排) > .tab-page × 4 (100vw 各) > 各自内容
+     今日 = hero + summary 2 sections, 其他 = 1 section. drawer translateX = -idx * 100%
+     swipe 进行中: drawer transform translateX(calc(-idx * 100% + dx)) 让整个 drawer 跟手,
+     用户能看到下一 page 从边缘 peek 进来 (native iOS page swipe 体验). -->
+<div class="tab-drawer">
+<div class="tab-page" id="page-today">
+
 <!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============
      v24.0: 回滚 v23.0 P1-C 跨 tab 永久决定 — 用户反馈 hero portfolio dashboard 卡片
      只需要在今日 tab 里展示, 其他 tab (分析/清仓&交易/设置) 不需要此卡片 -->
@@ -1296,8 +1325,11 @@
 </section>
 <!-- ============ / SUMMARY ============ -->
 
+</div><!-- /page-today -->
+<div class="tab-page" id="page-closed-trades">
+
 <!-- ============ TAB: 清仓&交易 (已清仓 + 交易汇总 + 交易记录) ============ -->
-<section class="tab-pane" id="tab-closed-trades" hidden>
+<section class="tab-pane" id="tab-closed-trades">
 
 <!-- ============ 已清仓 ============ -->
 <div id="closed-section" style="display:none">
@@ -1333,8 +1365,11 @@
 
 </section>
 
+</div><!-- /page-closed-trades -->
+<div class="tab-page" id="page-analysis">
+
 <!-- ============ TAB: 分析 (charts) ============ -->
-<section class="tab-pane" id="tab-analysis" hidden>
+<section class="tab-pane" id="tab-analysis">
   <!-- ============ 累计盈亏趋势 (含 carry_forward 文字注释, Round 3 Option D) ============ -->
 <div class="divider">
   <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
@@ -1377,8 +1412,11 @@
 </div>
 </section>
 
+</div><!-- /page-analysis -->
+<div class="tab-page" id="page-settings">
+
 <!-- ============ TAB: 设置 (placeholder) ============ -->
-<section class="tab-pane" id="tab-settings" hidden>
+<section class="tab-pane" id="tab-settings">
   <div style="padding: 80px 24px; text-align: center; color: var(--ink-muted);">
     <div style="font-size: 32px; margin-bottom: 16px;">⚙️</div>
     <div style="font-size: 16px; color: var(--ink-secondary);">设置: 即将上线</div>
@@ -1386,10 +1424,13 @@
   </div>
 </section>
 
+</div><!-- /page-settings -->
+</div><!-- /tab-drawer -->
+
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v30.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 7 (mobile 触屏横滑切换 tab: touchstart/touchmove/touchend, 横移 50px + 时间 500ms + 不在 chart/table 内触发, swipe 进行中显示 peek preview, commit 后 280ms 切 tab)</div>
+  <div>PORTFOLIO DASHBOARD · v31.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 8 (mobile swipe tab 升级 native iOS 体验: 4 个 page 横排在 .tab-drawer, 整个 drawer 跟手 translateX, 用户能看到下一 page 从边缘 peek 进来. 撤销 v30.0 单 pane transform 飘动方案)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1397,6 +1438,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=30.0"></script>
+<script src="dashboard.js?v=31.0"></script>
 </body>
 </html>
