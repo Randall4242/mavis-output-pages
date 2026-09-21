@@ -349,7 +349,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 4px;
+    padding: 0 4px;  /* v22.42: padding 0 让 box-shadow spread 控制空隙 (跟 mobile @media 同步, user 14:34 反馈空隙太大) */
     font-family: 'Inter', sans-serif;
     font-size: clamp(22px, 2.8vw, 32px);
     font-weight: 700;
@@ -362,9 +362,11 @@
        (之前 background 只在 auto 列内, 没擦到 col 接壤处的线 — symbol 看起来还在线旁边, 不在线上) */
     /* v22.40: spread 3px 让阴影实际覆盖 .seg border-right 1px + 上下多 1px, 真擦掉分割线中段
        (v22.38/39 spread 1px + offset 1px 跟 border 同一位置, 实际不覆盖 — 修正后用 spread 3px + 0 spread width) */
+    /* v22.42: spread 2px + padding 0, 空隙只比符号上下各多 ~2px (user 2026-09-21 14:34 反馈'空隙太大, 稍微比符号大点就行')
+       v22.41 spread 3px + padding 16px 让空隙太大, 改紧凑 */
     box-shadow:
-      -1px 0 0 3px var(--bg-card),
-      1px 0 0 3px var(--bg-card);
+      -1px 0 0 2px var(--bg-card),
+      1px 0 0 2px var(--bg-card);
     position: relative;
     z-index: 1;
   }
@@ -668,16 +670,17 @@
     }
     /* mobile 运算符: 跟数字同字号, baseline 对齐, 保留 default 的 background / box-shadow / position / z-index 让符号嵌分割线 */
     .seg-op {
-      padding: 16px 2px;
+      padding: 0 2px;
       font-size: 18px;
       font-weight: 700;
       border-bottom: none;
-      align-self: center;
+      /* v22.43: align-self: flex-start + margin-top 让符号跟 .seg 内部数字行 vertical 对齐 (之前 align-self center 居中在 cell 中, 但 .seg 内部 4 行 content 中心略偏上, 符号偏下) */
+      align-self: flex-start;
+      margin-top: 32px;
       background: var(--bg-card);
-      /* v22.41: spread 3px 让阴影实际覆盖 .seg border-right 1px (mobile @media 重写也同步改, 之前 v22.40 default 改了 mobile 没改, user 看不到效果) */
       box-shadow:
-        -1px 0 0 3px var(--bg-card),
-        1px 0 0 3px var(--bg-card);
+        -1px 0 0 2px var(--bg-card),
+        1px 0 0 2px var(--bg-card);
       position: relative;
       z-index: 1;
     }
@@ -1355,7 +1358,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.41 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile .seg-op spread 同步 3px (default 改了 mobile 没改, user 看不到效果, 第 3 次踩同坑)</div>
+  <div>PORTFOLIO DASHBOARD · v22.43 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 算式符号对齐 + 空隙紧凑 (spread 3→2px + padding 16→0 + align-self flex-start + margin-top 32px 跟数字行 baseline 对齐)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1363,6 +1366,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.41"></script>
+<script src="dashboard.js?v=22.43"></script>
 </body>
 </html>
