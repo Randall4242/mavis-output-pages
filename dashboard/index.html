@@ -595,17 +595,46 @@
   @media (max-width: 600px) {
     /* ===== 布局 (现有) ===== */
     .holdings-grid { grid-template-columns: 1fr; }
-    /* v22.30: mobile 算式表达法 — column 模式让 seg + op 各占一行, 视觉依然清晰 */
-    .three-seg { grid-template-columns: 1fr; }
-    .seg { border-right: none; border-bottom: 1px solid var(--border); }
-    .seg:nth-child(5) { border-bottom: none; }
-    /* mobile 运算符: column 模式 fallback 居中单行 (不再 padding 0 4px) */
-    .seg-op {
-      padding: 6px 0;
-      font-size: 22px;
-      border-bottom: 1px solid var(--border);
+    /* v22.31: mobile 三段式横排 5 列 (持仓 + 已实现 = 总投) — user 2026-09-21 11:37 反馈"我要横的",
+       不要 column 模式 + op 单独行. mobile 360 宽 / 5 列 ≈ 65px 一列, 字号紧凑到 14px,
+       隐藏 seg-label 和 seg-denominator 节省空间, 只留核心: 数字 + 百分比 + op */
+    .three-seg {
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 2px;
     }
-    .seg-op-equals { border-bottom: 1px solid var(--border); }
+    .seg {
+      padding: 14px 4px 12px;
+      border-right: 1px solid var(--border);
+      border-bottom: none;  /* 5 列横排不需要底部 border */
+    }
+    .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
+    .seg-op + .seg { border-right: 1px solid var(--border); }
+    .seg:nth-child(5) { border-right: none; }
+    .seg-label { display: none; }  /* mobile 不够空间, label 隐藏 */
+    .seg-amount {
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      font-weight: 800;
+    }
+    .seg-amount .unit {
+      font-size: 11px;
+      margin-left: 2px;
+    }
+    .seg-percent {
+      font-size: 11px;
+      margin-top: 0;
+      letter-spacing: -0.01em;
+    }
+    .seg-denominator { display: none; }  /* mobile 不够空间, vs 注释隐藏 */
+    /* mobile 运算符: 跟数字同字号, baseline 对齐 */
+    .seg-op {
+      padding: 0 2px;
+      font-size: 18px;
+      font-weight: 700;
+      border-bottom: none;
+      align-self: center;  /* 跟数字 baseline 对齐 */
+    }
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
 
@@ -1280,7 +1309,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.30 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 三段式算式表达法 (持仓 + 已实现 = 总投, 中间塞运营商 + 和 =, + 红 / = 深棕, editorial 风)</div>
+  <div>PORTFOLIO DASHBOARD · v22.31 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 三段式也横排 5 列 (column 模式改回 1fr auto 1fr auto 1fr, 字号缩到 16px, 隐藏 label/denominator 省空间, 算式一气呵成)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1288,6 +1317,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.30"></script>
+<script src="dashboard.js?v=22.31"></script>
 </body>
 </html>
