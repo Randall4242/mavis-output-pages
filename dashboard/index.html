@@ -333,7 +333,8 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     background: var(--bg-card);
-    overflow: hidden;
+    /* v22.39: 取消 overflow: hidden (原本用于 border-radius 切子元素, 但 .seg-op box-shadow 外扩 1px 会被它裁掉, 分割线擦不掉)
+       改为 .seg overflow: hidden 单独保留 border-radius 视觉, 但 .seg-op 的 box-shadow 不被裁 */
   }
   .seg {
     padding: 28px 24px;
@@ -359,9 +360,11 @@
     background: var(--bg-card);
     /* v22.38: box-shadow 左右各扩 1px 同色阴影, 跨过 col 边界擦掉 .seg border-right 中段
        (之前 background 只在 auto 列内, 没擦到 col 接壤处的线 — symbol 看起来还在线旁边, 不在线上) */
+    /* v22.40: spread 3px 让阴影实际覆盖 .seg border-right 1px + 上下多 1px, 真擦掉分割线中段
+       (v22.38/39 spread 1px + offset 1px 跟 border 同一位置, 实际不覆盖 — 修正后用 spread 3px + 0 spread width) */
     box-shadow:
-      -1px 0 0 1px var(--bg-card),
-      1px 0 0 1px var(--bg-card);
+      -1px 0 0 3px var(--bg-card),
+      1px 0 0 3px var(--bg-card);
     position: relative;
     z-index: 1;
   }
@@ -663,13 +666,19 @@
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
     }
-    /* mobile 运算符: 跟数字同字号, baseline 对齐 */
+    /* mobile 运算符: 跟数字同字号, baseline 对齐, 保留 default 的 background / box-shadow / position / z-index 让符号嵌分割线 */
     .seg-op {
-      padding: 0 2px;
+      padding: 16px 2px;
       font-size: 18px;
       font-weight: 700;
       border-bottom: none;
-      align-self: center;  /* 跟数字 baseline 对齐 */
+      align-self: center;
+      background: var(--bg-card);
+      box-shadow:
+        -1px 0 0 1px var(--bg-card),
+        1px 0 0 1px var(--bg-card);
+      position: relative;
+      z-index: 1;
     }
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
@@ -1345,7 +1354,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.38 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 算式符号嵌分割线 (op box-shadow ±1px 跨 col 边界擦 .seg border, 符号真在线中央)</div>
+  <div>PORTFOLIO DASHBOARD · v22.40 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 算式符号真嵌分割线 (spread 3px + 取消 three-seg overflow:hidden + mobile .seg-op 重写保留 box-shadow)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1353,6 +1362,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.38"></script>
+<script src="dashboard.js?v=22.40"></script>
 </body>
 </html>
