@@ -328,52 +328,56 @@
   .three-seg {
     display: grid;
     /* v22.30: 算式表达法 — 持仓 + 已实现 = 总投, 中间塞两个运营商列 (auto)
-       v26.0: 改 1fr → minmax(0, 1fr), 三段 column 严格等宽 — 之前 1fr 默认
-       minmax(auto, 1fr), 内容 min-content 撑开 column, 持仓 column 比另外两段窄,
-       两条竖向分割线 (seg 1 右 border + seg 3 右 border) 在卡片内偏左.
-       minmax(0, 1fr) 强制 1fr 不被内容撑开, 三段 column 严格 1/3 宽度, 两条分割线
-       落在卡片 33% / 66% 位置 (水平均匀分布), 跟中间符号对得上 */
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+       v26.0: 改 1fr → minmax(0, 1fr), 三段 column 严格等宽
+       v27.0: 改 grid 1fr 1fr 1fr (去掉两个 auto 列), 三段 column 严格 1/3 等宽,
+       borders 落在 1/3 + 2/3 位置; .seg-op 改 position: absolute 浮动在 borders 上,
+       背景透明 + 无 box-shadow, 不再视觉扩展相邻 block 的白底面积
+       (之前 .seg-op 白色背景 + box-shadow 各扩 2px, 让已实现 + 总投 两段的白底
+       比持仓宽 60+ px, 三段白底面积不等 — user 9-21 反馈) */
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
     border: 1px solid var(--border);
     border-radius: 4px;
     background: var(--bg-card);
+    position: relative;
   }
   .seg {
     padding: 28px 24px;
-    border-right: 1px solid var(--border);
     position: relative;
   }
-  .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
-  .seg-op + .seg { border-right: 1px solid var(--border); }
-  .seg:nth-child(5) { border-right: none; }
+  .seg:not(:last-child) { border-right: 1px solid var(--border); }
   /* 算式运算符: + 和 = 跟数字同字号, baseline 对齐, + 红 / = 深棕, editorial 透感
      v25.0: 改 align-self center → flex-start + margin-top, 让符号跟 .seg 内部数字行
-     (seg-amount) baseline 对齐, 而不是居中在 .seg 4 行 content 中心 (之前 4 行中心
-     略偏上, 符号实际位置偏低, 视觉上跟周围 seg 数字错位)
-     margin-top 数值 (跟 mobile v22.43 32 按字号 30/15 = 2x 反推, 再扣减 seg-label margin-bottom 14 * 2 → 50) */
+     (seg-amount) baseline 对齐
+     v27.0: 改 position: absolute + 透明背景 + 无 box-shadow, 浮动在 1/3 + 2/3 border 上
+     (left: 33.333% / 66.667%, transform translateX(-50%) 居中), 不再视觉扩展 block 白底 */
   .seg-op {
+    position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
+    padding: 0;
     font-family: 'Inter', sans-serif;
     font-size: clamp(22px, 2.8vw, 32px);
     font-weight: 700;
     line-height: 1;
-    align-self: flex-start;
-    margin-top: 50px;  /* 让 + = 符号垂直居中在 seg-amount 数字行 */
+    top: 54px;  /* 跟 seg-amount 数字行 vertical 对齐 (seg top + padding 28 + label 11 + margin 14 + half seg-amount 16 = 69, top + font-half = 54 + 16 = 70 ≈ 69) */
     user-select: none;
     letter-spacing: 0;
-    background: var(--bg-card);
-    box-shadow:
-      -1px 0 0 2px var(--bg-card),
-      1px 0 0 2px var(--bg-card);
-    position: relative;
-    z-index: 1;
+    background: transparent;
+    box-shadow: none;
+    z-index: 2;
   }
-  .seg-op-plus { color: var(--accent-up); }
-  .seg-op-equals { color: var(--accent-engrave); }
+  .seg-op-plus {
+    left: 33.333%;
+    transform: translateX(-50%);
+    color: var(--accent-up);
+  }
+  .seg-op-equals {
+    left: 66.667%;
+    transform: translateX(-50%);
+    color: var(--accent-engrave);
+  }
   .seg-label {
     font-size: 11px;
     font-weight: 600;
@@ -585,16 +589,15 @@
     padding: 14px 22px 18px;  /* padding-top 14 跟 headpiece 紧贴, padding-bottom 18 跟 summary bottom 留点 */
   }
   /* closed-trades 只显示中段 (已实现盈亏), 隐藏头尾 seg + 算式运算符
-     v24.0: 修 nth-child 选错 bug — .three-seg DOM 子元素顺序是 seg(①) + seg-op(+) + seg(②) + seg-op(=) + seg(③),
-     所以 nth-child(1)=持仓 seg, nth-child(3)=已实现 seg, nth-child(5)=总投资 seg.
-     之前写 nth-child(3) 错误关掉了 已实现 seg, 导致 closed-trades tab 卡片显示的
-     是 总投资 seg 数字 (③total_pnl_abs), 不是 已实现 seg 数字 (②realized_pnl_abs).
-     修法: nth-child(3) → nth-child(5); 下面 nth-child(2) 死代码 → nth-child(3) 让
-     flex 布局精确应用到已实现 seg */
+     v24.0: 修 nth-child 选错 bug
+     v25.0: 改 flex column + center 居中
+     v27.0: grid 从 5 列 (3 seg + 2 seg-op) 改为 3 列 (3 seg, .seg-op 移出 grid 改 absolute),
+     已实现 seg 现在是 .seg:nth-child(2) (旧 nth-child(3) 已无对应元素),
+     持仓 nth-child(1), 总投 nth-child(3) (旧 nth-child(5) 已无对应元素) */
   .summary[data-tab-mode="closed-trades"] .three-seg .seg-op,
   .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(1),
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(5) { display: none; }
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) {
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) { display: none; }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(2) {
     /* v25.0: 改 flex column + center 居中, 替代 baseline 单行 (user 反馈已实现盈亏卡片
        内容需居中, baseline 对齐 + flex-wrap 看起来元素错位不卡片化) */
     display: flex;
@@ -633,9 +636,9 @@
        不要 column 模式 + op 单独行. mobile 360 宽 / 5 列 ≈ 65px 一列, 字号紧凑到 14px,
        隐藏 seg-label 和 seg-denominator 节省空间, 只留核心: 数字 + 百分比 + op */
     .three-seg {
-      /* v26.0: 跟 desktop 同步 minmax(0, 1fr), mobile 三段 column 严格等宽 */
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-      gap: 2px;
+      /* v27.0: 跟 desktop 同步, mobile 三段 column 1fr 1fr 1fr 等宽 */
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
     }
     .seg {
       padding: 12px 4px 14px;
@@ -690,21 +693,15 @@
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
     }
-    /* mobile 运算符: 跟数字同字号, baseline 对齐, 保留 default 的 background / box-shadow / position / z-index 让符号嵌分割线 */
+    /* mobile 运算符: 跟数字同字号, baseline 对齐, v27.0 跟 desktop 同步 absolute + 透明 + 无 box-shadow */
     .seg-op {
-      padding: 0 2px;
+      padding: 0;
       font-size: 18px;
       font-weight: 700;
       border-bottom: none;
-      /* v22.43: align-self: flex-start + margin-top 让符号跟 .seg 内部数字行 vertical 对齐 (之前 align-self center 居中在 cell 中, 但 .seg 内部 4 行 content 中心略偏上, 符号偏下) */
-      align-self: flex-start;
-      margin-top: 32px;
-      background: var(--bg-card);
-      box-shadow:
-        -1px 0 0 2px var(--bg-card),
-        1px 0 0 2px var(--bg-card);
-      position: relative;
-      z-index: 1;
+      top: 22px;  /* mobile seg-amount 中心对齐 (seg top + padding 12 + label 7 + gap 4 + half seg-amount 7.5 = 30.5, top + font-half = 22 + 9 = 31 ≈ 30.5) */
+      background: transparent;
+      box-shadow: none;
     }
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
@@ -1382,7 +1379,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v26.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 3 (三段 column 严格等宽: 1fr → minmax(0,1fr), 两条竖向分割线水平均匀分布, 跟中间符号对得上)</div>
+  <div>PORTFOLIO DASHBOARD · v27.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 4 (三段 column 白底面积真正等宽: grid 1fr 1fr 1fr, .seg-op 改 absolute 浮动在 border 上, 背景透明 + 无 box-shadow, 不再视觉扩展相邻 block)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1390,6 +1387,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=26.0"></script>
+<script src="dashboard.js?v=27.0"></script>
 </body>
 </html>
