@@ -336,9 +336,13 @@
     overflow: hidden;
   }
   .seg {
-    padding: 28px 24px;
+    padding: 24px 22px;
     border-right: 1px solid var(--border);
     position: relative;
+    /* v22.34: flex column 统一间距 + gap, 跟 mobile 一致的 layout 模型 (mobile 缩 gap 4px, desktop 6px) */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
   .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
   .seg-op + .seg { border-right: 1px solid var(--border); }
@@ -603,17 +607,22 @@
       gap: 2px;
     }
     .seg {
-      padding: 14px 4px 12px;
+      padding: 12px 4px 14px;
       border-right: 1px solid var(--border);
-      border-bottom: none;  /* 5 列横排不需要底部 border */
+      border-bottom: none;
+      /* v22.34: flex column 统一间距 + gap, label / 数字 / 百分比 / vs 注释 整齐排 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
     }
     .seg:nth-child(1), .seg:nth-child(3), .seg:nth-child(5) { border-right: 1px solid var(--border); }
     .seg-op + .seg { border-right: 1px solid var(--border); }
     .seg:nth-child(5) { border-right: none; }
     .seg-label {
-      display: block;  /* v22.33: user 反馈每个数字是什么也得标出, mobile 也显示 seg-label (字号缩 7px + 紧凑, 65px 列宽塞得下) */
+      display: block;
       font-size: 7px;
-      margin-bottom: 6px;
+      margin: 0;  /* v22.34: gap 控制 */
       letter-spacing: 0.02em;
       line-height: 1.1;
       color: var(--ink-muted);
@@ -622,25 +631,28 @@
       text-overflow: ellipsis;
     }
     .seg-amount {
-      font-size: 16px;
+      font-size: 15px;
       letter-spacing: -0.02em;
-      margin-bottom: 4px;
+      margin: 0;  /* v22.34: gap 控制 */
       font-weight: 800;
+      line-height: 1;  /* v22.34: 紧凑, 跟 .unit baseline 对齐 */
     }
     .seg-amount .unit {
-      font-size: 11px;
-      margin-left: 2px;
+      font-size: 10px;
+      margin-left: 1px;
+      vertical-align: baseline;  /* v22.34: 跟数字 baseline 对齐 (原来没设导致略低) */
     }
     .seg-percent {
-      font-size: 11px;
-      margin-top: 0;
+      font-size: 10px;
+      margin: 0;  /* v22.34: gap 控制 */
       letter-spacing: -0.01em;
+      line-height: 1;
     }
     .seg-denominator {
-      display: block;  /* v22.32: user 反馈分母也要保留, 字号缩到 7px 让 mobile 65px 列宽塞得下 (6 字中文 ≈ 42px) */
+      display: block;
       font-size: 7px;
       color: var(--ink-muted);
-      margin-top: 4px;
+      margin: 0;  /* v22.34: gap 控制 */
       letter-spacing: 0.02em;
       line-height: 1.2;
       font-family: 'JetBrains Mono', monospace;
@@ -1328,7 +1340,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.33 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile seg-label 段名也显示 (7px monospace + nowrap + ellipsis, 65px 列塞得下, 每个数字归属清晰)</div>
+  <div>PORTFOLIO DASHBOARD · v22.34 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 三段式 layout 整齐化: .seg flex column + gap 4px(mobile)/6px(desktop), label/数字/百分比/分母 4 层 gap 一致, 数字+元 baseline 对齐</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1336,6 +1348,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.33"></script>
+<script src="dashboard.js?v=22.34"></script>
 </body>
 </html>
