@@ -1,17 +1,24 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v6 (2026-09-17)
+ * Mavis Stock Tracker — Dashboard.js v23.0 (2026-09-21)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
  * 比例分母副行: 副行 in-line (Round 2 Option A)
  * carry_forward: 纯文字注释 (Round 3 Option D)
+ * v23.0 Fix Round 1:
+ *   - P1-A settings tab 视觉: 走完整切 pane 路径, placeholder pane 真显示
+ *   - P1-B carry-forward 兜底: HTML hardcode 改 "数据加载中…", 异常路径不显示过期值
+ *   - P1-C Hero 跨 tab 永久: hero 从 tab-pane#tab-today 抽出, 4 tab 都可见
+ *   - P1-D 港股后缀契约: holdings/closed_holdings 支持可选 market 字段 (兜底 .SH)
  *
- * 数据契约 (dashboard.json schema_version=2):
+ * 数据契约 (dashboard.json schema_version=2 / 3):
+ *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
+ *   v3: holdings[]/closed_holdings[] 补 market: 'SH'|'SZ'|'HK'|'US', 前端按 market 拼后缀
  *   meta: {generated_at, trade_date, source, schema_version}
  *   summary: {floating_pnl_abs/pct, realized_pnl_abs/pct, total_pnl_abs/pct,
  *              initial_principal, excess_csi300_pct, excess_sh_pct}
- *   holdings: [{code, name, shares, cost, close, pnl_abs, pnl_pct, change_pct, change_amount, daily_pnl}]
- *   closed_holdings: [{code, name, closed_at, cost_total, recv_total, realized_abs, realized_pct}]
+ *   holdings: [{code, name, market?, shares, cost, close, pnl_abs, pnl_pct, change_pct, change_amount, daily_pnl}]
+ *   closed_holdings: [{code, name, market?, closed_at, cost_total, recv_total, realized_abs, realized_pct}]
  *   transactions_recent: [{trade_date, code, name, side, shares, price}]
  *   trade_summary: {buy_count, sell_count, total_buy_amount, total_sell_amount, total_fee}
  *   pnl_series: [{trade_date, total_cost, total_mkt, total_pnl, total_pct, cost_basis}]
@@ -42,7 +49,7 @@
         const r = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-cache' });
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const data = await r.json();
-        if (data.meta && data.meta.schema_version !== 2) {
+        if (data.meta && data.meta.schema_version !== 2 && data.meta.schema_version !== 3) {
           console.warn('[dashboard] schema_version 不匹配, 当前=' + data.meta.schema_version);
         }
         this.data = data;
@@ -137,11 +144,8 @@
             const cardMode = ({ 'today':'standard', 'analysis':'compact', 'closed-trades':'hidden', 'settings':'hidden' })[target] || 'standard';
             summaryEl.querySelectorAll('.holding-card').forEach(c => { c.dataset.mode = cardMode; });
           }
-          if (target === 'settings') {
-            // 占位 tab, 暂时只 toast
-            this.toast('设置: 即将上线');
-            return;
-          }
+          // settings tab 占位: 走完整切 pane 路径, placeholder (⚙️ 设置: 即将上线)
+          // 在 #tab-settings 自身显示 (index.html line 1350-1356 已有 placeholder)
           // 切换 active class
           tabs.forEach(x => x.classList.toggle('active', x === a));
           // 切换 pane visibility
@@ -320,7 +324,7 @@
           <div class="holding-card ${cls}" data-mode="standard">
             <div class="holding-head">
               <span class="holding-name">${escapeHtml(h.name)}</span>
-              <span class="holding-code">${h.code}.SH</span>
+              <span class="holding-code">${h.code}.${h.market || 'SH'}</span>
               <span class="holding-status ${statusClass}">${statusArrow}</span>
             </div>
             <div class="holding-row"><span class="holding-key">持仓</span><span class="holding-val">${h.shares.toLocaleString()} 股</span></div>
@@ -357,7 +361,7 @@
           <div class="holding-card closed-card">
             <div class="holding-head">
               <span class="holding-name" style="color: var(--ink-secondary);">${escapeHtml(c.name)}</span>
-              <span class="holding-code">${c.code}.SH</span>
+              <span class="holding-code">${c.code}.${c.market || 'SH'}</span>
               <span class="holding-status" style="color: var(--ink-muted);">${status}</span>
             </div>
             <div class="holding-row"><span class="holding-key">清仓日</span><span class="holding-val">${c.closed_at}</span></div>
