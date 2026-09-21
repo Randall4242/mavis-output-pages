@@ -1157,8 +1157,10 @@
   </nav>
 </header>
 
-<!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============ -->
-<section class="hero tab-pane" id="tab-today">
+<!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============
+     v23.0: hero 从 tab-pane#tab-today 抽出, 跨 4 个 tab 永久显示 — 用户切到
+     分析/清仓&交易/设置 都能看到总投资盈亏 -X 元 + 跑赢沪深 300 + 跑赢上证指数 + 初始总投入 -->
+<section class="hero">
   <div class="hero-frame"></div>
 
   <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
@@ -1322,7 +1324,7 @@
   <div class="chart-legend">
     <div class="chart-legend-note" id="carry-forward-note">
       <span class="legend-mark"></span>
-      前 3 天为假设性回填
+      数据加载中…
     </div>
     <div>数据来源: Supabase · Q4 决策 统一到云端</div>
   </div>
@@ -1358,7 +1360,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.43 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · mobile 算式符号对齐 + 空隙紧凑 (spread 3→2px + padding 16→0 + align-self flex-start + margin-top 32px 跟数字行 baseline 对齐)</div>
+  <div>PORTFOLIO DASHBOARD · v23.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · Phase 1 必修 (settings 视觉 / carry-forward 兜底 / hero 跨 tab 永久 / 港股后缀契约)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1366,6 +1368,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.43"></script>
+<script src="dashboard.js?v=23.0"></script>
 </body>
 </html>
