@@ -45,11 +45,23 @@
   /* ============ HEADER ============ */
   header.app-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 14px;
     padding: 16px 0 24px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 56px;
+  }
+  /* v22.29: logo + meta 紧挨在一行 (top-row), tab 独立下一行.
+     meta 紧贴 logo 右边 (gap 24px), 视觉上是 logo 的一组附属, 不再散到屏幕最右.
+     desktop margin-left: auto 让 meta 推到屏幕右端, 留出中间空白 (1280 宽, 视觉平衡) */
+  .header-top-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 24px;
+  }
+  .header-top-row .header-meta {
+    margin-left: auto;
   }
   /* Mobile (≤600px) header sticky 上浮: 滚动时保持 tab 栏在顶部, 随时切 tab
      v22.28: 整条 header liquid glass 化 — logo + tab + meta 平铺在一个玻璃底板上,
@@ -147,6 +159,13 @@
       padding: 0;
       margin-top: 0;
       gap: 18px;
+    }
+    /* v22.29: mobile 让 meta 紧贴 logo (desktop 是推到右端, mobile 空间紧, 紧贴更符合 "logo 右边" 字面意思) */
+    .header-top-row {
+      gap: 14px;
+    }
+    .header-top-row .header-meta {
+      margin-left: 0;
     }
   }
 
@@ -1013,9 +1032,15 @@
 
 <!-- ============ HEADER ============ -->
 <header class="app-header">
-  <div class="logo-mark">
-    <div class="logo-square"></div>
-    <span class="logo-text">持仓</span>
+  <div class="header-top-row">
+    <div class="logo-mark">
+      <div class="logo-square"></div>
+      <span class="logo-text">持仓</span>
+    </div>
+    <div class="header-meta">
+      <span id="header-date">加载中…</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
   </div>
   <nav class="tabs">
     <a href="#" class="active" data-tab="today">今日</a>
@@ -1023,10 +1048,6 @@
     <a href="#" data-tab="closed-trades">清仓&交易</a>
     <a href="#" data-tab="settings">设置</a>
   </nav>
-  <div class="header-meta">
-    <span id="header-date">加载中…</span>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  </div>
 </header>
 
 <!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============ -->
@@ -1228,7 +1249,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v22.28 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 整条 header 统一 liquid glass (logo+tab+meta 平铺), 不再让 tab 栏单独浮起成卡</div>
+  <div>PORTFOLIO DASHBOARD · v22.29 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · logo+meta 同排 (meta 在 logo 右边), tab 独立下一行 (mobile 紧贴, desktop 推到右)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1236,6 +1257,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=22.28"></script>
+<script src="dashboard.js?v=22.29"></script>
 </body>
 </html>
