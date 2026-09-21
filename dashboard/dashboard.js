@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v30.0 (2026-09-21)
+ * Mavis Stock Tracker — Dashboard.js v31.0 (2026-09-21)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -61,6 +61,20 @@
  *     边界 rubber band (0.3 比例有限反馈)
  *   - commit 后 280ms 飞出动画 + changeTab 切到下一/上一 tab
  *   - snap back 280ms (未达阈值时回到原位)
+ * v31.0 反馈调整 round 8 (用户 9-21 反馈 v30.0 单 pane transform 看起来像"卡片滞留",
+ *   想要 native iOS page swipe 体验 — 整个 drawer 4 page 一起跟手指方向推移, 能看到下一 page
+ *   从边缘 peek 进来):
+ *   - HTML wrap 5 个 sections (hero + summary + closed-trades + analysis + settings) 到
+ *     .tab-drawer > .tab-page × 4 (page-today 含 hero + summary, 其他各含 1 pane).
+ *     去掉 closed-trades / analysis / settings 的 hidden 属性 (drawer 控制 visibility).
+ *   - CSS .tab-drawer: flex 横排 + overflow hidden + touch-action pan-y.
+ *     .tab-page: flex 0 0 100% 各占 viewport.
+ *   - JS changeTab 重构成 drawer transform (translateX(-idx * 100%)) 代替之前 hidden 切换,
+ *     接 animMs 参数控制 transition 时长 (0 = no anim 用于 init, 280 = swipe commit + click).
+ *   - JS initSwipeTabs 重写: 整个 .tab-drawer 1:1 跟手 (drawer.style.transform =
+ *     translateX(calc(-currentIdx * 100% + dx px))), 边界 rubber band 0.3 比例.
+ *     commit 后 drawer 动画 280ms 到目标 idx (transition + transform).
+ *   - tabOrder 常量提到 module 级 (让 changeTab + initSwipeTabs 共用).
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
@@ -80,6 +94,8 @@
   'use strict';
 
   const DATA_URL = 'data/dashboard.json';
+  // v31.0: 4 tab 顺序常量提到 module 级, 让 changeTab + initSwipeTabs 都能引用
+  const tabOrder = ['today', 'analysis', 'closed-trades', 'settings'];
   const $ = (id) => document.getElementById(id);
 
   // 中文习惯: 盈=红/涨, 亏=绿/跌 (跟视觉 token --accent-up/--accent-down 一致)
@@ -175,18 +191,24 @@
     },
 
     initTabs() {
-      // v30.0: 拆出 changeTab named method, 让 initSwipeTabs swipe 完成后也能复用
+      // v31.0: 拆出 changeTab named method, 让 initSwipeTabs swipe 完成后也能复用
+      this.drawer = document.querySelector('.tab-drawer');
+      this.currentTabIdx = 0;
+      if (this.drawer) {
+        this.drawer.style.transform = 'translateX(0)';
+      }
       document.querySelectorAll('nav.tabs a[data-tab]').forEach(a => {
         a.addEventListener('click', (e) => {
           e.preventDefault();
-          this.changeTab(a.dataset.tab);
+          this.changeTab(a.dataset.tab, 280);
         });
       });
       // v30.0: 触屏 swipe 切换 tab (mobile UX)
       this.initSwipeTabs();
     },
 
-    changeTab(target) {
+    changeTab(target, animMs = 0) {
+      const idx = tabOrder.indexOf(target);
       // 切 tab 时改 summary 形态 + headpiece text + holding-card data-mode
       // (today 标准 / analysis 紧凑 / closed-trades 已实现单行 + holding 隐藏 / settings 全隐)
       const summaryEl = document.querySelector('.summary');
@@ -206,56 +228,61 @@
       document.querySelectorAll('nav.tabs a[data-tab]').forEach(a => {
         a.classList.toggle('active', a.dataset.tab === target);
       });
-      // 切换 pane visibility
-      document.querySelectorAll('.tab-pane').forEach(p => {
-        p.hidden = (p.id !== 'tab-' + target);
-      });
-      // 切到分析时画 charts (canvas 这时才 visible, width 正确, Chart.js 内部 layout 正常)
-      // rAF 单帧: tab-analysis 在 v22.12 提到 tab-closed-trades 之外做 body 直接子, 切 tab 时
-      // tab-closed-trades 仍是 hidden 不影响, tab-analysis 自身 hidden=false 后 wrap 立即有真实 clientWidth,
-      // 不需要任何 retry / layout-ready 检测
-      if (target === 'analysis' && this.data) {
-        requestAnimationFrame(() => this.renderCharts(this.data));
+      // v31.0: drawer transform 控制显示哪个 page (取代之前 hidden 切换)
+      if (idx >= 0 && this.drawer) {
+        if (animMs > 0) {
+          this.drawer.style.transition = `transform ${animMs}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+        } else {
+          this.drawer.style.transition = 'none';
+        }
+        this.drawer.style.transform = `translateX(-${idx * 100}%)`;
+        this.currentTabIdx = idx;
+        if (animMs > 0) {
+          setTimeout(() => {
+            this.drawer.style.transition = '';
+            if (target === 'analysis' && this.data) {
+              requestAnimationFrame(() => this.renderCharts(this.data));
+            }
+          }, animMs);
+        } else if (target === 'analysis' && this.data) {
+          requestAnimationFrame(() => this.renderCharts(this.data));
+        }
       }
     },
 
     initSwipeTabs() {
-      // v30.0: 触屏横滑切换 tab (mobile UX)
-      // 检测 touchstart → touchmove → touchend 序列, 横移 > 50px + 时间 < 500ms + 不被 chart/table 拦截
-      // 触发切到下一/上一 tab, swipe 进行中显示 peek preview (active pane translate + opacity 反馈)
-      // 4 tab 顺序: today → analysis → closed-trades → settings
+      // v31.0: 触屏横滑切换 tab (native iOS page swipe 体验)
+      // 整个 .tab-drawer (4 page 横排) 一起跟手指 translateX, 用户能看到下一 page 从边缘 peek 进来.
+      // 检测 touchstart → touchmove → touchend 序列:
+      //   - 横移 > 50px + 时间 < 500ms + 不在 chart/table 内触发 → commit (drawer 动画到下一 page)
+      //   - 否则 snap back (drawer 动画回当前 page)
+      // 边界 (今日右滑 / 设置左滑) rubber band: drag 量只跟 0.30 倍, commit 失败 snap back
       const tabOrder = ['today', 'analysis', 'closed-trades', 'settings'];
-      let touchState = null;  // {startX, startY, startTime, currentPane, currentIdx, peekHint}
+      let touchState = null;  // {startX, startY, startTime, currentIdx}
 
-      const SWIPE_DX_THRESHOLD = 50;     // 横移最小阈值 (px)
-      const SWIPE_TIME_LIMIT = 500;     // 横移最长时间 (ms)
-      const SWIPE_MIN_START = 20;       // 触发 peek 预览最小位移 (px)
-      const SWIPE_DRAG_RATIO = 0.6;     // 拖动跟随比例 (1=跟手, 0=不动)
-      const SWIPE_RUBBER_RATIO = 0.3;   // 边界 rubber band 比例
-      const SWIPE_OPACITY_DROP = 0.4;    // 全程 opacity 衰减 (peek 时)
-      const SWIPE_ANIM_MS = 280;        // 切 tab / snap back 动画时长
+      const SWIPE_DX_THRESHOLD = 50;
+      const SWIPE_TIME_LIMIT = 500;
+      const SWIPE_MIN_START = 20;
+      const SWIPE_RUBBER_RATIO = 0.3;
+      const SWIPE_ANIM_MS = 280;
 
       const shouldIgnore = (target) => {
-        // 不在 chart / table / canvas 内触发 swipe, 让 chart pan zoom + table horizontal scroll 正常
         if (!target) return true;
         if (target.closest('.chart-card')) return true;
         if (target.closest('.trade-grid')) return true;
         if (target.closest('canvas')) return true;
-        if (target.closest('nav.tabs')) return true;  // 顶部 tab 链接自己处理 click
+        if (target.closest('nav.tabs')) return true;
         return false;
       };
 
       const onTouchStart = (e) => {
         if (shouldIgnore(e.target)) return;
-        const visiblePane = document.querySelector('.tab-pane:not([hidden])');
-        if (!visiblePane) return;
         const t = e.touches[0];
         touchState = {
           startX: t.clientX,
           startY: t.clientY,
           startTime: Date.now(),
-          currentPane: visiblePane,
-          currentIdx: tabOrder.indexOf(visiblePane.id.replace('tab-', ''))
+          currentIdx: this.currentTabIdx
         };
       };
 
@@ -265,67 +292,46 @@
         const t = e.touches[0];
         const dx = t.clientX - touchState.startX;
         const dy = t.clientY - touchState.startY;
-
-        // vertical scroll 优先: dy 大于 dx 时不接管 swipe, 让 vertical 滚动自然
-        if (Math.abs(dy) > Math.abs(dx)) return;
-        // 太小不触发
+        if (Math.abs(dy) > Math.abs(dx)) return;  // vertical scroll
         if (Math.abs(dx) < SWIPE_MIN_START) return;
 
-        const nextIdx = dx < 0 ? touchState.currentIdx + 1 : touchState.currentIdx - 1;
-        const pane = touchState.currentPane;
-        pane.style.transition = 'none';
+        const currentIdx = touchState.currentIdx;
+        const nextIdx = dx < 0 ? currentIdx + 1 : currentIdx - 1;
+        const inBounds = nextIdx >= 0 && nextIdx < tabOrder.length;
 
-        if (nextIdx < 0 || nextIdx >= tabOrder.length) {
-          // 边界 rubber band: 限制 drag 量, 给出有限反馈 (不到边界时不切)
+        this.drawer.style.transition = 'none';
+        if (!inBounds) {
+          // 边界 rubber band
           const rubberDx = dx * SWIPE_RUBBER_RATIO;
-          pane.style.transform = `translateX(${rubberDx}px)`;
-          pane.style.opacity = '0.92';
+          this.drawer.style.transform = `translateX(calc(-${currentIdx * 100}% + ${rubberDx}px))`;
         } else {
-          // 正常 peek: pane 跟随手指 + opacity 衰减
-          const dragPx = dx * SWIPE_DRAG_RATIO;
-          const progress = Math.min(Math.abs(dragPx) / 120, 1);
-          pane.style.transform = `translateX(${dragPx}px)`;
-          pane.style.opacity = String(1 - SWIPE_OPACITY_DROP * progress);
+          // 1:1 跟手 (drawer 整个跟手指)
+          this.drawer.style.transform = `translateX(calc(-${currentIdx * 100}% + ${dx}px))`;
         }
       };
 
       const onTouchEnd = (e) => {
         if (!touchState) return;
         const t = (e.changedTouches && e.changedTouches[0]) || null;
-        const pane = touchState.currentPane;
         const dx = t ? t.clientX - touchState.startX : 0;
         const dt = Date.now() - touchState.startTime;
-        const nextIdx = dx < 0 ? touchState.currentIdx + 1 : touchState.currentIdx - 1;
+        const currentIdx = touchState.currentIdx;
+        const nextIdx = dx < 0 ? currentIdx + 1 : currentIdx - 1;
         const triggered = Math.abs(dx) > SWIPE_DX_THRESHOLD && dt < SWIPE_TIME_LIMIT && nextIdx >= 0 && nextIdx < tabOrder.length;
 
         if (triggered) {
-          // commit: active pane 飞出去 (左滑出 / 右滑出), 然后切 tab
-          const outX = dx < 0 ? -window.innerWidth : window.innerWidth;
-          pane.style.transition = `transform ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1), opacity ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
-          pane.style.transform = `translateX(${outX}px)`;
-          pane.style.opacity = '0';
-          const targetTab = tabOrder[nextIdx];
-          setTimeout(() => {
-            // 动画结束后真正切 tab + 重置样式 (下一 tab 从原始位置进入)
-            pane.style.transition = '';
-            pane.style.transform = '';
-            pane.style.opacity = '';
-            this.changeTab(targetTab);
-          }, SWIPE_ANIM_MS);
+          this.changeTab(tabOrder[nextIdx], SWIPE_ANIM_MS);
         } else {
-          // snap back: 回到原位
-          pane.style.transition = `transform ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1), opacity ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
-          pane.style.transform = '';
-          pane.style.opacity = '';
+          // snap back (边界 or 未达阈值都回 currentIdx)
+          this.drawer.style.transition = `transform ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+          this.drawer.style.transform = `translateX(-${currentIdx * 100}%)`;
           setTimeout(() => {
-            pane.style.transition = '';
+            this.drawer.style.transition = '';
           }, SWIPE_ANIM_MS);
         }
         touchState = null;
       };
 
-      // 监听在 document.body (4 个 tab-pane 是兄弟, 没有共同父容器, 监听 body 覆盖全部 viewport)
-      // passive: true 不阻塞原生滚动 (vertical scroll 完全不接管, 仅 horizontal swipe 时 inline 设 transform)
       document.body.addEventListener('touchstart', onTouchStart, { passive: true });
       document.body.addEventListener('touchmove', onTouchMove, { passive: true });
       document.body.addEventListener('touchend', onTouchEnd, { passive: true });
