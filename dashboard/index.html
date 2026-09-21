@@ -345,50 +345,35 @@
     padding: 28px 24px;
     position: relative;
   }
-  /* v28.0: 改 .seg border-right → ::before 伪元素 (position: absolute 1px 宽), 然后用 mask-image
-     让 vertical 26-67% 范围 (symbol 高度区间) 透明, 实现"border 中段留空"镂空效果.
-     之前 v26.0 用 box-shadow 实现类似效果, 但 box-shadow 横向扩展让中段 / 右段白底比左段宽 60+ px
-     (破坏三段等宽). 现在用 ::before + mask, 三段 column 严格 1fr 1fr 1fr 等宽,
-     borders 在 symbol vertical range 透明 (symbol 看起来"嵌在 border 镂空处") */
-  .seg:not(:last-child)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--border);
-    -webkit-mask-image: linear-gradient(to bottom,
-      rgba(0,0,0,1) 0%, rgba(0,0,0,1) 22%,
-      rgba(0,0,0,0) 26%, rgba(0,0,0,0) 67%,
-      rgba(0,0,0,1) 71%, rgba(0,0,0,1) 100%);
-    mask-image: linear-gradient(to bottom,
-      rgba(0,0,0,1) 0%, rgba(0,0,0,1) 22%,
-      rgba(0,0,0,0) 26%, rgba(0,0,0,0) 67%,
-      rgba(0,0,0,1) 71%, rgba(0,0,0,1) 100%);
-  }
-  /* closed-trades / analysis 模式: segs 不需要竖向 border, 关掉 ::before */
-  .summary[data-tab-mode="closed-trades"] .seg::before,
-  .summary[data-tab-mode="analysis"] .seg::before { display: none; }
+  .seg:not(:last-child) { border-right: 1px solid var(--border); }
+  /* v29.0: 撤销 v28.0 ::before mask (效果不佳), 改回 .seg border-right 直接.
+     镂空效果改在 .seg-op 加白色圆形 background (padding + border-radius 50%) 实现:
+     圆形 background 略大于 symbol, 覆盖 border 一小段形成镂空, 跟 card 装饰风格统一. */
   /* 算式运算符: + 和 = 跟数字同字号, baseline 对齐, + 红 / = 深棕, editorial 透感
      v25.0: 改 align-self center → flex-start + margin-top, 让符号跟 .seg 内部数字行
      (seg-amount) baseline 对齐
      v27.0: 改 position: absolute + 透明背景 + 无 box-shadow, 浮动在 1/3 + 2/3 border 上
-     (left: 33.333% / 66.667%, transform translateX(-50%) 居中), 不再视觉扩展 block 白底 */
+     v28.0: symbol 下移到 .seg visual Y 轴中心 (top: 54→64 desktop / 22→30 mobile)
+     v29.0: 加 padding 0.4em + background var(--bg-card) + border-radius 50%, 形成
+     白色圆形 background 略大于 symbol (跨平台用 em 单位同步 font-size),
+     圆形覆盖 border 一小段形成镂空效果 (border 中段留空), 跟 card 装饰风格统一.
+     圆形 background 让三段 column 视觉白底损失 < 15 px (从 v27.0 三段严格等宽,
+     移到三段视觉 ~14 px 差异), 但 borders 中段镂空 + 圆形凸起视觉比 v28.0 mask 更直接 */
   .seg-op {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding: 0.4em;
     font-family: 'Inter', sans-serif;
     font-size: clamp(22px, 2.8vw, 32px);
     font-weight: 700;
     line-height: 1;
-    top: 64px;  /* v28.0: 下移到 .seg visual Y 轴中心 (seg top + half seg-height ≈ 78.5, top + half font = 64 + 16 = 80 ≈ 78.5) */
+    top: 64px;  /* v28.0: 下移到 .seg visual Y 轴中心 */
     user-select: none;
     letter-spacing: 0;
-    background: transparent;
+    background: var(--bg-card);
+    border-radius: 50%;
     box-shadow: none;
     z-index: 2;
   }
@@ -717,15 +702,16 @@
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap;
     }
-    /* mobile 运算符: 跟数字同字号, baseline 对齐, v27.0 跟 desktop 同步 absolute + 透明 + 无 box-shadow */
+    /* mobile 运算符: 跟数字同字号, baseline 对齐, v29.0 跟 desktop 同步加圆形 background */
     .seg-op {
-      padding: 0;
+      /* v29.0: padding 0.4em 跟 desktop 同步 (mobile font 18 → padding 7.2 px),
+         加 background var(--bg-card) + border-radius 50% 形成圆形 background */
       font-size: 18px;
       font-weight: 700;
       border-bottom: none;
-      top: 30px;  /* v28.0: 下移到 mobile .seg visual Y 轴中心 (seg top + half seg-height ≈ 38.5, top + half font = 30 + 9 = 39 ≈ 38.5) */
-      background: transparent;
-      box-shadow: none;
+      top: 30px;
+      background: var(--bg-card);
+      border-radius: 50%;
     }
     header.app-header { flex-direction: column; gap: 12px; align-items: flex-start; }
     nav.tabs { gap: 20px; }
@@ -1403,7 +1389,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v28.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 5 (两条竖向分割线中段留空: .seg border 改 ::before + mask-image 让 symbol vertical range 26-67% 透明 + symbol 下移到 .seg 视觉 Y 轴中心: top 54→64 desktop / 22→30 mobile)</div>
+  <div>PORTFOLIO DASHBOARD · v29.0 · 2026-09-21 · ELSEWHERE 母题 · 4 tab · 反馈调整 round 6 (symbol 底层加白色圆形 background: padding 0.4em + background var(--bg-card) + border-radius 50%, 圆覆盖 border 一小段形成镂空, 跟 card 装饰风格统一)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1411,6 +1397,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=28.0"></script>
+<script src="dashboard.js?v=29.0"></script>
 </body>
 </html>
