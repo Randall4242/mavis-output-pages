@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v26.0 (2026-09-21)
+ * Mavis Stock Tracker — Dashboard.js v27.0 (2026-09-21)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -26,6 +26,16 @@
  *     偏左, 跟中间符号对不上. minmax(0, 1fr) 强制 1fr 不被内容撑开, 三段 column
  *     严格 1/3 宽度, 两条分割线落在卡片 33% / 66% 位置 (水平均匀分布).
  *     mobile overflow 已有 text-overflow: ellipsis 截断, OK.
+ * v27.0 反馈调整 round 4 (用户 9-21 像素级验证后反馈):
+ *   - 三段白底面积真正等宽: grid 1fr auto 1fr auto 1fr → 1fr 1fr 1fr (去掉两个
+ *     auto 列), .seg-op 改 position: absolute + left: 33.333% / 66.667% +
+ *     transform translateX(-50%) 浮动在 1/3 + 2/3 borders 上, 背景 transparent +
+ *     box-shadow none, 不再视觉扩展相邻 block 的白底面积.
+ *     之前 v26.0 .seg-op 在 auto 列里 + 白色背景 + box-shadow 各扩 2px, 让已实现
+ *     + 总投两段的白底比持仓宽 60+ px (实测持仓 311 px, 已实现 375 px, 总投 374 px,
+ *     差异 64 px), 三段白底面积不等.
+ *   - closed-trades 模式 nth-child 同步更新 (grid 5 列 → 3 列, 已实现从
+ *     nth-child(3) 变 nth-child(2)).
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
