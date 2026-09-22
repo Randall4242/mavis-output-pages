@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.9 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v32.0 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -131,6 +131,18 @@
  * 时把 hero 跟 summary 都放进 drawer / stage, 导致今天 tab 顶部 hero 不见 + 分析/清仓 tab 顶部
  * summary 不见, 三次迭代 (v31.3 / v31.4 / v31.5) 才定位到根因. 教训: sticky element 必须
  * 在 overflow:hidden ancestor 之外, 否则 silently fail.)
+ * v32.0 bugfix (用户 9-22 反馈: 切到 analysis tab 时数据未加载静默):
+ *   根因 — changeTab 内 `if (target === 'analysis' && this.data)` 守卫在 fetch 未完成时
+ *   跳过 renderCharts, fetch 完成 render(data) 跑了但 renderCharts 没补触发, charts 区
+ *   永远空白 + carry-forward note 永远显示 "数据加载中…". initTabs 只首次 load 跑一次,
+ *   不主动触发 changeTab, 所以 fetch 完成后 charts 区不会被补画.
+ *   修法 —
+ *     1) HTML: chart-canvas-wrap 内加 <div class="chart-skeleton"> 默认显示
+ *     2) JS renderCharts 成功 → hideAllSkeletons() 双保险隐藏
+ *     3) JS load() catch → markSkeletonError() 改 "加载失败,点击重试" + cursor pointer
+ *        + 点击触发 load()
+ *     4) JS changeTab analysis 内 this.data undefined → startChartsPolling() 100ms ×100
+ *        (10s 超时) 轮询 this.data 就绪 → renderCharts. 超过改 "加载超时,请下拉刷新"
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
@@ -181,6 +193,10 @@
         const diff = isFirstLoad ? { kind: 'full' } : this.diffData(this.dataCache, data);
         this.dataCache = data;
 
+        // v32.0: data 到了, 隐藏所有 skeleton (切到 analysis 时 polling 触发 renderCharts 是另一码,
+        // 但首次 load 后用户也可能已切到 analysis, 这边 hide 兜底)
+        this.hideAllSkeletons();
+
         // 文字部分: 全量重画 (DOM 替换原子, 没有增量需求)
         this.render(data);
 
@@ -202,6 +218,8 @@
         return data;
       } catch (e) {
         this.showError('数据加载失败: ' + e.message);
+        // v32.0: skeleton 改 "加载失败,点击重试" + cursor pointer + 点击触发 load()
+        this.markSkeletonError();
         throw e;
       }
     },
@@ -306,13 +324,25 @@
         if (animMs > 0) {
           setTimeout(() => {
             this.drawer.style.transition = '';
-            if (target === 'analysis' && this.data) {
-              requestAnimationFrame(() => this.renderCharts(this.data));
+            // v32.0: animation 路径 — analysis tab 时 data 已就绪 → 直接画; 未就绪 → polling
+            if (target === 'analysis') {
+              if (this.data) {
+                requestAnimationFrame(() => this.renderCharts(this.data));
+              } else {
+                this.startChartsPolling();
+              }
             }
           }, animMs);
         } else if (target === 'analysis' && this.data) {
+          // 立即路径 (animMs=0, drawer 已就绪): 已有 data 就画
           requestAnimationFrame(() => this.renderCharts(this.data));
         }
+      }
+      // v32.0: polling 启动必须在 drawer 守卫外 — this.drawer 在 initTabs() 后才赋值,
+      // initTabs() 等 fetch 完成; 若 polling 也在 drawer 守卫内就死锁 (this.drawer 永远 null 时 fetch 没完).
+      // 覆盖所有路径: click (animMs=280) setTimeout 后, swipe commit (animMs=280), 首次 load 后 initTabs 主动 (animMs=0)。
+      if (target === 'analysis' && !this.data) {
+        this.startChartsPolling();
       }
     },
 
@@ -670,6 +700,52 @@
       } catch (e) {
         console.warn('[charts] carry_forward note update failed:', e);
       }
+      // v32.0: 成功 → hide skeleton (覆盖正常路径 + polling 触发路径)
+      this.hideAllSkeletons();
+    },
+
+    // v32.0: 切到 analysis tab 时 this.data 还未就绪 → polling 100ms ×100 等 fetch 完成
+    startChartsPolling() {
+      if (this._pollingActive) return;
+      this._pollingActive = true;
+      let attempts = 0;
+      const tick = () => {
+        if (!this._pollingActive) return;
+        attempts++;
+        if (this.data) {
+          this._pollingActive = false;
+          requestAnimationFrame(() => this.renderCharts(this.data));
+          return;
+        }
+        if (attempts >= 100) {
+          // 10s 超时: 停止 polling, skeleton 改 "加载超时"
+          this._pollingActive = false;
+          this.markSkeletonError('加载超时,请下拉刷新');
+          return;
+        }
+        setTimeout(tick, 100);
+      };
+      tick();
+    },
+
+    // v32.0: 隐藏所有 skeleton (renderCharts 成功 / load 成功 路径调用)
+    hideAllSkeletons() {
+      document.querySelectorAll('.chart-skeleton').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('error');
+        el.onclick = null;
+      });
+    },
+
+    // v32.0: skeleton 改 "加载失败" + cursor pointer + 点击触发 load() 重试
+    markSkeletonError(msg) {
+      const text = msg || '加载失败,点击重试';
+      document.querySelectorAll('.chart-skeleton').forEach(el => {
+        el.classList.remove('hidden');
+        el.classList.add('error');
+        el.innerHTML = `<span>${text}</span><div class="skeleton-bar"></div>`;
+        el.onclick = () => this.load();
+      });
     },
 
     // v22.26: chart 已存在 → updateChartsFull 重设 data + update('none');

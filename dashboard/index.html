@@ -973,6 +973,38 @@
     text-align: center;
     padding: 24px;
   }
+  /* v32.0: skeleton 占位 — chart-canvas-wrap 内默认显示, fetch + renderCharts 成功后隐藏.
+     fetch 失败 → 改"加载失败"+cursor pointer+点击触发 load() 重试. */
+  .chart-skeleton {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    color: var(--ink-muted); font-size: 12px;
+    background: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    z-index: 2;
+  }
+  .chart-skeleton.error {
+    color: var(--accent-up);
+    cursor: pointer;
+  }
+  .chart-skeleton.hidden {
+    display: none;
+  }
+  .chart-skeleton .skeleton-bar {
+    width: 60%; height: 1px; background: var(--border);
+    position: relative; overflow: hidden;
+  }
+  .chart-skeleton .skeleton-bar::after {
+    content: ''; position: absolute;
+    left: -40%; top: 0; width: 40%; height: 100%;
+    background: var(--ink-muted);
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes skeleton-pulse {
+    0%, 100% { transform: translateX(0); opacity: 0.3; }
+    50% { transform: translateX(280%); opacity: 1; }
+  }
   .chart-legend {
     margin-top: 14px;
     padding-top: 12px;
@@ -1373,6 +1405,10 @@
   </div>
   <div class="chart-canvas-wrap">
     <canvas id="chart-pnl-trend"></canvas>
+    <div class="chart-skeleton" id="skeleton-pnl-trend">
+      <span>数据加载中…</span>
+      <div class="skeleton-bar"></div>
+    </div>
   </div>
   <div class="chart-legend">
     <div class="chart-legend-note" id="carry-forward-note">
@@ -1397,6 +1433,10 @@
   </div>
   <div class="chart-canvas-wrap">
     <canvas id="chart-benchmark"></canvas>
+    <div class="chart-skeleton" id="skeleton-benchmark">
+      <span>数据加载中…</span>
+      <div class="skeleton-bar"></div>
+    </div>
   </div>
 </div>
 </section>
@@ -1461,7 +1501,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.9 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.8 bugfix (用户 9-22 反馈: 横滑切 tab 太灵敏, 手指稍微偏移 (dy 小) 就切到另一 tab. 修法: SWIPE_DX_THRESHOLD 50→80 px (commit 阈值提高 60%), SWIPE_MIN_START 20→30, 新增 SWIPE_DY_RATIO=1.8 (dx 必须 ≥ dy×1.8 才算横滑主导, vertical scroll 主导时不触发), SWIPE_RUBBER_RATIO 0.3→0.15 (边界 rubber band 反馈更弱))</div>
+  <div>PORTFOLIO DASHBOARD · v32.0 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.9→v32.0 bugfix (用户 9-22 反馈: 切到 analysis tab 时数据未加载静默 — changeTab 内 `if (target === 'analysis' && this.data)` 守卫在 fetch 未完成时跳过 renderCharts, fetch 完成 render() 跑了但 renderCharts 没补触发, charts 区永远空白 + carry-forward note 永远显示"数据加载中…"。修法: chart-canvas-wrap 加 skeleton 占位默认显示, renderCharts 成功后 → hide skeleton; load() catch → skeleton 改"加载失败"+点击重试; changeTab 内 this.data 未就绪 → polling 100ms ×100 (10s 超时) 触发 renderCharts)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1469,6 +1509,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.9"></script>
+<script src="dashboard.js?v=32.0"></script>
 </body>
 </html>
