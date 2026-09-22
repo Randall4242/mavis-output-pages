@@ -132,16 +132,24 @@
  * summary 不见, 三次迭代 (v31.3 / v31.4 / v31.5) 才定位到根因. 教训: sticky element 必须
  * 在 overflow:hidden ancestor 之外, 否则 silently fail.)
  * v32.0 bugfix (用户 9-22 反馈: 切到 analysis tab 时数据未加载静默):
- *   根因 — changeTab 内 `if (target === 'analysis' && this.data)` 守卫在 fetch 未完成时
- *   跳过 renderCharts, fetch 完成 render(data) 跑了但 renderCharts 没补触发, charts 区
- *   永远空白 + carry-forward note 永远显示 "数据加载中…". initTabs 只首次 load 跑一次,
- *   不主动触发 changeTab, 所以 fetch 完成后 charts 区不会被补画.
+ *   根因 — 三个叠加:
+ *     a) nav.tabs click handler 只在 initTabs 内绑, initTabs 在 load() 完成才跑. 用户 fetch
+ *        未完成时点 tab, handler 没绑, click 无声无息, 完全没反应.
+ *     b) initTabs 内 `this.drawer.style.transform = 'translateX(0)'` 强制重置 drawer, 即使
+ *        changeTab 已经写过 currentTabIdx, 也被 initTabs 覆盖回 today tab.
+ *     c) changeTab 守卫 `if (target === 'analysis' && this.data)` 在 fetch 未完成时跳过
+ *        renderCharts, fetch 完成 render(data) 跑了但 renderCharts 没补触发, charts 区
+ *        永远空白 + carry-forward note 永远显示 "数据加载中…".
  *   修法 —
  *     1) HTML: chart-canvas-wrap 内加 <div class="chart-skeleton"> 默认显示
- *     2) JS renderCharts 成功 → hideAllSkeletons() 双保险隐藏
- *     3) JS load() catch → markSkeletonError() 改 "加载失败,点击重试" + cursor pointer
+ *     2) JS bindNavTabs() 独立方法, IIFE 启动时立即绑 nav.tabs click handler (DOMContentLoaded
+ *        后), fetch 未完成时点 tab 也能触发 changeTab. initTabs 不再绑 click, 只负责 swipe + drawer.
+ *     3) JS changeTab: 总是 this.currentTabIdx = idx; 用 drawer query 查 .tab-drawer 元素 fallback,
+ *        即使 this.drawer 还没赋值也能视觉切 tab. initTabs 保留 currentTabIdx (用户已切过就不重置).
+ *     4) JS renderCharts 成功 → hideAllSkeletons() 双保险隐藏
+ *     5) JS load() catch → markSkeletonError() 改 "加载失败,点击重试" + cursor pointer
  *        + 点击触发 load()
- *     4) JS changeTab analysis 内 this.data undefined → startChartsPolling() 100ms ×100
+ *     6) JS changeTab analysis 内 this.data undefined → startChartsPolling() 100ms ×100
  *        (10s 超时) 轮询 this.data 就绪 → renderCharts. 超过改 "加载超时,请下拉刷新"
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
@@ -267,27 +275,43 @@
     initTabs() {
       // v31.0: 拆出 changeTab named method, 让 initSwipeTabs swipe 完成后也能复用
       this.drawer = document.querySelector('.tab-drawer');
-      this.currentTabIdx = 0;
+      // v32.0: currentTabIdx 默认 0; 但如果用户在 fetch 未完成时已切过 tab (load 未 resolve,
+      // initTabs 还没跑前), changeTab 已经把 currentTabIdx 写到这里, 不要覆盖, 保留用户选择.
+      if (this.currentTabIdx === undefined) {
+        this.currentTabIdx = 0;
+      }
       if (this.drawer) {
-        this.drawer.style.transform = 'translateX(0)';
+        this.drawer.style.transform = `translateX(-${this.currentTabIdx * 25}%)`;
       }
       // v31.5: hero 初始 today visible (nav active = today)
       const heroEl = document.getElementById('tab-today');
       if (heroEl && heroEl.classList.contains('hero')) {
-        heroEl.dataset.tabMode = 'today';
+        // v32.0: 同上, 如果用户已切过, 保留 summary/hero 形态
+        if (!heroEl.dataset.tabMode) {
+          heroEl.dataset.tabMode = 'today';
+        }
       }
+      // v32.0: click handler 移到 bindNavTabs(), 在 IIFE 启动时立即绑, 不必等 load 完成.
+      // initTabs 只负责 swipe + drawer/hero 初始化.
+      // v30.0: 触屏 swipe 切换 tab (mobile UX)
+      this.initSwipeTabs();
+    },
+
+    // v32.0: 单独绑 nav.tabs click handler — IIFE 启动时立即调, 不必等 load() 完成.
+    // 修切到 analysis tab 时数据未加载静默的根因 (用户 fetch 未完成时点 tab, handler 没绑, click 无声无息).
+    bindNavTabs() {
       document.querySelectorAll('nav.tabs a[data-tab]').forEach(a => {
         a.addEventListener('click', (e) => {
           e.preventDefault();
           this.changeTab(a.dataset.tab, 280);
         });
       });
-      // v30.0: 触屏 swipe 切换 tab (mobile UX)
-      this.initSwipeTabs();
     },
 
     changeTab(target, animMs = 0) {
       const idx = tabOrder.indexOf(target);
+      // v32.0: 总是记 currentTabIdx — initTabs 后 drawer 用, 即使现在没 drawer 也要记.
+      this.currentTabIdx = idx;
       // 切 tab 时改 summary 形态 + headpiece text + holding-card data-mode
       // (today 标准 / analysis 紧凑 / closed-trades 已实现单行 + holding 隐藏 / settings 全隐)
       const summaryEl = document.querySelector('.summary');
@@ -313,17 +337,20 @@
         heroEl.dataset.tabMode = target === 'today' ? 'today' : 'hidden';
       }
       // v31.0: drawer transform 控制显示哪个 page (取代之前 hidden 切换)
-      if (idx >= 0 && this.drawer) {
+      // v32.0: 用 DOM 查询 fallback, 不依赖 this.drawer — load 未完成时 this.drawer 是 null,
+      // 但 .tab-drawer 元素在 HTML 里, 能查到. 改 transform 让用户看到 tab 切换视觉.
+      const drawer = this.drawer || document.querySelector('.tab-drawer');
+      if (idx >= 0 && drawer) {
         if (animMs > 0) {
-          this.drawer.style.transition = `transform ${animMs}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+          drawer.style.transition = `transform ${animMs}ms cubic-bezier(0.16, 1, 0.3, 1)`;
         } else {
-          this.drawer.style.transition = 'none';
+          drawer.style.transition = 'none';
         }
-        this.drawer.style.transform = `translateX(-${idx * 25}%)`;
-        this.currentTabIdx = idx;
+        drawer.style.transform = `translateX(-${idx * 25}%)`;
+        this.drawer = drawer;
         if (animMs > 0) {
           setTimeout(() => {
-            this.drawer.style.transition = '';
+            drawer.style.transition = '';
             // v32.0: animation 路径 — analysis tab 时 data 已就绪 → 直接画; 未就绪 → polling
             if (target === 'analysis') {
               if (this.data) {
@@ -338,9 +365,8 @@
           requestAnimationFrame(() => this.renderCharts(this.data));
         }
       }
-      // v32.0: polling 启动必须在 drawer 守卫外 — this.drawer 在 initTabs() 后才赋值,
-      // initTabs() 等 fetch 完成; 若 polling 也在 drawer 守卫内就死锁 (this.drawer 永远 null 时 fetch 没完).
-      // 覆盖所有路径: click (animMs=280) setTimeout 后, swipe commit (animMs=280), 首次 load 后 initTabs 主动 (animMs=0)。
+      // v32.0: polling 启动必须在 drawer 守卫外 — drawer 现在 query 即使 DOM (load 未完也能查),
+      // 但保险起见 polling 还是放外面, 万一 drawer 元素真的缺失也不阻塞 polling.
       if (target === 'analysis' && !this.data) {
         this.startChartsPolling();
       }
@@ -1168,10 +1194,15 @@
     return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
-  // 启动
+  // v32.0: 启动 — bindNavTabs() 立即绑 nav.tabs click handler (不必等 load 完成),
+  // 用户 fetch 未完成时点 tab 立即触发 changeTab.
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => App.load());
+    document.addEventListener('DOMContentLoaded', () => {
+      App.bindNavTabs();
+      App.load();
+    });
   } else {
+    App.bindNavTabs();
     App.load();
   }
 
