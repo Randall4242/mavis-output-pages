@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.2 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v31.3 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -93,6 +93,14 @@
  *   overflow 边界跟 transform 完全解耦. drawer width = 400% (= 4 page), 1 page = 25% of drawer,
  *   translateX(-idx * 25%) 让 drawer 偏移 1 page width. 跨 session 接手必知: transformed element
  *   上不要同时设 overflow:hidden, 必须分两层 — 外层 overflow, 内层 transform. 9-7 瞎归因教训 #8)
+ * v31.3 bugfix (用户 9-22 反馈: 分析 / 清仓&交易 tab 顶部置顶卡片不见了 (mini 三段 + mini 持仓
+ *   / 已实现盈亏). 根因: v31.0 wrap 把 summary 误放进 page-today 内, 切到非今日 tab 时 summary
+ *   跟 page-today 一起被 drawer 切走. 修法: 把 summary 从 page-today 移到 tab-stage 内 tab-drawer
+ *   外面 (跟 v29.0 之前 HTML 结构一致), summary 永远顶部可见, dataset.tabMode 切 4 种形态
+ *   (today 完整 / analysis mini 三段 + mini 持仓 / closed-trades 已实现 + 单行 / hidden).
+ *   跨 session 接手必知: summary 是 sticky 顶部卡片, 在 tab-drawer 外, 不参与 drawer translateX.
+ *   之前 v22.x 时 summary 是独立 section, v31.0 wrap 时误放进 page-today, 9-22 用户反馈后才
+ *   修复回 sticky 位置.)
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
