@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.1 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v31.2 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -83,6 +83,16 @@
  *   教训: v31.0 wrap 时没注意 HTML 物理顺序, 假设顺序是 today/analysis/closed/... 实际是
  *   today/summary (今日) / closed-trades / analysis / settings. 跨 session 接手必知: drawer
  *   横排顺序必须跟 nav.tabs + tabOrder 严格一致, 不一致时 changeTab() 用错 idx 切到错 page.
+ * v31.2 bugfix #2 (用户 9-22 反馈 v31.1 切到非今日 tab 内容还是不显示. 根因: v31.0/v31.1 .tab-drawer
+ *   自带 overflow:hidden + transform translateX, 浏览器对 transformed element 的 overflow 裁剪
+ *   行为不稳定. getBoundingClientRect 返回的 viewport 位置看似在 viewport 内, 但 elementFromPoint
+ *   返回 BODY 说明元素被裁剪掉 — CSS overflow:hidden 在 transform 元素上 clipping reference frame
+ *   行为不明确, transform 之前的 overflow bounds (-328 to 0 in drawer local) 把 page-analysis
+ *   (在 drawer local x=328+) 裁掉, 实际渲染不出来.
+ *   修法: 加 .tab-stage 外壳负责 overflow:hidden (不 transform), .tab-drawer 内层负责 transform.
+ *   overflow 边界跟 transform 完全解耦. drawer width = 400% (= 4 page), 1 page = 25% of drawer,
+ *   translateX(-idx * 25%) 让 drawer 偏移 1 page width. 跨 session 接手必知: transformed element
+ *   上不要同时设 overflow:hidden, 必须分两层 — 外层 overflow, 内层 transform. 9-7 瞎归因教训 #8)
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
@@ -243,7 +253,7 @@
         } else {
           this.drawer.style.transition = 'none';
         }
-        this.drawer.style.transform = `translateX(-${idx * 100}%)`;
+        this.drawer.style.transform = `translateX(-${idx * 25}%)`;
         this.currentTabIdx = idx;
         if (animMs > 0) {
           setTimeout(() => {
@@ -309,12 +319,13 @@
 
         this.drawer.style.transition = 'none';
         if (!inBounds) {
-          // 边界 rubber band
+          // 边界 rubber band (0.3 比例)
+          // v31.2: drawer width = 400% (4 page), 1 page = 25% of drawer. translateX(-idx * 25%) = drawer offset
           const rubberDx = dx * SWIPE_RUBBER_RATIO;
-          this.drawer.style.transform = `translateX(calc(-${currentIdx * 100}% + ${rubberDx}px))`;
+          this.drawer.style.transform = `translateX(calc(-${currentIdx * 25}% + ${rubberDx}px))`;
         } else {
           // 1:1 跟手 (drawer 整个跟手指)
-          this.drawer.style.transform = `translateX(calc(-${currentIdx * 100}% + ${dx}px))`;
+          this.drawer.style.transform = `translateX(calc(-${currentIdx * 25}% + ${dx}px))`;
         }
       };
 
@@ -332,7 +343,7 @@
         } else {
           // snap back (边界 or 未达阈值都回 currentIdx)
           this.drawer.style.transition = `transform ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
-          this.drawer.style.transform = `translateX(-${currentIdx * 100}%)`;
+          this.drawer.style.transform = `translateX(-${currentIdx * 25}%)`;
           setTimeout(() => {
             this.drawer.style.transition = '';
           }, SWIPE_ANIM_MS);
