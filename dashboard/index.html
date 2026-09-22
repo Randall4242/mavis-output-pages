@@ -1461,7 +1461,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.8 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.7 bugfix (用户 9-22 反馈: 顶部置顶卡片不需要固定在顶部, 下拉时随页面滚动就行. 修法: 删除 v31.5-v31.7 的 .summary `position: sticky; top: 0; z-index: 2`, summary 跟 hero 一起在 document flow, 用户滚屏时一起滚动. layout: nav → hero (today only) → summary (tab-shared, 4 种形态) → tab-stage (drawer) → footer, 全部 document flow.)</div>
+  <div>PORTFOLIO DASHBOARD · v31.9 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.8 bugfix (用户 9-22 反馈: 横滑切 tab 太灵敏, 手指稍微偏移 (dy 小) 就切到另一 tab. 修法: SWIPE_DX_THRESHOLD 50→80 px (commit 阈值提高 60%), SWIPE_MIN_START 20→30, 新增 SWIPE_DY_RATIO=1.8 (dx 必须 ≥ dy×1.8 才算横滑主导, vertical scroll 主导时不触发), SWIPE_RUBBER_RATIO 0.3→0.15 (边界 rubber band 反馈更弱))</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1469,6 +1469,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.8"></script>
+<script src="dashboard.js?v=31.9"></script>
 </body>
 </html>
