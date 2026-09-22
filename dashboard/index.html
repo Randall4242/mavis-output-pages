@@ -455,13 +455,10 @@
   .neutral { color: var(--ink-muted); }
 
   /* ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette, 居中装饰, 非分割线) ============ */
-  /* v31.5: summary sticky top:0, z-index 2, 顶部 sticky 可见. 4 tab 都可见, dataset.tabMode 切形态.
-     hero dataset.tab-mode 切 today-only visibility. 两者都在 tab-stage drawer 之前. */
-  .summary {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-  }
+  /* v31.8: 撤销 v31.5 sticky top:0. 用户 9-22 反馈 summary 不需要固定在顶部, 跟其他内容一起随
+     滚屏走 (document flow). hero 跟 summary 都在 body level (tab-stage 外), tab-stage 内只放 drawer.
+     today tab: nav → hero (380 px) → summary (1165 px 三段 + 持仓) → drawer (1984 px 切 page).
+     4 tab 都靠 document flow 排版, scroll 一起滚. sticky top:0 移除后 summary 顶部不再固定. */
   .summary .headpiece {
     display: none;  /* 默认 hidden, JS / data-tab-mode 控制 */
     position: relative;
@@ -1464,7 +1461,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.7 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.6 bugfix (用户 9-22 反馈 v31.6 deploy 后 summary 顶部 sticky 正确但 hero 在 stage 内 stage top=1307 (summary 下方 1165 px), 看不到. 修法: hero 也移出 tab-stage 到 body level, summary 之前. layout: nav → hero (today-only, default flow) → summary (sticky top:0) → tab-stage (drawer) → footer. today tab scroll=0: hero 顶部可见, summary 默认位置在 hero 之后, 滚屏 summary sticky 顶部. 切到非今日 tab: hero hidden, summary sticky 顶部切形态.)</div>
+  <div>PORTFOLIO DASHBOARD · v31.8 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.7 bugfix (用户 9-22 反馈: 顶部置顶卡片不需要固定在顶部, 下拉时随页面滚动就行. 修法: 删除 v31.5-v31.7 的 .summary `position: sticky; top: 0; z-index: 2`, summary 跟 hero 一起在 document flow, 用户滚屏时一起滚动. layout: nav → hero (today only) → summary (tab-shared, 4 种形态) → tab-stage (drawer) → footer, 全部 document flow.)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1472,6 +1469,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.7"></script>
+<script src="dashboard.js?v=31.8"></script>
 </body>
 </html>
