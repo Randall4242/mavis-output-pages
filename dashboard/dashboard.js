@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.4 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v31.5 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -109,6 +109,15 @@
  *   tab-stage 内 child 顺序: drawer 第一个 (含 tab-specific hero), summary 第二个 (tab-shared).
  *   跨 session 接手必知: hero 是 tab-specific 顶部卡片 (只在今日 tab 可见), summary 是 tab-shared
  *   卡片 (4 tab 都可见 + dataset.tabMode 切形态), 必须 drawer 在前 summary 在后, 不能反.)
+ * v31.5 bugfix (用户 9-22 反馈 v31.4 后今日 tab 顶部 hero 可见但 summary 在 drawer 后 2082 px,
+ *   用户滚屏才看到. 修法: hero 跟 summary 都从 drawer 拆出, 一起放到 tab-stage 顶部 (drawer 之前).
+ *   summary `position: sticky; top:0; z-index:2` 顶部 sticky. hero dataset.tab-mode 切 today-only
+ *   visibility (today → 'today', 其他 → 'hidden'). today tab 滚屏时 hero 出顶部, summary sticky
+ *   顶部固定; 切到非今日 tab hero hidden, summary 仍顶部 sticky 切形态 (mini 三段 / 已实现).
+ *   changeTab() 同时设 hero.dataset.tabMode + summary.dataset.tabMode. 跨 session 接手必知:
+ *   tab-stage 内 child 顺序: hero (today-only, position default flow) → summary (sticky top:0,
+ *   tab-shared) → drawer (切 page, 不含 hero 也不含 summary). 三者都在 overflow:hidden 的 stage 内,
+ *   sticky summary 在 drawer 之前意味着 drawer 内容滚屏时 summary 顶部固定不动.)
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
@@ -231,6 +240,11 @@
       if (this.drawer) {
         this.drawer.style.transform = 'translateX(0)';
       }
+      // v31.5: hero 初始 today visible (nav active = today)
+      const heroEl = document.getElementById('tab-today');
+      if (heroEl && heroEl.classList.contains('hero')) {
+        heroEl.dataset.tabMode = 'today';
+      }
       document.querySelectorAll('nav.tabs a[data-tab]').forEach(a => {
         a.addEventListener('click', (e) => {
           e.preventDefault();
@@ -262,6 +276,11 @@
       document.querySelectorAll('nav.tabs a[data-tab]').forEach(a => {
         a.classList.toggle('active', a.dataset.tab === target);
       });
+      // v31.5: hero dataset.tabMode 切 today-only visibility (today → visible, 其他 → hidden)
+      const heroEl = document.getElementById('tab-today');
+      if (heroEl && heroEl.classList.contains('hero')) {
+        heroEl.dataset.tabMode = target === 'today' ? 'today' : 'hidden';
+      }
       // v31.0: drawer transform 控制显示哪个 page (取代之前 hidden 切换)
       if (idx >= 0 && this.drawer) {
         if (animMs > 0) {
