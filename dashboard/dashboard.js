@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.0 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v32.1 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -683,17 +683,19 @@
       const s = data.trade_summary || {};
       const grid = $('trade-summary-grid');
       if (!grid) return;
+      // P2-B: 第三个 arg 改为 trade-cell 上的 extra class (原 'neutral' 实际无 CSS 依赖, 移走);
+      // 最后一个 cell (累计手续费) 加 trade-cell-fee class, CSS 把它 grid-column: 1/-1 横跨整行加大
       const cells = [
-        ['买入次数', s.buy_count != null ? s.buy_count + ' 次' : '—', 'neutral'],
-        ['卖出次数', s.sell_count != null ? s.sell_count + ' 次' : '—', 'neutral'],
-        ['累计买入金额', s.total_buy_amount != null ? fmtMoneyAbs(s.total_buy_amount) + ' 元' : '—', 'neutral'],
-        ['累计卖出金额', s.total_sell_amount != null ? fmtMoneyAbs(s.total_sell_amount) + ' 元' : '—', 'neutral'],
-        ['累计手续费', s.total_fee != null ? s.total_fee + ' 元' : '—', 'neutral'],
+        ['买入次数', s.buy_count != null ? s.buy_count + ' 次' : '—', ''],
+        ['卖出次数', s.sell_count != null ? s.sell_count + ' 次' : '—', ''],
+        ['累计买入金额', s.total_buy_amount != null ? fmtMoneyAbs(s.total_buy_amount) + ' 元' : '—', ''],
+        ['累计卖出金额', s.total_sell_amount != null ? fmtMoneyAbs(s.total_sell_amount) + ' 元' : '—', ''],
+        ['累计手续费', s.total_fee != null ? s.total_fee + ' 元' : '—', 'trade-cell-fee'],
       ];
-      grid.innerHTML = cells.map(([label, val, cls]) => `
-        <div class="trade-cell">
+      grid.innerHTML = cells.map(([label, val, extra]) => `
+        <div class="trade-cell${extra ? ' ' + extra : ''}">
           <div class="trade-cell-key">${label}</div>
-          <div class="trade-cell-val ${cls}">${val}</div>
+          <div class="trade-cell-val">${val}</div>
         </div>
       `).join('');
     },
