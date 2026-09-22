@@ -1230,46 +1230,12 @@
      切换 4 种形态 (today 完整 / analysis mini / closed-trades 已实现 / settings hidden).
      drawer width = 400% (= 4 page), translateX(-idx * 25%) 让 drawer 偏移 1 page width.
      swipe 进行中: drawer transform translateX(calc(-idx * 25% + dx / drawer_width * 100%)) 让整个 drawer 跟手. -->
-<div class="tab-stage">
-
-<!-- ============ HERO (v31.5 移出 page-today, 放到 tab-stage 内 drawer 之前, today-only) ============
-     修法 v31.5: 之前 v31.4 hero 在 drawer 内 page-today 顶部 (drawer 在前), 但 summary 在 drawer 后
-     (2082 px 位置), 顶部看不到 summary. 现在 hero 也移出 drawer 到 tab-stage 第一 child, summary
-     第二 child (sticky top:0), drawer 第三 child. today tab: hero 顶部 + summary 在 hero 下方 +
-     drawer 在 summary 下方. 切到其他 tab: hero hidden, summary 顶部 sticky + drawer 内容 (charts/lists).
-     hero dataset.tabMode = today / hidden, 由 changeTab 切换. -->
-<section class="hero" id="tab-today" data-tab-mode="today">
-  <div class="hero-frame"></div>
-
-  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
-  <div class="hero-label">总投资盈亏 · 总览</div>
-
-  <div class="hero-amount-row">
-    <div class="hero-amount" id="hero-amount">—</div>
-    <div class="hero-percent" id="hero-percent">—</div>
-  </div>
-
-  <div class="hero-sub" id="hero-sub">加载中…</div>
-
-  <div class="hero-stats-bar">
-    <div>
-      <div class="hero-stat-key">跑赢沪深 300</div>
-      <div class="hero-stat-val" id="excess-csi300-val">—</div>
-    </div>
-    <div>
-      <div class="hero-stat-key">跑赢上证指数</div>
-      <div class="hero-stat-val" id="excess-sh-val">—</div>
-    </div>
-    <div>
-      <div class="hero-stat-key">初始总投入</div>
-      <div class="hero-stat-val" id="initial-principal-val">—</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SUMMARY (sticky 顶部卡片, 4 个 tab 都可见, dataset.tabMode 切形态) ============
-     v31.5: hero 跟 summary 都在 tab-stage 第一/二 child, drawer 第三 child. today tab: hero 顶部 +
-     summary 在 hero 下方 (滚动 summary 顶部固定). 切到非今日 tab: hero hidden, summary 顶部 sticky. */
+<!-- ============ SUMMARY (v31.6 移到 tab-stage 外, body level, sticky top:0) ============
+     v31.6: 之前 v31.5 summary 在 tab-stage 内 (overflow:hidden), sticky 不生效. 修法: 把 summary 移到
+     tab-stage 外 (body level, header 之后, tab-stage 之前), sticky top:0 直接生效 (body overflow 默认 visible).
+     hero 仍在 tab-stage 第一 child. layout: nav → summary (sticky top:0) → tab-stage (hero + drawer) → footer.
+     today tab: summary 顶部 sticky (三段 + 持仓 cards) + tab-stage 顶部 hero (大数字). 切到非今日 tab:
+     hero hidden, summary 顶部 sticky 切形态 (mini 三段 / 已实现). -->
 <section class="summary" data-tab-mode="today">
 
   <!-- ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette + 两侧 scrollwork, 居中装饰非分割线) ============ -->
@@ -1346,6 +1312,47 @@
 
 </section>
 <!-- ============ / SUMMARY ============ -->
+
+<div class="tab-stage">
+
+<!-- ============ HERO (v31.5 移出 page-today, 放到 tab-stage 内 drawer 之前, today-only) ============
+     修法 v31.5: 之前 v31.4 hero 在 drawer 内 page-today 顶部 (drawer 在前), 但 summary 在 drawer 后
+     (2082 px 位置), 顶部看不到 summary. 现在 hero 也移出 drawer 到 tab-stage 第一 child, summary
+     第二 child (sticky top:0), drawer 第三 child. today tab: hero 顶部 + summary 在 hero 下方 +
+     drawer 在 summary 下方. 切到其他 tab: hero hidden, summary 顶部 sticky + drawer 内容 (charts/lists).
+     hero dataset.tabMode = today / hidden, 由 changeTab 切换.
+
+     v31.6: summary 移到 tab-stage 外 (body level), sticky top:0 直接生效 (tab-stage overflow:hidden
+     阻止 sticky 在 tab-stage 内生效). hero 仍在 tab-stage 第一 child. tab-stage 内只放 hero + drawer.
+     body layout: nav → summary (sticky top:0) → tab-stage (hero + drawer) → footer. -->
+<section class="hero" id="tab-today" data-tab-mode="today">
+  <div class="hero-frame"></div>
+
+  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
+  <div class="hero-label">总投资盈亏 · 总览</div>
+
+  <div class="hero-amount-row">
+    <div class="hero-amount" id="hero-amount">—</div>
+    <div class="hero-percent" id="hero-percent">—</div>
+  </div>
+
+  <div class="hero-sub" id="hero-sub">加载中…</div>
+
+  <div class="hero-stats-bar">
+    <div>
+      <div class="hero-stat-key">跑赢沪深 300</div>
+      <div class="hero-stat-val" id="excess-csi300-val">—</div>
+    </div>
+    <div>
+      <div class="hero-stat-key">跑赢上证指数</div>
+      <div class="hero-stat-val" id="excess-sh-val">—</div>
+    </div>
+    <div>
+      <div class="hero-stat-key">初始总投入</div>
+      <div class="hero-stat-val" id="initial-principal-val">—</div>
+    </div>
+  </div>
+</section>
 
 <div class="tab-drawer">
 <div class="tab-page" id="page-today">
@@ -1456,7 +1463,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.5 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.4 bugfix (用户 9-22 反馈 v31.4 后今日 tab 顶部 hero 可见但 summary 在 drawer 后 2082 px, 用户滚屏才看到. 修法 v31.5: hero 跟 summary 都从 drawer 拆出, 一起放到 tab-stage 顶部 (drawer 之前). summary `position: sticky; top:0; z-index:2` 顶部 sticky. hero dataset.tab-mode 切 today-only visibility. today tab 滚屏时 hero 出顶部, summary sticky 顶部固定; 切到非今日 tab hero hidden, summary 仍顶部 sticky 切形态.)</div>
+  <div>PORTFOLIO DASHBOARD · v31.6 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.5 bugfix (用户 9-22 反馈 v31.5 deploy 后 summaryPosition='static' (sticky 没生效), tab-stage overflow:hidden 阻止 sticky. 修法 v31.6: 把 summary 移出 tab-stage 到 body level (header 后, tab-stage 前), sticky top:0 直接生效. layout: nav → summary (sticky top:0) → tab-stage (hero + drawer) → footer.)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1464,6 +1471,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.5"></script>
+<script src="dashboard.js?v=31.6"></script>
 </body>
 </html>
