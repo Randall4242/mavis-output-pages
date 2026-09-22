@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.0 (2026-09-21)
+ * Mavis Stock Tracker — Dashboard.js v31.1 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -75,6 +75,14 @@
  *     translateX(calc(-currentIdx * 100% + dx px))), 边界 rubber band 0.3 比例.
  *     commit 后 drawer 动画 280ms 到目标 idx (transition + transform).
  *   - tabOrder 常量提到 module 级 (让 changeTab + initSwipeTabs 共用).
+ * v31.1 bugfix (用户 9-22 反馈: swipe 切到 analysis / settings 后内容不显示, 实际展示 closed-trades.
+ *   根因: v31.0 HTML wrap 顺序是 today→closed-trades→analysis→settings, 但 tabOrder +
+ *   nav.tabs 顺序是 today→analysis→closed-trades→settings, drawer translateX(-100%) 切到 idx 1
+ *   时实际偏移到 page-closed-trades. 修法: HTML 调换 page-analysis 与 page-closed-trades 位置,
+ *   drawer 顺序 = tabOrder 顺序, changeTab('analysis', 280) 后 drawer 展示 page-analysis).
+ *   教训: v31.0 wrap 时没注意 HTML 物理顺序, 假设顺序是 today/analysis/closed/... 实际是
+ *   today/summary (今日) / closed-trades / analysis / settings. 跨 session 接手必知: drawer
+ *   横排顺序必须跟 nav.tabs + tabOrder 严格一致, 不一致时 changeTab() 用错 idx 切到错 page.
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
