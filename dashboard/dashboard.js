@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.3 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v31.4 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -101,6 +101,14 @@
  *   跨 session 接手必知: summary 是 sticky 顶部卡片, 在 tab-drawer 外, 不参与 drawer translateX.
  *   之前 v22.x 时 summary 是独立 section, v31.0 wrap 时误放进 page-today, 9-22 用户反馈后才
  *   修复回 sticky 位置.)
+ * v31.4 bugfix (用户 9-22 反馈 v31.3 今日 tab 顶部 hero 卡片 (大数字 -1,938 元 -7.70%) 消失了.
+ *   根因: v31.3 把 summary 放在 tab-stage 顶部 (drawer 之前), drawer 内 page-today 第一个 child
+ *   (hero) 被挤到 summary 下面 1165 px, 用户看不到 hero. 调换位置 — drawer 在前 (hero 顶部可见),
+ *   summary 在后 (all 4 tab 都可见). today tab 顺序: nav → drawer(page-today 含 hero) → summary.
+ *   教训: drawer 内第一个 child 会被推到 drawer 内容区顶部, drawer 上面不能放高 summary (会挤压).
+ *   tab-stage 内 child 顺序: drawer 第一个 (含 tab-specific hero), summary 第二个 (tab-shared).
+ *   跨 session 接手必知: hero 是 tab-specific 顶部卡片 (只在今日 tab 可见), summary 是 tab-shared
+ *   卡片 (4 tab 都可见 + dataset.tabMode 切形态), 必须 drawer 在前 summary 在后, 不能反.)
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
