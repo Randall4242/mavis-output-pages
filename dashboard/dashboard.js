@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.2 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v32.3 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -798,6 +798,9 @@
     // v32.2: tab-stage 高度 = 当前 active page offsetHeight, 让 footer 紧贴无空白.
     // 触发: changeTab / initTabs / renderCharts 完成 / window resize / fonts ready.
     // CSS .tab-stage 有 280ms height transition 平滑过渡 (跟 swipe commit 同 timing).
+    // 注意: page-today 是空容器 (今日 tab 实际内容在 body level 的 hero + summary),
+    // page-today.offsetHeight = 0, 必须把 height 设成 0 让 tab-stage 真缩, 否则 inline
+    // style 空 → computed height 走 drawer 默认 = max(page heights) ≈ 1992px 留白.
     updateTabStageHeight() {
       const stage = document.querySelector('.tab-stage');
       if (!stage) return;
@@ -807,10 +810,7 @@
       const page = document.getElementById('page-' + target);
       if (!page) return;
       const h = page.offsetHeight;
-      // 只设有效高度,避免初次 layout 时设 0 把 stage 隐藏
-      if (h > 0) {
-        stage.style.height = h + 'px';
-      }
+      stage.style.height = h + 'px';  // 包括 h=0, 不守卫, 否则今日 tab 留白
     },
 
     // v22.26: chart 已存在 → updateChartsFull 重设 data + update('none');
