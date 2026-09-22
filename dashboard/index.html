@@ -178,21 +178,25 @@
   nav.tabs a { cursor: pointer; transition: color 0.2s; }
   nav.tabs a.settings-soon { color: var(--ink-muted); cursor: not-allowed; opacity: 0.5; }
 
-  /* v31.0: tab-drawer flex 横排, 4 page 各 100vw, overflow hidden, drawer transform 控制
-     显示哪个 page (swipe 时整个 drawer 跟手 translateX) */
-  .tab-drawer {
-    display: flex;
-    flex-direction: row;
+  /* v31.2: tab-stage 外层负责 overflow:hidden (不 transform), drawer 内层负责 transform translateX.
+     之前 v31.0/v31.1 drawer 自带 overflow:hidden + transform 同时, 浏览器对 transformed element
+     的 overflow 裁剪行为不稳定, 导致 drawer 切到非 idx 0 page 时内容不显示 (被裁掉) */
+  .tab-stage {
     width: 100%;
     overflow: hidden;
     position: relative;
     touch-action: pan-y;  /* 允许 vertical scroll, horizontal swipe 走 JS */
+  }
+  .tab-drawer {
+    display: flex;
+    flex-direction: row;
+    width: 400%;  /* 4 page 各 25% = 4 × stage width, 让 100% in translateX = 1 page width */
     will-change: transform;
   }
   .tab-page {
-    flex: 0 0 100%;
-    min-width: 100%;
-    width: 100%;
+    flex: 0 0 25%;   /* 25% of drawer width = 1/4 × 400% = 100% of stage width = viewport width */
+    min-width: 25%;
+    width: 25%;
     flex-shrink: 0;
   }
 
@@ -1207,11 +1211,15 @@
   </nav>
 </header>
 
-<!-- ============ TAB DRAWER (v31.0: 4 个 page 横排, drawer translateX 控制显示哪个, swipe 整个 drawer 跟手) ============
-     结构: .tab-drawer (overflow:hidden + flex 横排) > .tab-page × 4 (100vw 各) > 各自内容
-     今日 = hero + summary 2 sections, 其他 = 1 section. drawer translateX = -idx * 100%
-     swipe 进行中: drawer transform translateX(calc(-idx * 100% + dx)) 让整个 drawer 跟手,
-     用户能看到下一 page 从边缘 peek 进来 (native iOS page swipe 体验). -->
+<!-- ============ TAB STAGE + DRAWER (v31.2: tab-stage 外层 overflow:hidden + drawer 内层 transform) ============
+     结构: .tab-stage (overflow:hidden + position:relative) > .tab-drawer (display:flex + transform translateX)
+     > .tab-page × 4 (flex 0 0 100%) > 各自内容. 今日 = hero + summary 2 sections, 其他 = 1 section.
+     修法: v31.0/v31.1 drawer 自带 overflow:hidden + 自带 transform, 浏览器对 transformed element 的 overflow
+     裁剪行为不稳定, page-analysis 内容虽然 getBoundingClientRect 返回 viewport 位置但 elementFromPoint
+     返回 BODY 说明被裁掉. stage 外层 overflow:hidden + 不 transform, drawer 内层 transform 可 clip
+     关系完全解耦. drawer width = 4 × page_width (= 4 × 100% of stage, flex 横排), translateX(-idx * 25%)
+     因为 100% = drawer own width = 4 × page_width. swipe 进行中: drawer transform translateX(calc(-idx * 25% + dx / drawer_width * 100%)) 让整个 drawer 跟手. -->
+<div class="tab-stage">
 <div class="tab-drawer">
 <div class="tab-page" id="page-today">
 
@@ -1426,11 +1434,12 @@
 
 </div><!-- /page-settings -->
 </div><!-- /tab-drawer -->
+</div><!-- /tab-stage -->
 
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.1 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.0 bugfix (HTML wrap 顺序跟 nav.tabs / tabOrder 不一致: drawer 顺序 today→closed-trades→analysis→settings, 但 tabOrder 是 today→analysis→closed-trades→settings, 切到 analysis 时实际展示 closed-trades。 fix 调换 page-analysis 与 page-closed-trades 位置, drawer 顺序 = nav.tabs 顺序)</div>
+  <div>PORTFOLIO DASHBOARD · v31.2 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.1 bugfix #2 (用户反馈: 切到非今日 tab 内容还是不显示. 根因 v31.0/v31.1 .tab-drawer 自带 overflow:hidden + transform translateX, 浏览器对 transformed element 的 overflow 裁剪行为不稳定, page-analysis 内容虽然 getBoundingClientRect 返回 viewport 位置但 elementFromPoint 返回 BODY 说明被裁掉. 修法: 加 .tab-stage 外壳负责 overflow:hidden (不 transform), drawer 内层 transform — overflow 边界跟 transform 解耦. drawer width = 400% (= 4 page), 1 page = 25% of drawer, translateX(-idx * 25%))</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1438,6 +1447,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.1"></script>
+<script src="dashboard.js?v=31.2"></script>
 </body>
 </html>
