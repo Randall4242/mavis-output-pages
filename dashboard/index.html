@@ -1518,7 +1518,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.3 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v32.2→v32.3 hotfix: 今日 tab 仍留 ~1992px 空白 (page-today 是空容器, v32.2 的 `if (h > 0)` 守卫把 height=0 情况挡掉, inline style 空 → tab-stage 仍走 drawer 默认 max 高度). 修法: 移除 h>0 守卫, 直接 stage.style.height = h + 'px' (含 0), 今日 tab-stage 缩到 0, footer 紧贴 summary 底部. 其他 tab (分析 1146 / 清仓 1992 / 设置 279) 不变</div>
+  <div>PORTFOLIO DASHBOARD · v32.4 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v32.3→v32.4 cleanup: plan P2-C + P4-A 实施 — 公开仓根 dashboard.js / sw.js / preview.html / dashboard/i18n.js 移到 archive/legacy-v4/ (4 个废弃文件 + README 标注 deprecated), 私有仓根 i18n.js 同步移到 archive/legacy-v4/ (保留根 dashboard.js / sw.js 是私有仓生产入口). live URL /mavis-output-pages/dashboard.js + sw.js + preview.html + dashboard/i18n.js → 404 (死代码清理成功)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1526,6 +1526,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.3"></script>
+<script src="dashboard.js?v=32.4"></script>
 </body>
 </html>
