@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.6 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v31.7 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -109,8 +109,7 @@
  *   tab-stage 内 child 顺序: drawer 第一个 (含 tab-specific hero), summary 第二个 (tab-shared).
  *   跨 session 接手必知: hero 是 tab-specific 顶部卡片 (只在今日 tab 可见), summary 是 tab-shared
  *   卡片 (4 tab 都可见 + dataset.tabMode 切形态), 必须 drawer 在前 summary 在后, 不能反.)
- * v31.5 bugfix (用户 9-22 反馈 v31.4 后今日 tab 顶部 hero 可见但 summary 在 drawer 后 2082 px,
- *   用户滚屏才看到. 修法: hero 跟 summary 都从 drawer 拆出, 一起放到 tab-stage 顶部 (drawer 之前).
+ * v31.5 bugfix: hero 跟 summary 都从 drawer 拆出, 一起放到 tab-stage 顶部 (drawer 之前).
  *   summary `position: sticky; top:0; z-index:2` 顶部 sticky. hero dataset.tab-mode 切 today-only
  *   visibility (today → 'today', 其他 → 'hidden'). today tab 滚屏时 hero 出顶部, summary sticky
  *   顶部固定; 切到非今日 tab hero hidden, summary 仍顶部 sticky 切形态 (mini 三段 / 已实现).
@@ -118,6 +117,20 @@
  *   tab-stage 内 child 顺序: hero (today-only, position default flow) → summary (sticky top:0,
  *   tab-shared) → drawer (切 page, 不含 hero 也不含 summary). 三者都在 overflow:hidden 的 stage 内,
  *   sticky summary 在 drawer 之前意味着 drawer 内容滚屏时 summary 顶部固定不动.)
+ * v31.6 bugfix: 部署后实测 summaryPosition='static' (sticky 没生效). 根因: tab-stage overflow:hidden
+ *   阻止 sticky 在 tab-stage 内生效 (CSS sticky 在 overflow:hidden ancestor 下失效). 修法: 把 summary
+ *   移出 tab-stage 到 body level (header 之后, tab-stage 之前). sticky 直接生效.
+ * v31.7 bugfix: 部署后实测 today tab 时 summary 顶部 sticky 正确, 但 hero 在 tab-stage 内 (stage top=1307),
+ *   summary 下方 1165 px 看不到. 修法: hero 也移到 tab-stage 外 (body level), 放在 summary 之前.
+ * layout: nav → hero (today-only, default flow) → summary (sticky top:0) → tab-stage (drawer) → footer.
+ * today tab scroll=0: hero 顶部可见 (大数字 -1,938 元 -7.70%), summary 默认位置在 hero 之后 (510+).
+ * 滚屏时 hero 出顶部, summary sticky 顶部固定.
+ * 切到非今日 tab: hero hidden, summary sticky 顶部 0-1165 切形态 (mini / 已实现).
+ * 跨 session 接手必知: tab-stage 内**只能放** drawer (切 page), 其他 sticky / tab-shared element
+ * 必须在 tab-stage 外. 任何 drawer / stage overflow:hidden 都会破坏 sticky. 早期 v31.0 wrap
+ * 时把 hero 跟 summary 都放进 drawer / stage, 导致今天 tab 顶部 hero 不见 + 分析/清仓 tab 顶部
+ * summary 不见, 三次迭代 (v31.3 / v31.4 / v31.5) 才定位到根因. 教训: sticky element 必须
+ * 在 overflow:hidden ancestor 之外, 否则 silently fail.)
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
