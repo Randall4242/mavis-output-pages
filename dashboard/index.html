@@ -1222,84 +1222,6 @@
      swipe 进行中: drawer transform translateX(calc(-idx * 25% + dx / drawer_width * 100%)) 让整个 drawer 跟手. -->
 <div class="tab-stage">
 
-<!-- ============ SUMMARY (sticky 顶部卡片, 4 个 tab 都可见, dataset.tabMode 切形态) ============ -->
-<section class="summary" data-tab-mode="today">
-
-  <!-- ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette + 两侧 scrollwork, 居中装饰非分割线) ============ -->
-  <div class="headpiece">
-    <svg class="headpiece-svg" viewBox="0 0 360 50" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <!-- 中央椭圆 cartouche (双层) -->
-      <ellipse cx="180" cy="22" rx="40" ry="16" fill="none" stroke="currentColor" stroke-width="0.8"/>
-      <ellipse cx="180" cy="22" rx="36" ry="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
-      <!-- 中央 rosette 8 瓣 -->
-      <g transform="translate(180 22)">
-        <ellipse cx="0" cy="-9" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="6" cy="-6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
-        <ellipse cx="9" cy="0" rx="4.5" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="6" cy="6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
-        <ellipse cx="0" cy="9" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="-6" cy="6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
-        <ellipse cx="-9" cy="0" rx="4.5" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
-        <ellipse cx="-6" cy="-6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
-        <circle r="2" fill="currentColor"/>
-      </g>
-      <!-- 左 scrollwork (弧线+小椭圆叶) -->
-      <path d="M140 22 Q120 17 100 22 Q120 27 140 22 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="0.4"/>
-      <ellipse cx="115" cy="19" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <ellipse cx="130" cy="24" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <!-- 右 scrollwork (mirror) -->
-      <path d="M220 22 Q240 17 260 22 Q240 27 220 22 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="0.4"/>
-      <ellipse cx="245" cy="19" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <ellipse cx="230" cy="24" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
-      <!-- 端点 anchor -->
-      <circle cx="85" cy="22" r="2.5" fill="currentColor"/>
-      <circle cx="275" cy="22" r="2.5" fill="currentColor"/>
-    </svg>
-    <div class="headpiece-text"></div>
-  </div>
-
-  <!-- ============ 三段式盈亏 (含分母副行, Round 2 Option A) ============ -->
-  <div class="divider summary-divider summary-divider-three">
-    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
-  </div>
-
-  <h2 class="section-title summary-h2 summary-h2-three">三段式盈亏 <span class="count">3 segments</span></h2>
-
-  <div class="three-seg">
-    <div class="seg">
-      <div class="seg-label">① 持仓盈亏 · 浮盈</div>
-      <div class="seg-amount" id="floating-amount">—</div>
-      <div class="seg-percent" id="floating-pct">—</div>
-      <div class="seg-denominator">vs 当前持仓成本</div>
-    </div>
-    <div class="seg-op seg-op-plus" aria-hidden="true">+</div>
-    <div class="seg">
-      <div class="seg-label">② 已实现盈亏</div>
-      <div class="seg-amount" id="realized-amount">—</div>
-      <div class="seg-percent" id="realized-pct">—</div>
-      <div class="seg-denominator">vs 历史消耗本金</div>
-    </div>
-    <div class="seg-op seg-op-equals" aria-hidden="true">=</div>
-    <div class="seg">
-      <div class="seg-label">③ 总投资盈亏</div>
-      <div class="seg-amount" id="total-amount">—</div>
-      <div class="seg-percent" id="total-pct">—</div>
-      <div class="seg-denominator">vs 初始总投入</div>
-    </div>
-  </div>
-
-  <!-- ============ 当前持仓 ============ -->
-  <div class="divider summary-divider summary-divider-holdings">
-    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
-  </div>
-
-  <h2 class="section-title summary-h2 summary-h2-holdings">当前持仓 <span class="count"><span id="holdings-count">0</span> 只</span></h2>
-
-  <div class="holdings-grid" id="holdings-list"></div>
-
-</section>
-<!-- ============ / SUMMARY ============ -->
-
 <div class="tab-drawer">
 <div class="tab-page" id="page-today">
 
@@ -1436,12 +1358,96 @@
 
 </div><!-- /page-settings -->
 </div><!-- /tab-drawer -->
+
+<!-- ============ SUMMARY (sticky 顶部卡片, 4 个 tab 都可见, dataset.tabMode 切形态) ============
+     v31.4: 移到 drawer 之后. 之前 v31.3 放在 tab-stage 顶部时 hero (在 drawer 内 page-today 第一个 child)
+     被推到 summary 下面, 用户看不到今日 tab 顶部 hero 卡片 (大数字 -1,938 元 -7.70%).
+     修法: drawer 在前 (hero 顶部可见), summary 在 drawer 后 (all 4 tab 都可见).
+     today tab: nav → drawer(page-today 含 hero) → summary(三段 + 持仓).
+     非今日 tab: nav → drawer(对应 page) → summary(mini 三段 / 已实现). -->
+<section class="summary" data-tab-mode="today">
+
+  <!-- ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette + 两侧 scrollwork, 居中装饰非分割线) ============ -->
+  <div class="headpiece">
+    <svg class="headpiece-svg" viewBox="0 0 360 50" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <!-- 中央椭圆 cartouche (双层) -->
+      <ellipse cx="180" cy="22" rx="40" ry="16" fill="none" stroke="currentColor" stroke-width="0.8"/>
+      <ellipse cx="180" cy="22" rx="36" ry="13" fill="none" stroke="currentColor" stroke-width="0.5"/>
+      <!-- 中央 rosette 8 瓣 -->
+      <g transform="translate(180 22)">
+        <ellipse cx="0" cy="-9" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="6" cy="-6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
+        <ellipse cx="9" cy="0" rx="4.5" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="6" cy="6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
+        <ellipse cx="0" cy="9" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="-6" cy="6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(45)"/>
+        <ellipse cx="-9" cy="0" rx="4.5" ry="2" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <ellipse cx="-6" cy="-6" rx="2" ry="4.5" fill="none" stroke="currentColor" stroke-width="0.5" transform="rotate(-45)"/>
+        <circle r="2" fill="currentColor"/>
+      </g>
+      <!-- 左 scrollwork (弧线+小椭圆叶) -->
+      <path d="M140 22 Q120 17 100 22 Q120 27 140 22 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="0.4"/>
+      <ellipse cx="115" cy="19" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <ellipse cx="130" cy="24" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <!-- 右 scrollwork (mirror) -->
+      <path d="M220 22 Q240 17 260 22 Q240 27 220 22 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="0.4"/>
+      <ellipse cx="245" cy="19" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <ellipse cx="230" cy="24" rx="3" ry="1.5" fill="currentColor" opacity="0.5"/>
+      <!-- 端点 anchor -->
+      <circle cx="85" cy="22" r="2.5" fill="currentColor"/>
+      <circle cx="275" cy="22" r="2.5" fill="currentColor"/>
+    </svg>
+    <div class="headpiece-text"></div>
+  </div>
+
+  <!-- ============ 三段式盈亏 (含分母副行, Round 2 Option A) ============ -->
+  <div class="divider summary-divider summary-divider-three">
+    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+  </div>
+
+  <h2 class="section-title summary-h2 summary-h2-three">三段式盈亏 <span class="count">3 segments</span></h2>
+
+  <div class="three-seg">
+    <div class="seg">
+      <div class="seg-label">① 持仓盈亏 · 浮盈</div>
+      <div class="seg-amount" id="floating-amount">—</div>
+      <div class="seg-percent" id="floating-pct">—</div>
+      <div class="seg-denominator">vs 当前持仓成本</div>
+    </div>
+    <div class="seg-op seg-op-plus" aria-hidden="true">+</div>
+    <div class="seg">
+      <div class="seg-label">② 已实现盈亏</div>
+      <div class="seg-amount" id="realized-amount">—</div>
+      <div class="seg-percent" id="realized-pct">—</div>
+      <div class="seg-denominator">vs 历史消耗本金</div>
+    </div>
+    <div class="seg-op seg-op-equals" aria-hidden="true">=</div>
+    <div class="seg">
+      <div class="seg-label">③ 总投资盈亏</div>
+      <div class="seg-amount" id="total-amount">—</div>
+      <div class="seg-percent" id="total-pct">—</div>
+      <div class="seg-denominator">vs 初始总投入</div>
+    </div>
+  </div>
+
+  <!-- ============ 当前持仓 ============ -->
+  <div class="divider summary-divider summary-divider-holdings">
+    <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+  </div>
+
+  <h2 class="section-title summary-h2 summary-h2-holdings">当前持仓 <span class="count"><span id="holdings-count">0</span> 只</span></h2>
+
+  <div class="holdings-grid" id="holdings-list"></div>
+
+</section>
+<!-- ============ / SUMMARY ============ -->
+
 </div><!-- /tab-stage -->
 
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.3 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.2 bugfix (用户 9-22 反馈: 分析 / 清仓&交易 tab 的置顶卡片不见了 (mini 三段&mini 持仓 / 已实现盈亏). 根因: v31.0 wrap 把 summary 误放进 page-today 内, 切到非今日 tab 时 summary 跟 page-today 一起被 drawer 切走. 修法: 把 summary 提到 tab-stage 内 tab-drawer 外面 (跟 v29.0 之前一致), summary 永远顶部可见, dataset.tabMode 切 4 种形态 (today 完整 / analysis mini 三段 + mini 持仓 / closed-trades 已实现 / settings hidden). drawer 不再 wrap summary.)</div>
+  <div>PORTFOLIO DASHBOARD · v31.4 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.3 bugfix (用户 9-22 反馈: 今日 tab 顶部 hero 卡片 (大数字 -1,938 元 -7.70%) 消失了. 根因 v31.3 把 summary 放在 tab-stage 顶部 (drawer 之前), drawer 内 page-today 第一个 child (hero) 被挤到 summary 下面 1165 px 位置, 用户需滚屏才看到. 修法: 调换 drawer / summary 位置 — drawer 在前 (hero 顶部可见), summary 在 drawer 后 (all 4 tab 都可见). today tab 顺序: nav → drawer(page-today 含 hero) → summary(三段 + 持仓).)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1449,6 +1455,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.3"></script>
+<script src="dashboard.js?v=31.4"></script>
 </body>
 </html>
