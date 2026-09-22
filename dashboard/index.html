@@ -1211,51 +1211,18 @@
   </nav>
 </header>
 
-<!-- ============ TAB STAGE + DRAWER (v31.2: tab-stage 外层 overflow:hidden + drawer 内层 transform) ============
-     结构: .tab-stage (overflow:hidden + position:relative) > .tab-drawer (display:flex + transform translateX)
-     > .tab-page × 4 (flex 0 0 100%) > 各自内容. 今日 = hero + summary 2 sections, 其他 = 1 section.
-     修法: v31.0/v31.1 drawer 自带 overflow:hidden + 自带 transform, 浏览器对 transformed element 的 overflow
-     裁剪行为不稳定, page-analysis 内容虽然 getBoundingClientRect 返回 viewport 位置但 elementFromPoint
-     返回 BODY 说明被裁掉. stage 外层 overflow:hidden + 不 transform, drawer 内层 transform 可 clip
-     关系完全解耦. drawer width = 4 × page_width (= 4 × 100% of stage, flex 横排), translateX(-idx * 25%)
-     因为 100% = drawer own width = 4 × page_width. swipe 进行中: drawer transform translateX(calc(-idx * 25% + dx / drawer_width * 100%)) 让整个 drawer 跟手. -->
+<!-- ============ TAB STAGE + DRAWER (v31.3: 修复 summary 卡片丢失) ============
+     结构 (v31.3): .tab-stage (overflow:hidden) > .summary (sticky 顶部卡片, dataset.tabMode 切形态)
+     + .tab-drawer (display:flex + transform translateX) > .tab-page × 4 (flex 0 0 100%) > 各自内容.
+     v31.0 wrap 时误把 summary 放进 page-today 内, 切到非今日 tab 时 summary 跟 page-today 一起被
+     drawer 切走, 用户看不到 mini 三段&mini 持仓 / 已实现盈亏 顶部卡片. 修法: 把 summary 移到
+     tab-stage 内 tab-drawer 外面 (跟 v29.0 之前的 HTML 结构一致), summary 永远顶部可见, dataset.tabMode
+     切换 4 种形态 (today 完整 / analysis mini / closed-trades 已实现 / settings hidden).
+     drawer width = 400% (= 4 page), translateX(-idx * 25%) 让 drawer 偏移 1 page width.
+     swipe 进行中: drawer transform translateX(calc(-idx * 25% + dx / drawer_width * 100%)) 让整个 drawer 跟手. -->
 <div class="tab-stage">
-<div class="tab-drawer">
-<div class="tab-page" id="page-today">
 
-<!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============
-     v24.0: 回滚 v23.0 P1-C 跨 tab 永久决定 — 用户反馈 hero portfolio dashboard 卡片
-     只需要在今日 tab 里展示, 其他 tab (分析/清仓&交易/设置) 不需要此卡片 -->
-<section class="hero tab-pane" id="tab-today">
-  <div class="hero-frame"></div>
-
-  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
-  <div class="hero-label">总投资盈亏 · 总览</div>
-
-  <div class="hero-amount-row">
-    <div class="hero-amount" id="hero-amount">—</div>
-    <div class="hero-percent" id="hero-percent">—</div>
-  </div>
-
-  <div class="hero-sub" id="hero-sub">加载中…</div>
-
-  <div class="hero-stats-bar">
-    <div>
-      <div class="hero-stat-key">跑赢沪深 300</div>
-      <div class="hero-stat-val" id="excess-csi300-val">—</div>
-    </div>
-    <div>
-      <div class="hero-stat-key">跑赢上证指数</div>
-      <div class="hero-stat-val" id="excess-sh-val">—</div>
-    </div>
-    <div>
-      <div class="hero-stat-key">初始总投入</div>
-      <div class="hero-stat-val" id="initial-principal-val">—</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SUMMARY (按 tab 切换形态: today 完整 / analysis 合并卡片 / closed-trades 已实现单行) ============ -->
+<!-- ============ SUMMARY (sticky 顶部卡片, 4 个 tab 都可见, dataset.tabMode 切形态) ============ -->
 <section class="summary" data-tab-mode="today">
 
   <!-- ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette + 两侧 scrollwork, 居中装饰非分割线) ============ -->
@@ -1332,6 +1299,41 @@
 
 </section>
 <!-- ============ / SUMMARY ============ -->
+
+<div class="tab-drawer">
+<div class="tab-page" id="page-today">
+
+<!-- ============ HERO (guilloche PNG 沿 4 边, 端点圆头丝滑, 不画 4 角) ============
+     v24.0: 回滚 v23.0 P1-C 跨 tab 永久决定 — 用户反馈 hero portfolio dashboard 卡片
+     只需要在今日 tab 里展示, 其他 tab (分析/清仓&交易/设置) 不需要此卡片 -->
+<section class="hero tab-pane" id="tab-today">
+  <div class="hero-frame"></div>
+
+  <div class="hero-meta-top">PORTFOLIO DASHBOARD</div>
+  <div class="hero-label">总投资盈亏 · 总览</div>
+
+  <div class="hero-amount-row">
+    <div class="hero-amount" id="hero-amount">—</div>
+    <div class="hero-percent" id="hero-percent">—</div>
+  </div>
+
+  <div class="hero-sub" id="hero-sub">加载中…</div>
+
+  <div class="hero-stats-bar">
+    <div>
+      <div class="hero-stat-key">跑赢沪深 300</div>
+      <div class="hero-stat-val" id="excess-csi300-val">—</div>
+    </div>
+    <div>
+      <div class="hero-stat-key">跑赢上证指数</div>
+      <div class="hero-stat-val" id="excess-sh-val">—</div>
+    </div>
+    <div>
+      <div class="hero-stat-key">初始总投入</div>
+      <div class="hero-stat-val" id="initial-principal-val">—</div>
+    </div>
+  </div>
+</section>
 
 </div><!-- /page-today -->
 <div class="tab-page" id="page-analysis">
@@ -1439,7 +1441,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v31.2 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.1 bugfix #2 (用户反馈: 切到非今日 tab 内容还是不显示. 根因 v31.0/v31.1 .tab-drawer 自带 overflow:hidden + transform translateX, 浏览器对 transformed element 的 overflow 裁剪行为不稳定, page-analysis 内容虽然 getBoundingClientRect 返回 viewport 位置但 elementFromPoint 返回 BODY 说明被裁掉. 修法: 加 .tab-stage 外壳负责 overflow:hidden (不 transform), drawer 内层 transform — overflow 边界跟 transform 解耦. drawer width = 400% (= 4 page), 1 page = 25% of drawer, translateX(-idx * 25%))</div>
+  <div>PORTFOLIO DASHBOARD · v31.3 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.2 bugfix (用户 9-22 反馈: 分析 / 清仓&交易 tab 的置顶卡片不见了 (mini 三段&mini 持仓 / 已实现盈亏). 根因: v31.0 wrap 把 summary 误放进 page-today 内, 切到非今日 tab 时 summary 跟 page-today 一起被 drawer 切走. 修法: 把 summary 提到 tab-stage 内 tab-drawer 外面 (跟 v29.0 之前一致), summary 永远顶部可见, dataset.tabMode 切 4 种形态 (today 完整 / analysis mini 三段 + mini 持仓 / closed-trades 已实现 / settings hidden). drawer 不再 wrap summary.)</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1447,6 +1449,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=31.2"></script>
+<script src="dashboard.js?v=31.3"></script>
 </body>
 </html>
