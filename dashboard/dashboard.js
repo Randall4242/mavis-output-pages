@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v31.8 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v31.9 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -326,10 +326,16 @@
       const tabOrder = ['today', 'analysis', 'closed-trades', 'settings'];
       let touchState = null;  // {startX, startY, startTime, currentIdx}
 
-      const SWIPE_DX_THRESHOLD = 50;
+      // v31.9: 提高横滑触发门槛, 避免轻微偏移就切 tab (用户 9-22 反馈)
+      // - SWIPE_DX_THRESHOLD 50 → 80 px (commit 阈值提高 60%)
+      // - SWIPE_DY_RATIO: dx 必须 ≥ dy * 1.8 才算横滑 (vertical scroll 主导时不触发)
+      //   之前用 dy > dx 直接 return, 但 dy=10 dx=15 仍能触发. 改成 dx/dy >= 1.8 更鲁棒.
+      // - SWIPE_RUBBER_RATIO 0.3 → 0.15 (边界 rubber band 反馈更弱, 减少边界误触)
+      const SWIPE_DX_THRESHOLD = 80;
+      const SWIPE_DY_RATIO = 1.8;  // dx / dy >= 1.8 才算横滑主导
       const SWIPE_TIME_LIMIT = 500;
-      const SWIPE_MIN_START = 20;
-      const SWIPE_RUBBER_RATIO = 0.3;
+      const SWIPE_MIN_START = 30;
+      const SWIPE_RUBBER_RATIO = 0.15;
       const SWIPE_ANIM_MS = 280;
 
       const shouldIgnore = (target) => {
@@ -358,7 +364,7 @@
         const t = e.touches[0];
         const dx = t.clientX - touchState.startX;
         const dy = t.clientY - touchState.startY;
-        if (Math.abs(dy) > Math.abs(dx)) return;  // vertical scroll
+        if (Math.abs(dy) > 0 && Math.abs(dx) < Math.abs(dy) * SWIPE_DY_RATIO) return;  // vertical scroll 主导, dx/dy < 1.8 不触发
         if (Math.abs(dx) < SWIPE_MIN_START) return;
 
         const currentIdx = touchState.currentIdx;
