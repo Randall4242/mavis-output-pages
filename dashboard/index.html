@@ -1501,7 +1501,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.0 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.9→v32.0 bugfix (用户 9-22 反馈: 切到 analysis tab 时数据未加载静默 — changeTab 内 `if (target === 'analysis' && this.data)` 守卫在 fetch 未完成时跳过 renderCharts, fetch 完成 render() 跑了但 renderCharts 没补触发, charts 区永远空白 + carry-forward note 永远显示"数据加载中…"。修法: chart-canvas-wrap 加 skeleton 占位默认显示, renderCharts 成功后 → hide skeleton; load() catch → skeleton 改"加载失败"+点击重试; changeTab 内 this.data 未就绪 → polling 100ms ×100 (10s 超时) 触发 renderCharts)</div>
+  <div>PORTFOLIO DASHBOARD · v32.0 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v31.9→v32.0 bugfix (用户 9-22 反馈: 切到 analysis tab 时数据未加载静默 — 三个根因叠加: (1) nav.tabs click handler 只在 initTabs 内绑, initTabs 在 load 完成才跑, fetch 未完成时点 tab 无声无息; (2) initTabs 强制重置 drawer translateX(0), 即使用户已切过也被覆盖; (3) changeTab 守卫 `if (target === 'analysis' && this.data)` 在 fetch 未完成时跳过 renderCharts, charts 区永远空白 + carry-forward note 永远显示"数据加载中…"。修法: bindNavTabs() 独立方法 IIFE 启动时立即绑 click handler; changeTab 用 DOM query fallback 视觉切 tab, 总是记 currentTabIdx; initTabs 保留 currentTabIdx 不重置; HTML chart-canvas-wrap 加 skeleton 占位默认显示; renderCharts 成功后 → hide skeleton; load() catch → skeleton 改"加载失败"+点击重试; changeTab 内 this.data 未就绪 → polling 100ms ×100 (10s 超时) 触发 renderCharts)</div>
 </footer>
 
 <!-- 刷新按钮 -->
