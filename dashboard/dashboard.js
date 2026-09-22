@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.1 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v32.2 (2026-09-22)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -151,6 +151,16 @@
  *        + 点击触发 load()
  *     6) JS changeTab analysis 内 this.data undefined → startChartsPolling() 100ms ×100
  *        (10s 超时) 轮询 this.data 就绪 → renderCharts. 超过改 "加载超时,请下拉刷新"
+ * v32.2 polish (用户 9-22 反馈: 每个 tab 底部留白, 页面不能自适应长度):
+ *   根因 — .tab-drawer 是 flex row, 默认 align-items: stretch 把 4 个 page 高度强制拉到 max.
+ *     短 tab (设置) 内容少但 drawer 仍是今日 tab 的高, tab-stage 撑到 max, 短 tab 底部大量空白
+ *     直到 footer.
+ *   修法 —
+ *     1) CSS .tab-drawer 加 align-items: flex-start (page 不被 flex stretch, 各自 content 高度)
+ *     2) CSS .tab-stage 加 transition: height 280ms cubic-bezier(0.16, 1, 0.3, 1) 平滑过渡
+ *     3) JS 加 updateTabStageHeight() 方法: tab-stage.style.height = 当前 active page.offsetHeight
+ *     4) JS 触发时机: changeTab 末尾 (rAF 一帧) / initTabs 末尾 (初次进入) / renderCharts 末尾
+ *        (chart 画完撑高) / window resize (debounce 200ms) / document.fonts.ready (字体异步加载)
  *
  * 数据契约 (dashboard.json schema_version=2 / 3):
  *   v2: holdings[]/closed_holdings[] 无 market 字段, 前端兜底 .SH
@@ -295,6 +305,9 @@
       // initTabs 只负责 swipe + drawer/hero 初始化.
       // v30.0: 触屏 swipe 切换 tab (mobile UX)
       this.initSwipeTabs();
+      // v32.2: initTabs 完成设 tab-stage 高度 = 当前 page (默认 today tab) 高度.
+      // 初次进入 dashboard 时立即应用, 不等切 tab 才生效.
+      requestAnimationFrame(() => this.updateTabStageHeight());
     },
 
     // v32.0: 单独绑 nav.tabs click handler — IIFE 启动时立即调, 不必等 load() 完成.
@@ -370,6 +383,9 @@
       if (target === 'analysis' && !this.data) {
         this.startChartsPolling();
       }
+      // v32.2: 切 tab 后立即设 tab-stage 高度 = 当前 page 高度 (CSS transition 平滑过渡).
+      // rAF 等一帧让 layout 完成 (drawer transform 还没应用前先读 offsetHeight 更稳).
+      requestAnimationFrame(() => this.updateTabStageHeight());
     },
 
     initSwipeTabs() {
@@ -730,6 +746,9 @@
       }
       // v32.0: 成功 → hide skeleton (覆盖正常路径 + polling 触发路径)
       this.hideAllSkeletons();
+      // v32.2: analysis tab 内容画完 (chart / carry_forward note), 重新算 tab-stage 高度
+      // (chart canvas 撑高, 或 skeleton 隐藏后高度变化)
+      requestAnimationFrame(() => this.updateTabStageHeight());
     },
 
     // v32.0: 切到 analysis tab 时 this.data 还未就绪 → polling 100ms ×100 等 fetch 完成
@@ -774,6 +793,24 @@
         el.innerHTML = `<span>${text}</span><div class="skeleton-bar"></div>`;
         el.onclick = () => this.load();
       });
+    },
+
+    // v32.2: tab-stage 高度 = 当前 active page offsetHeight, 让 footer 紧贴无空白.
+    // 触发: changeTab / initTabs / renderCharts 完成 / window resize / fonts ready.
+    // CSS .tab-stage 有 280ms height transition 平滑过渡 (跟 swipe commit 同 timing).
+    updateTabStageHeight() {
+      const stage = document.querySelector('.tab-stage');
+      if (!stage) return;
+      const idx = this.currentTabIdx != null ? this.currentTabIdx : 0;
+      const target = tabOrder[idx];
+      if (!target) return;
+      const page = document.getElementById('page-' + target);
+      if (!page) return;
+      const h = page.offsetHeight;
+      // 只设有效高度,避免初次 layout 时设 0 把 stage 隐藏
+      if (h > 0) {
+        stage.style.height = h + 'px';
+      }
     },
 
     // v22.26: chart 已存在 → updateChartsFull 重设 data + update('none');
@@ -1206,6 +1243,18 @@
   } else {
     App.bindNavTabs();
     App.load();
+  }
+
+  // v32.2: window resize 监听 (debounce 200ms) 重算 tab-stage 高度 — 横竖屏切换 / 浏览器
+  // 窗口 resize / 软键盘弹出收回 都会触发, 防止 tab-stage 高度 stale.
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => App.updateTabStageHeight(), 200);
+  });
+  // v32.2: 字体异步加载完 (Google Fonts / 系统字体回落) 后, 行高变化 → 重算 tab-stage 高度.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => App.updateTabStageHeight());
   }
 
   window.DashboardApp = App;

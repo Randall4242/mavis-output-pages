@@ -186,12 +186,17 @@
     overflow: hidden;
     position: relative;
     touch-action: pan-y;  /* 允许 vertical scroll, horizontal swipe 走 JS */
+    /* v32.2: tab-stage 高度 = 当前 active page 高度 (JS 动态设), 让 footer 紧贴无空白.
+       280ms 平滑过渡, 跟 swipe commit 动画 timing 一致, 切 tab 时垂直缩放不抖 */
+    transition: height 280ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .tab-drawer {
     display: flex;
     flex-direction: row;
     width: 400%;  /* 4 page 各 25% = 4 × stage width, 让 100% in translateX = 1 page width */
     will-change: transform;
+    /* v32.2: align-items flex-start 让短 page 不被 flex stretch 到长 page 高 (否则 drawer 高 = max, 短 tab 撑高) */
+    align-items: flex-start;
   }
   .tab-page {
     flex: 0 0 25%;   /* 25% of drawer width = 1/4 × 400% = 100% of stage width = viewport width */
@@ -1513,7 +1518,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.1 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v32.0→v32.1 polish: trade-cell-fee (累计手续费) grid-column: 1/-1 横跨整行 + 米白底 + 深棕 2px 边 + 24px 字号, 桌面 3 列布局 (3+1+1wide-row) + 移动 2 列布局 (2+2+1wide-row) 都让"累计手续费"独占一行加大, 信息层级突显 (plan P2-B 实施)</div>
+  <div>PORTFOLIO DASHBOARD · v32.2 · 2026-09-22 · ELSEWHERE 母题 · 4 tab · v32.1→v32.2 fix: 每个 tab 自适应页面长度, tab-stage 高度 = 当前 active page offsetHeight (CSS 280ms transition 平滑过渡), 切到短 tab (设置) 时 footer 自动往上贴不留空白, 切到长 tab (今日/分析) 自动撑高; .tab-drawer 加 align-items: flex-start 让短 page 不被 flex stretch; 触发时机: changeTab / initTabs / renderCharts / window resize / fonts.ready</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1521,6 +1526,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.1"></script>
+<script src="dashboard.js?v=32.2"></script>
 </body>
 </html>
