@@ -1,35 +1,22 @@
 {
   "meta": {
-    "generated_at": "2026-09-23T16:48:37+08:00",
+    "generated_at": "2026-09-23T16:58:11+08:00",
     "trade_date": "2026-09-23",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -1428.0,
-    "floating_pnl_pct": -5.67,
-    "realized_pnl_abs": 596.2,
-    "realized_pnl_pct": 2.61,
-    "total_pnl_abs": -831.8,
-    "total_pnl_pct": -1.73,
+    "floating_pnl_abs": -1589.0,
+    "floating_pnl_pct": -7.47,
+    "realized_pnl_abs": 822.2,
+    "realized_pnl_pct": 3.07,
+    "total_pnl_abs": -766.8,
+    "total_pnl_pct": -1.6,
     "initial_principal": 48064.3,
     "excess_csi300_pct": -1.01,
     "excess_sh_pct": 0.76
   },
   "holdings": [
-    {
-      "code": "600755",
-      "name": "厦门国贸",
-      "shares": 700,
-      "cost": 5.57,
-      "close": 5.8,
-      "prev_close": 5.81,
-      "change_pct": -0.17,
-      "change_amount": -0.01,
-      "daily_pnl": -7.0,
-      "pnl_abs": 161.0,
-      "pnl_pct": 4.1293
-    },
     {
       "code": "601021",
       "name": "春秋航空",
@@ -59,6 +46,15 @@
   ],
   "closed_holdings": [
     {
+      "code": "600755",
+      "name": "厦门国贸",
+      "closed_at": "2026-09-23",
+      "cost_total": 6119.0,
+      "recv_total": 6402.0,
+      "realized_abs": 273.0,
+      "realized_pct": 4.46
+    },
+    {
       "code": "600383",
       "name": "金地集团",
       "closed_at": "2026-09-03",
@@ -78,6 +74,14 @@
     }
   ],
   "transactions_recent": [
+    {
+      "trade_date": "2026-09-23",
+      "code": "600755",
+      "name": "厦门国贸",
+      "side": "sell",
+      "shares": 700,
+      "price": 5.9
+    },
     {
       "trade_date": "2026-09-18",
       "code": "601021",
@@ -149,22 +153,14 @@
       "side": "sell",
       "shares": 400,
       "price": 5.68
-    },
-    {
-      "trade_date": "2026-07-01",
-      "code": "600884",
-      "name": "杉杉股份",
-      "side": "buy",
-      "shares": 1300,
-      "price": 13.14
     }
   ],
   "trade_summary": {
     "buy_count": 10,
-    "sell_count": 6,
+    "sell_count": 7,
     "total_buy_amount": 48094.3,
-    "total_sell_amount": 23482.5,
-    "total_fee": 60.0
+    "total_sell_amount": 27607.5,
+    "total_fee": 65.0
   },
   "pnl_series": [
     {
@@ -1177,10 +1173,10 @@
     },
     {
       "trade_date": "2026-09-23",
-      "total_cost": 25178.0,
-      "total_mkt": 23750.0,
-      "total_pnl": -1428.0,
-      "total_pct": -5.67,
+      "total_cost": 21279.0,
+      "total_mkt": 19690.0,
+      "total_pnl": -1589.0,
+      "total_pct": -7.47,
       "cost_basis": "real"
     }
   ],
