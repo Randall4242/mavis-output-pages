@@ -4,6 +4,24 @@
 
 ---
 
+## v32.6 · 2026-09-23 · cleanup
+
+plan **P4-C** + **P4-D** 实施
+
+- **P4-C**: CSS 16 处 `v22.X` 版本号修订史注释清理(`v22.27` Liquid Glass / `v22.28` mobile nav.tabs / `v22.29` logo+meta / `v22.30-v27.0` 三段式算式 / `v22.31` mobile 5 列 / `v22.34` gap / `v22.36` flex column),全部移到 CHANGELOG.md。CSS 注释只保留"为什么这样" (设计意图),不保留"改了什么" (历史信息)。
+- **P4-D**: sw.js CACHE 列表加 `./images/icon-512.svg`(manifest.json 早就引了 192+512,但 sw.js 只预缓存 192 → PWA 离线时 512 找不到)。二选一选了 (a) 加 512 缓存,避免 manifest 定义跟 sw cache 不一致。
+- 4 处版本号同步 v32.6。
+
+## v32.5 · 2026-09-23 · 加固
+
+plan **Phase 3** 实施 — 5 项加固
+
+- **P3-A** dashboard.js line 2 注释版本号 v32.5 (9-20 硬规则保证,自动同步)
+- **P3-B** footer 文字清理 (CSS 关键字从 footer 移除) + 创建 `CHANGELOG.md` 归档变动摘要
+- **P3-C** renderHoldings `change_amount` 加 NULL guard(`if (h.change_pct != null && h.change_amount != null)`,后端漏字段不崩)
+- **P3-D** appendChartsWith 改用预转 Map 替代 `.find()` O(N):`myMap.get(fullDate)` 替代 `(bench.my_portfolio || []).find(x => x.trade_date === fullDate)`,append N day 时 3N find → 3 + N Map lookup
+- **P3-E** t.side 三元映射 buy/sell/dividend/fee → 显示文本 + 颜色 class,其他值兜底原值:`({buy:'up',sell:'down'})[t.side] || ''` 配 class,`({buy:'买',sell:'卖',dividend:'分红',fee:'费用'})[t.side] || t.side` 配文本
+
 ## v32.4 · 2026-09-22 · cleanup
 
 plan **P2-C** + **P4-A** 实施

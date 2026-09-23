@@ -51,9 +51,7 @@
     border-bottom: 1px solid var(--border);
     margin-bottom: 56px;
   }
-  /* v22.29: logo + meta 紧挨在一行 (top-row), tab 独立下一行.
-     meta 紧贴 logo 右边 (gap 24px), 视觉上是 logo 的一组附属, 不再散到屏幕最右.
-     desktop margin-left: auto 让 meta 推到屏幕右端, 留出中间空白 (1280 宽, 视觉平衡) */
+  /* header desktop: logo + meta 同 row, meta margin-left: auto 推右端 (视觉平衡), tab 独立下一行 */
   .header-top-row {
     display: flex;
     align-items: center;
@@ -63,9 +61,7 @@
   .header-top-row .header-meta {
     margin-left: auto;
   }
-  /* Mobile (≤600px) header sticky 上浮: 滚动时保持 tab 栏在顶部, 随时切 tab
-     v22.28: 整条 header liquid glass 化 — logo + tab + meta 平铺在一个玻璃底板上,
-     不再让 tab 栏单独浮起成 "玻璃卡". 视觉过度自然, 跟周围一体 */
+  /* mobile @600: header 整条 liquid glass 化 (不再让 tab 栏单独浮起成"玻璃卡") */
   @media (max-width: 600px) {
     header.app-header {
       position: sticky;
@@ -113,7 +109,7 @@
     padding-top: 12px;
     padding-bottom: 8px;
     margin-top: -4px;  /* 抵消 padding-top 避免多余间距 */
-    /* v22.27: Apple Liquid Glass 风 — 滚动时浮在顶部, 半透米白 + 饱和度增强 + 玻璃高光 + 浮起阴影 */
+    /* Apple Liquid Glass 风 (sticky header): 半透米白 + 玻璃高光 + 浮起阴影 */
     background: rgba(247, 247, 245, 0.5);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -146,8 +142,7 @@
   }
   .header-meta svg { color: var(--ink-secondary); cursor: pointer; }
 
-  /* v22.28: mobile 下让 nav.tabs 在 header 内部平铺, 不再独立浮起成"玻璃卡".
-     整条 header 已经是 liquid glass (mobile @media 块里设过), nav.tabs 透明 + 不要 border + 不要 shadow. */
+  /* mobile @600: nav.tabs 在 header 内平铺, 透明 + 不要 border + 不要 shadow (整条 header 已 liquid glass) */
   @media (max-width: 600px) {
     nav.tabs {
       position: static;
@@ -160,7 +155,7 @@
       margin-top: 0;
       gap: 18px;
     }
-    /* v22.29: mobile 让 meta 紧贴 logo (desktop 是推到右端, mobile 空间紧, 紧贴更符合 "logo 右边" 字面意思) */
+    /* mobile @600: header-top-row 紧贴 (desktop gap 24px → mobile gap 14px, meta 紧跟 logo 符合 "logo 右边" 字面意思) */
     .header-top-row {
       gap: 14px;
     }
@@ -170,10 +165,8 @@
   }
 
   
-  /* Tab 切换 (2026-09-18 v22.4): 今日 / 分析 / 设置
-     v31.0: 撤销 .tab-pane[hidden] 控制 visibility, 改用 .tab-drawer + .tab-page 横排 +  drawer translateX
-     控制显示哪个 page (native iOS page swipe 体验, 整个 drawer 跟手 peek 下一 page).
-     .tab-pane 不再有 hidden 属性, 全部默认 display:block 在各自 page 内 */
+  /* v31.0: .tab-pane 不再有 hidden 属性, 4 个 page 全部默认 display:block 在各自 .tab-page 内,
+     drawer transform translateX 切 tab (native iOS page swipe 体验, drawer 跟手 peek 下一 page) */
   .tab-pane[hidden] { display: none !important; }
   nav.tabs a { cursor: pointer; transition: color 0.2s; }
   nav.tabs a.settings-soon { color: var(--ink-muted); cursor: not-allowed; opacity: 0.5; }
@@ -218,9 +211,8 @@
      默认 visible (today), 切到其他 tab 时 hidden */
   .hero[data-tab-mode="hidden"] { display: none; }
   /* Guilloche 编织花纹沿 4 边 (老银票风, 2 条 sine 互相缠绕).
-     2026-09-18 v22.2: SVG → PNG (PIL 程序生成, 无 AI). PNG 高 12px, 体积 513/578 bytes.
-     4 角不画 (留 6px 空白做 breathing room).
-     background-image 多层: top + bottom 两条横向 PNG, left + right 两条纵向 PNG. */
+     .hero-frame Guilloche 编织花纹沿 4 边 (老银票风, 2 条 sine 互绕):
+     top + bottom 各一条横向 PNG, left + right 各一条纵向 PNG, 4 角留 6px 空白 (breathing room) */
   .hero-frame {
     position: absolute;
     pointer-events: none;
@@ -360,10 +352,8 @@
   /* ============ THREE-SEGMENT P&L (with denominator 副行) ============ */
   .three-seg {
     display: grid;
-    /* v22.30: 算式表达法 — 持仓 + 已实现 = 总投, 中间塞两个运营商列 (auto)
-       v26.0: 改 1fr → minmax(0, 1fr), 三段 column 严格等宽
-       v27.0: 改 grid 1fr 1fr 1fr (去掉两个 auto 列), 三段 column 严格 1/3 等宽,
-       borders 落在 1/3 + 2/3 位置; .seg-op 改 position: absolute 浮动在 borders 上,
+    /* 三段式算式表达法: 持仓 + 已实现 = 总投, grid 1fr 1fr 1fr 等宽,
+       .seg-op position: absolute 浮动在 1/3 + 2/3 borders 上, 视觉上像数学算式 */
        背景透明 + 无 box-shadow, 不再视觉扩展相邻 block 的白底面积
        (之前 .seg-op 白色背景 + box-shadow 各扩 2px, 让已实现 + 总投 两段的白底
        比持仓宽 60+ px, 三段白底面积不等 — user 9-21 反馈) */
@@ -678,9 +668,8 @@
   @media (max-width: 600px) {
     /* ===== 布局 (现有) ===== */
     .holdings-grid { grid-template-columns: 1fr; }
-    /* v22.31: mobile 三段式横排 5 列 (持仓 + 已实现 = 总投) — user 2026-09-21 11:37 反馈"我要横的",
-       不要 column 模式 + op 单独行. mobile 360 宽 / 5 列 ≈ 65px 一列, 字号紧凑到 14px,
-       隐藏 seg-label 和 seg-denominator 节省空间, 只留核心: 数字 + 百分比 + op */
+    /* mobile @600: 三段式横排 5 列 (持仓 + 已实现 = 总投, 中间塞 op), 360 宽 / 65px 一列
+       字号紧凑到 14px, 隐藏 seg-label / seg-denominator 节省空间, 只留核心: 数字 + 百分比 + op */
     .three-seg {
       /* v27.0: 跟 desktop 同步, mobile 三段 column 1fr 1fr 1fr 等宽 */
       grid-template-columns: 1fr 1fr 1fr;
@@ -690,7 +679,7 @@
       padding: 12px 4px 14px;
       border-right: 1px solid var(--border);
       border-bottom: none;
-      /* v22.36: flex column + align-items: center 让 4 层 (label/数字/百分比/vs) 各自在 cell 内水平居中 */
+      /* seg 内 flex column + align-items: center: 让 4 层 (label/数字/百分比/vs) 各自在 cell 内水平居中 */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -703,7 +692,7 @@
     .seg-label {
       display: block;
       font-size: 7px;
-      margin: 0;  /* v22.34: gap 控制 */
+      margin: 0;
       letter-spacing: 0.02em;
       line-height: 1.1;
       color: var(--ink-muted);
@@ -714,18 +703,18 @@
     .seg-amount {
       font-size: 15px;
       letter-spacing: -0.02em;
-      margin: 0;  /* v22.34: gap 控制 */
+      margin: 0;
       font-weight: 800;
-      line-height: 1;  /* v22.34: 紧凑, 跟 .unit baseline 对齐 */
+      line-height: 1;  /* 紧凑, 跟 .unit baseline 对齐 */
     }
     .seg-amount .unit {
       font-size: 10px;
       margin-left: 1px;
-      vertical-align: baseline;  /* v22.34: 跟数字 baseline 对齐 (原来没设导致略低) */
+      vertical-align: baseline;  /* 跟数字 baseline 对齐 (无 baseline 会略低) */
     }
     .seg-percent {
       font-size: 10px;
-      margin: 0;  /* v22.34: gap 控制 */
+      margin: 0;
       letter-spacing: -0.01em;
       line-height: 1;
     }
@@ -733,7 +722,7 @@
       display: block;
       font-size: 7px;
       color: var(--ink-muted);
-      margin: 0;  /* v22.34: gap 控制 */
+      margin: 0;
       letter-spacing: 0.02em;
       line-height: 1.2;
       font-family: 'JetBrains Mono', monospace;
@@ -1518,7 +1507,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.5 · 2026-09-23 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.6 · 2026-09-23 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1526,6 +1515,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.5"></script>
+<script src="dashboard.js?v=32.6"></script>
 </body>
 </html>
