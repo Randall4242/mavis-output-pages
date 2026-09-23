@@ -449,6 +449,12 @@
   .down { color: var(--accent-down); }
   .neutral { color: var(--ink-muted); }
 
+  /* v32.7 polish: summary 切 tab fade transition (today→analysis/closed/settings 形态变化时不重).
+     .switching 加在 changeTab 同步切 dataset.tabMode 之前, 100ms 后移除.
+     锁防快速连切: clearTimeout 同一个 .summary 上的 stale timer. */
+  .summary { transition: opacity 0.18s ease-out; }
+  .summary.switching { opacity: 0; }
+
   /* ============ HEADPIECE (文艺复兴官方文件头饰 — 椭圆 cartouche + rosette, 居中装饰, 非分割线) ============ */
   /* v31.8: 撤销 v31.5 sticky top:0. 用户 9-22 反馈 summary 不需要固定在顶部, 跟其他内容一起随
      滚屏走 (document flow). hero 跟 summary 都在 body level (tab-stage 外), tab-stage 内只放 drawer.
@@ -787,6 +793,10 @@
     .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl { margin-top: 2px; padding-top: 2px; }
     .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-key { font-size: 7px; }
     .summary[data-tab-mode="analysis"] .holding-card[data-mode="compact"] .holding-pnl-val { font-size: 10px; }
+    /* v32.7 polish: closed-trades 标题 '已清仓' 跟 count span 在 S24 (360 宽) 挤两行,
+       flex-wrap: wrap 让 h2 自己一行 + .count 拆下一行独占. desktop 不动 (gap 12px 还够). */
+    .section-title { flex-wrap: wrap; row-gap: 4px; }
+    .section-title > .count { flex-basis: 100%; white-space: normal; word-break: break-word; }
   }
 
   .holding-card {
@@ -1507,7 +1517,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.6 · 2026-09-23 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.7 · 2026-09-23 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1515,6 +1525,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.6"></script>
+<script src="dashboard.js?v=32.7"></script>
 </body>
 </html>

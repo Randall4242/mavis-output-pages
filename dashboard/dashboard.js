@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.6 (2026-09-23)
+ * Mavis Stock Tracker — Dashboard.js v32.7 (2026-09-23)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -328,6 +328,15 @@
       // 切 tab 时改 summary 形态 + headpiece text + holding-card data-mode
       // (today 标准 / analysis 紧凑 / closed-trades 已实现单行 + holding 隐藏 / settings 全隐)
       const summaryEl = document.querySelector('.summary');
+      // v32.7 polish: summary 切 tab fade. 只在已加载过的形态变化时 fade (避免初次加载看不见).
+      // 锁防快速连切: 同一 summary 上 stale timer clearTimeout 掉.
+      const prevTabMode = summaryEl?.dataset.tabMode;
+      const needsFade = summaryEl && prevTabMode && prevTabMode !== target;
+      if (this._summaryFadeTimer) {
+        clearTimeout(this._summaryFadeTimer);
+        this._summaryFadeTimer = null;
+      }
+      if (needsFade) summaryEl.classList.add('switching');
       if (summaryEl) {
         summaryEl.dataset.tabMode = target;
         const headpieceText = summaryEl.querySelector('.headpiece-text');
@@ -386,6 +395,14 @@
       // v32.2: 切 tab 后立即设 tab-stage 高度 = 当前 page 高度 (CSS transition 平滑过渡).
       // rAF 等一帧让 layout 完成 (drawer transform 还没应用前先读 offsetHeight 更稳).
       requestAnimationFrame(() => this.updateTabStageHeight());
+      // v32.7 polish: summary fade in. 100ms 后移除 .switching (opacity 0→1, CSS transition 0.18s).
+      // 锁 this._summaryFadeTimer 在上面, 快速连切时上次的 timer 已被 clear, 只 fade-in 一次.
+      if (needsFade) {
+        this._summaryFadeTimer = setTimeout(() => {
+          summaryEl.classList.remove('switching');
+          this._summaryFadeTimer = null;
+        }, 100);
+      }
     },
 
     initSwipeTabs() {
