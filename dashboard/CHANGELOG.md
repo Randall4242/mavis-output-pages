@@ -182,3 +182,21 @@ plan **P2-A** 实施 — 切到 analysis tab 数据未加载静默(三个叠加�
 
 **4 处版本号同步硬规则**(9-20 user-pinned):
 每次 commit 必同步 `index.html footer` + `dashboard.js?v=X.X` query string + `dashboard.js line 2 注释` + `sw.js CACHE_NAME`。漏掉 user 看页面不知道是新版本,会怀疑没生效。
+---
+
+## v32.7 (2026-09-23) — mobile UX polish (2 项)
+
+### 任务 2: closed-trades 标题 "已清仓" 挤两行 fix
+- **症状**: S24 (360×800) 清仓 tab 标题 "已清仓" 被挤压成两行 ("已清" + "仓"), 后面 count span "2 只 · 累计实现 +547.20 · 释放本金 16,247.30" 顶开 title 宽度
+- **修法**: mobile @media (max-width: 600px) 内 `.section-title { flex-wrap: wrap; row-gap: 4px; }` + `.section-title > .count { flex-basis: 100%; white-space: normal; word-break: break-word; }`
+- **效果**: title "已清仓" 单行大字, count span 拆下一行独占
+- **desktop 不动**: gap 12px 还够用, 没破坏现有 desktop 布局
+
+### 任务 3: summary 切 tab fade transition
+- **症状**: 切 tab 时 summary 直接 swap 形态 (today→analysis/closed/settings), 视觉上略生硬
+- **修法**: CSS `.summary { transition: opacity 0.18s ease-out; } .summary.switching { opacity: 0; }` + JS changeTab 加 needsFade guard + _summaryFadeTimer 锁防快速连切
+- **机制**: 
+  - needsFade = prevTabMode && prevTabMode !== target (避免初次加载空白)
+  - 加 .switching (同步, opacity 0) → 切 dataset.tabMode → 100ms 后移除 .switching (opacity 0→1, 0.18s transition)
+  - 锁 this._summaryFadeTimer: 快速连切时 clearTimeout 上次 timer, 只 fade-in 一次 (实测 60ms 内 3 次切 tab 只 fade-in 1 次)
+- **不影响**: drawer transform animation (并行), chart renderCharts (并行), hero dataset.tabMode 切换 (并行)
