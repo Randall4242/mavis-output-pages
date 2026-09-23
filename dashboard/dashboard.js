@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.4 (2026-09-22)
+ * Mavis Stock Tracker — Dashboard.js v32.5 (2026-09-23)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -630,7 +630,8 @@
         const cls = gain ? 'gain' : (loss ? 'loss' : '');
 
         const dailyRows = [];
-        if (h.change_pct != null) {
+        // v32.5: change_amount 加 null guard (plan P3-C) — 后端漏字段不会崩, 跳过该行
+        if (h.change_pct != null && h.change_amount != null) {
           dailyRows.push(`<div class="holding-row"><span class="holding-key">今日涨跌</span><span class="holding-val ${pnlClass(h.change_amount)}">${h.change_amount >= 0 ? '+' : ''}${h.change_amount.toFixed(3)} (${fmtPct(h.change_pct)})</span></div>`);
         }
         if (h.daily_pnl != null) {
@@ -722,7 +723,7 @@
       $('tx-tbody').innerHTML = list.map(t => `
         <tr>
           <td>${t.trade_date}</td>
-          <td class="${t.side === 'buy' ? 'up' : 'down'}">${t.side === 'buy' ? '买' : '卖'}</td>
+          <td class="${({buy:'up',sell:'down'})[t.side] || ''}">${({buy:'买',sell:'卖',dividend:'分红',fee:'费用'})[t.side] || t.side}</td>
           <td class="name-cell">${escapeHtml(t.name)} <span style="color:var(--ink-muted);font-size:11px">${t.code}</span></td>
           <td class="num">${t.shares.toLocaleString()}</td>
           <td class="num">${t.price.toFixed(3)}</td>
@@ -857,14 +858,18 @@
       }
 
       // benchmark: 找 my_portfolio / sh / csi300 里对应 trade_date 的 cum_pct / pct_from_baseline
+      // v32.5: bench 3 个数组预转 Map (plan P3-D 性能优化), append N day 时 O(3N) → O(3 + N) lookup
       const c2 = this.charts.benchmark;
       const bench = (this.dataCache && this.dataCache.benchmark) || {};
       if (c2) {
+        const myMap = new Map((bench.my_portfolio || []).map(r => [r.trade_date, r]));
+        const shMap = new Map((bench.sh || []).map(r => [r.trade_date, r]));
+        const csiMap = new Map((bench.csi300 || []).map(r => [r.trade_date, r]));
         newDays.forEach(r => {
           const fullDate = r.trade_date;
-          const myR = (bench.my_portfolio || []).find(x => x.trade_date === fullDate);
-          const shR = (bench.sh || []).find(x => x.trade_date === fullDate);
-          const csiR = (bench.csi300 || []).find(x => x.trade_date === fullDate);
+          const myR = myMap.get(fullDate);
+          const shR = shMap.get(fullDate);
+          const csiR = csiMap.get(fullDate);
           c2.data.labels.push(fullDate.substring(5));
           // dataset 0: 我的持仓
           c2.data.datasets[0].data.push(myR ? myR.cum_pct : null);
