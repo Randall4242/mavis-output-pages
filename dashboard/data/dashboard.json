@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-09-23T16:58:11+08:00",
+    "generated_at": "2026-09-23T17:04:26+08:00",
     "trade_date": "2026-09-23",
     "source": "supabase",
     "schema_version": 2
@@ -8,13 +8,13 @@
   "summary": {
     "floating_pnl_abs": -1589.0,
     "floating_pnl_pct": -7.47,
-    "realized_pnl_abs": 822.2,
-    "realized_pnl_pct": 3.07,
-    "total_pnl_abs": -766.8,
-    "total_pnl_pct": -1.6,
-    "initial_principal": 48064.3,
-    "excess_csi300_pct": -1.01,
-    "excess_sh_pct": 0.76
+    "realized_pnl_abs": 873.2,
+    "realized_pnl_pct": 3.14,
+    "total_pnl_abs": -715.8,
+    "total_pnl_pct": -1.46,
+    "initial_principal": 49064.3,
+    "excess_csi300_pct": -0.93,
+    "excess_sh_pct": 0.84
   },
   "holdings": [
     {
@@ -46,6 +46,15 @@
   ],
   "closed_holdings": [
     {
+      "code": "600383",
+      "name": "金地集团",
+      "closed_at": "2026-09-23",
+      "cost_total": 2319.4,
+      "recv_total": 2466.0,
+      "realized_abs": 136.6,
+      "realized_pct": 5.89
+    },
+    {
       "code": "600755",
       "name": "厦门国贸",
       "closed_at": "2026-09-23",
@@ -53,15 +62,6 @@
       "recv_total": 6402.0,
       "realized_abs": 273.0,
       "realized_pct": 4.46
-    },
-    {
-      "code": "600383",
-      "name": "金地集团",
-      "closed_at": "2026-09-03",
-      "cost_total": 1319.4,
-      "recv_total": 1410.0,
-      "realized_abs": 85.6,
-      "realized_pct": 6.49
     },
     {
       "code": "513780",
@@ -76,11 +76,27 @@
   "transactions_recent": [
     {
       "trade_date": "2026-09-23",
+      "code": "600383",
+      "name": "金地集团",
+      "side": "sell",
+      "shares": 400,
+      "price": 2.64
+    },
+    {
+      "trade_date": "2026-09-23",
       "code": "600755",
       "name": "厦门国贸",
       "side": "sell",
       "shares": 700,
       "price": 5.9
+    },
+    {
+      "trade_date": "2026-09-22",
+      "code": "600383",
+      "name": "金地集团",
+      "side": "buy",
+      "shares": 400,
+      "price": 2.5
     },
     {
       "trade_date": "2026-09-18",
@@ -137,30 +153,14 @@
       "side": "buy",
       "shares": 4000,
       "price": 1.481
-    },
-    {
-      "trade_date": "2026-07-06",
-      "code": "513780",
-      "name": "港股创新药ETF",
-      "side": "sell",
-      "shares": 3800,
-      "price": 1.579
-    },
-    {
-      "trade_date": "2026-07-03",
-      "code": "600755",
-      "name": "厦门国贸",
-      "side": "sell",
-      "shares": 400,
-      "price": 5.68
     }
   ],
   "trade_summary": {
-    "buy_count": 10,
-    "sell_count": 7,
-    "total_buy_amount": 48094.3,
-    "total_sell_amount": 27607.5,
-    "total_fee": 65.0
+    "buy_count": 11,
+    "sell_count": 8,
+    "total_buy_amount": 49099.3,
+    "total_sell_amount": 28658.5,
+    "total_fee": 75.0
   },
   "pnl_series": [
     {
@@ -1225,19 +1225,19 @@
       },
       {
         "trade_date": "2026-03-16",
-        "cum_pct": 0.23
+        "cum_pct": 0.22
       },
       {
         "trade_date": "2026-03-17",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-03-18",
-        "cum_pct": 0.35
+        "cum_pct": 0.34
       },
       {
         "trade_date": "2026-03-19",
-        "cum_pct": 0.13
+        "cum_pct": 0.12
       },
       {
         "trade_date": "2026-03-20",
@@ -1261,259 +1261,259 @@
       },
       {
         "trade_date": "2026-03-27",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-03-30",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-03-31",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-01",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-02",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-03",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-07",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-08",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-09",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-10",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-13",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-14",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-15",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-16",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-17",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-20",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-21",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-22",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-23",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-24",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-27",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-28",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-29",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-04-30",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-06",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-07",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-08",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-11",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-12",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-13",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-14",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-15",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-18",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-19",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-20",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-21",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-22",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-25",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-26",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-27",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-28",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-05-29",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-01",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-02",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-03",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-04",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-05",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-08",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-09",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-10",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-11",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-12",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-15",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-16",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-17",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-18",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-22",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-23",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-24",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-25",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-26",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-29",
-        "cum_pct": 0.26
+        "cum_pct": 0.25
       },
       {
         "trade_date": "2026-06-30",
-        "cum_pct": -0.84
+        "cum_pct": -0.83
       },
       {
         "trade_date": "2026-07-01",
-        "cum_pct": 0.78
+        "cum_pct": 0.77
       },
       {
         "trade_date": "2026-07-02",
@@ -1521,59 +1521,59 @@
       },
       {
         "trade_date": "2026-07-03",
-        "cum_pct": 0.36
+        "cum_pct": 0.35
       },
       {
         "trade_date": "2026-07-06",
-        "cum_pct": 1.2
+        "cum_pct": 1.18
       },
       {
         "trade_date": "2026-07-07",
-        "cum_pct": 1.63
+        "cum_pct": 1.6
       },
       {
         "trade_date": "2026-07-08",
-        "cum_pct": -0.73
+        "cum_pct": -0.72
       },
       {
         "trade_date": "2026-07-09",
-        "cum_pct": -2.28
+        "cum_pct": -2.24
       },
       {
         "trade_date": "2026-07-10",
-        "cum_pct": -2.62
+        "cum_pct": -2.57
       },
       {
         "trade_date": "2026-07-13",
-        "cum_pct": -2.07
+        "cum_pct": -2.03
       },
       {
         "trade_date": "2026-07-14",
-        "cum_pct": -1.57
+        "cum_pct": -1.54
       },
       {
         "trade_date": "2026-07-15",
-        "cum_pct": -1.59
+        "cum_pct": -1.56
       },
       {
         "trade_date": "2026-07-16",
-        "cum_pct": -1.64
+        "cum_pct": -1.61
       },
       {
         "trade_date": "2026-07-17",
-        "cum_pct": -2.66
+        "cum_pct": -2.6
       },
       {
         "trade_date": "2026-07-20",
-        "cum_pct": -3.84
+        "cum_pct": -3.76
       },
       {
         "trade_date": "2026-07-21",
-        "cum_pct": -0.82
+        "cum_pct": -0.8
       },
       {
         "trade_date": "2026-07-22",
-        "cum_pct": -0.54
+        "cum_pct": -0.53
       },
       {
         "trade_date": "2026-07-23",
@@ -1581,111 +1581,111 @@
       },
       {
         "trade_date": "2026-07-24",
-        "cum_pct": -1.25
+        "cum_pct": -1.22
       },
       {
         "trade_date": "2026-07-27",
-        "cum_pct": -0.15
+        "cum_pct": -0.14
       },
       {
         "trade_date": "2026-07-28",
-        "cum_pct": -0.36
+        "cum_pct": -0.35
       },
       {
         "trade_date": "2026-07-29",
-        "cum_pct": 0.96
+        "cum_pct": 0.94
       },
       {
         "trade_date": "2026-08-19",
-        "cum_pct": 1.06
+        "cum_pct": 1.04
       },
       {
         "trade_date": "2026-08-20",
-        "cum_pct": -2.86
+        "cum_pct": -2.8
       },
       {
         "trade_date": "2026-08-21",
-        "cum_pct": -2.32
+        "cum_pct": -2.28
       },
       {
         "trade_date": "2026-08-24",
-        "cum_pct": -1.93
+        "cum_pct": -1.89
       },
       {
         "trade_date": "2026-08-25",
-        "cum_pct": -1.96
+        "cum_pct": -1.92
       },
       {
         "trade_date": "2026-08-26",
-        "cum_pct": -1.41
+        "cum_pct": -1.38
       },
       {
         "trade_date": "2026-08-27",
-        "cum_pct": -1.57
+        "cum_pct": -1.54
       },
       {
         "trade_date": "2026-08-28",
-        "cum_pct": -1.8
+        "cum_pct": -1.76
       },
       {
         "trade_date": "2026-08-31",
-        "cum_pct": -2.29
+        "cum_pct": -2.24
       },
       {
         "trade_date": "2026-09-01",
-        "cum_pct": -2.25
+        "cum_pct": -2.2
       },
       {
         "trade_date": "2026-09-02",
-        "cum_pct": -3.02
+        "cum_pct": -2.96
       },
       {
         "trade_date": "2026-09-03",
-        "cum_pct": -2.89
+        "cum_pct": -2.83
       },
       {
         "trade_date": "2026-09-04",
-        "cum_pct": -3.12
+        "cum_pct": -3.06
       },
       {
         "trade_date": "2026-09-07",
-        "cum_pct": -3.06
+        "cum_pct": -3.0
       },
       {
         "trade_date": "2026-09-08",
-        "cum_pct": -2.87
+        "cum_pct": -2.81
       },
       {
         "trade_date": "2026-09-09",
-        "cum_pct": -3.06
+        "cum_pct": -3.0
       },
       {
         "trade_date": "2026-09-10",
-        "cum_pct": -3.33
+        "cum_pct": -3.26
       },
       {
         "trade_date": "2026-09-11",
-        "cum_pct": -4.09
+        "cum_pct": -4.0
       },
       {
         "trade_date": "2026-09-14",
-        "cum_pct": -4.06
+        "cum_pct": -3.98
       },
       {
         "trade_date": "2026-09-15",
-        "cum_pct": -4.07
+        "cum_pct": -3.99
       },
       {
         "trade_date": "2026-09-16",
-        "cum_pct": -4.02
+        "cum_pct": -3.93
       },
       {
         "trade_date": "2026-09-17",
-        "cum_pct": -4.58
+        "cum_pct": -4.48
       },
       {
         "trade_date": "2026-09-18",
-        "cum_pct": -4.03
+        "cum_pct": -3.95
       }
     ],
     "sh": [
