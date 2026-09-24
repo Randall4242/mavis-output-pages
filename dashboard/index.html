@@ -984,6 +984,32 @@
     position: relative;
     height: 280px;
   }
+  /* v32.22: external tooltip 容器 (绝对定位, chart 顶部对齐, 居中显示在 hovered x 上) */
+  .pnl-trend-tooltip {
+    position: absolute;
+    background: #1A1A1A;
+    color: #F7F7F5;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 8px 12px;
+    border: 1px solid #3A2E26;
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 5;
+    transform: translateX(-50%);  /* 居中对齐 hovered x */
+    white-space: nowrap;
+    transition: opacity 0.12s ease-out;
+  }
+  .pnl-trend-tooltip .pnl-tooltip-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #3A2E26;
+  }
+  .pnl-trend-tooltip .pnl-tooltip-line {
+    line-height: 1.5;
+  }
   .chart-loading {
     color: var(--ink-muted);
     font-size: 12px;
@@ -1422,6 +1448,8 @@
   </div>
   <div class="chart-canvas-wrap">
     <canvas id="chart-pnl-trend"></canvas>
+    <!-- v32.22: external HTML tooltip 容器 (绝对定位, 顶部对齐 chart, 不挡 chart) -->
+    <div id="pnl-trend-tooltip" class="pnl-trend-tooltip"></div>
     <div class="chart-skeleton" id="skeleton-pnl-trend">
       <span>数据加载中…</span>
       <div class="skeleton-bar"></div>
@@ -1547,7 +1575,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.21 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.22 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1555,6 +1583,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.21"></script>
+<script src="dashboard.js?v=32.22"></script>
 </body>
 </html>

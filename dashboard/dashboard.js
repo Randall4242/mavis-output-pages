@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.21 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.22 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1173,6 +1173,31 @@
         }
       };
 
+      // v32.22: vertical line marker plugin — tooltip hover 时画竖线在 chart 区域
+      const verticalLinePlugin = {
+        id: 'verticalLine',
+        afterDatasetsDraw(chart) {
+          const tooltip = chart.tooltip;
+          if (!tooltip || !tooltip._active || tooltip._active.length === 0) return;
+          // 只取 dataset[1] (总盈亏) 的 active item 决定 x 位置
+          const active = tooltip._active.find(a => a.datasetIndex === 1) || tooltip._active[0];
+          if (!active || !active.element) return;
+          const cctx = chart.ctx;
+          const cArea = chart.chartArea;
+          if (!cArea) return;
+          const x = active.element.x;
+          cctx.save();
+          cctx.beginPath();
+          cctx.moveTo(x, cArea.top);
+          cctx.lineTo(x, cArea.bottom);
+          cctx.lineWidth = 1;
+          cctx.strokeStyle = '#3A2E26';  // accent-engrave 深棕
+          cctx.setLineDash([3, 3]);  // 短虚线
+          cctx.stroke();
+          cctx.restore();
+        }
+      };
+
       this.charts.pnlTrend = new Chart(ctx, {
         type: 'line',
         data: {
@@ -1256,39 +1281,49 @@
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#1A1A1A',
-              titleColor: '#F7F7F5',
-              bodyColor: '#F7F7F5',
-              titleFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 11, weight: 600 },
-              bodyFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 12 },
-              padding: isMobile ? 8 : 10,
-              borderColor: '#3A2E26',
-              borderWidth: 1,
-              displayColors: false,
-              yAlign: isMobile ? 'bottom' : undefined,
-              xAlign: isMobile ? 'center' : undefined,
-              callbacks: {
-                title: (ctx) => {
-                  const i = ctx[0].dataIndex;
-                  return series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
-                },
-                // v32.19: filter 过滤掉 overlap fill dataset, 只让 dataset[1] (总盈亏 line) 进 tooltip, 输出完整三行
-                filter: (tooltipItem) => tooltipItem.datasetIndex === 1,
-                label: (ctx) => {
-                  if (ctx.datasetIndex !== 1) return '';
-                  const i = ctx.dataIndex;
-                  const r = realizedPnls[i] || 0;
-                  const t = totalPnls[i] || 0;
-                  const f = t - r;
-                  const fmtN = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', {minimumFractionDigits: 2});
-                  return [
-                    '已实现: ' + fmtN(r) + ' 元',
-                    '总盈亏: ' + fmtN(t) + ' 元',
-                    '持仓盈亏 (gap): ' + fmtN(f) + ' 元'
-                  ];
+              // v32.22: 关闭内置 tooltip 渲染, 改用 external HTML tooltip (顶部对齐, 不挡 chart)
+              enabled: false,
+              external: (context) => {
+                const tooltipModel = context.tooltip;
+                const tooltipEl = document.getElementById('pnl-trend-tooltip');
+                if (!tooltipEl) return;
+                if (tooltipModel.opacity === 0) {
+                  tooltipEl.style.opacity = 0;
+                  tooltipEl.style.pointerEvents = 'none';
+                  return;
                 }
+                // 渲染 tooltip 内容 (3 行: 已实现 / 总盈亏 / 持仓盈亏 gap)
+                const i = tooltipModel.dataPoints[0].index;
+                const r = realizedPnls[i] || 0;
+                const t = totalPnls[i] || 0;
+                const f = t - r;
+                const fmtN = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', {minimumFractionDigits: 2});
+                const title = series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
+                tooltipEl.innerHTML = `
+                  <div class="pnl-tooltip-title">${title}</div>
+                  <div class="pnl-tooltip-line">已实现: ${fmtN(r)} 元</div>
+                  <div class="pnl-tooltip-line">总盈亏: ${fmtN(t)} 元</div>
+                  <div class="pnl-tooltip-line">持仓盈亏 (gap): ${fmtN(f)} 元</div>
+                `;
+                // 位置: 绝对定位 (CSS 已设 position: absolute)
+                // left = hovered x (chart canvas wrapper 内的相对坐标), top 固定 4px (chart area 顶部上方)
+                tooltipEl.style.opacity = 1;
+                tooltipEl.style.left = tooltipModel.caretX + 'px';
+                tooltipEl.style.top = '4px';
               }
             }
+          },
+          // v32.22: 点击 x 轴位置 → 持久显示该日期 tooltip
+          onClick: (event, elements, chart) => {
+            if (!elements || elements.length === 0) return;
+            // 取最近 dataset (dataset[1] 总盈亏) 的元素, 获取 index
+            const idx = elements[0].index;
+            // 模拟 hover 持久显示: setActiveElements
+            chart.tooltip.setActiveElements(
+              [{ datasetIndex: 1, index: idx }],
+              { x: chart.scales.x.getPixelForValue(idx), y: 0 }
+            );
+            chart.update();
           },
           scales: {
             x: {
@@ -1316,7 +1351,7 @@
           }
         },
         // v32.19: 注册右侧大括号 connector plugin (持仓盈亏 = total - realized, 末点)
-        plugins: [gapConnectorPlugin],
+        plugins: [gapConnectorPlugin, verticalLinePlugin],
       });
     },
 

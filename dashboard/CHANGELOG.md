@@ -4,6 +4,20 @@
 
 ---
 
+## v32.22 · 2026-09-25 · chart-pnl-trend 悬浮窗改顶部对齐 + vertical line marker + 点击持久
+
+- **tooltip 行为重构**: user 反馈悬浮窗挡图表。改方案:
+  - 关闭内置 tooltip (`enabled: false`), 改用 external HTML tooltip (chart canvas 上方固定位置, 不挡 chart)
+  - 加 `verticalLinePlugin` (afterDatasetsDraw 钩子): tooltip hover/active 时画竖线在 chart 区域 (深棕 accent-engrave #3A2E26, 短虚线 [3,3])
+  - HTML 容器 `<div id="pnl-trend-tooltip">` 绝对定位, `top: 4px` (chart area 顶部上方 4px), `left: <caretX>px` (hovered x 居中对齐, transform translateX(-50%))
+  - tooltip 内容: date + 3 行 (已实现 / 总盈亏 / 持仓盈亏 gap), 跟之前 callback 同步
+- **onClick handler**: 点击 x 轴对应位置 → `chart.tooltip.setActiveElements()` 模拟 hover → 持久显示该日期 tooltip, vertical line marker 也停在 click 位置
+- **HTML 加 tooltip 容器** (在 chart-canvas-wrap 内, canvas 旁边)
+- **CSS 加 `.pnl-trend-tooltip`**: 绝对定位 + 深色背景 (#1A1A1A) + 白字 + 11px JetBrains Mono + 居中 + 0.12s transition
+- 4 处版本号同步 v32.22
+
+---
+
 ## v32.21 · 2026-09-25 · chart-pnl-trend 总盈亏线数据口径修正 (user 9-25 反馈画错)
 
 - **bug**: chart-pnl-trend dataset[1] "总盈亏金额线" 实际画的是持仓盈亏金额 (= pnl_series.total_pnl 当日浮盈), 不是 user 想要的"总盈亏 = 浮盈 + 累计已实现"
