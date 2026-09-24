@@ -4,6 +4,22 @@
 
 ---
 
+## v32.17 · 2026-09-25 · chart-pnl-trend 改 "盈亏 gap" 双线 + gap fill + overlap pattern
+
+- **section-title 改**: "已实现盈亏趋势" → "盈亏 gap", chart-title 改 "已实现 vs 总盈亏 · 持仓盈亏 = 两线 gap"
+- **chart datasets 重构 (4 个)**:
+  - `[0]` 已实现盈亏 line (主, 深色 #1A1A1A, 不 fill)
+  - `[1]` 总盈亏 line (主, 红 #C45C4F, fill 到 y=0 A 股惯例涨红跌绿) — `fill: { target: { value: 0 }, above: rgba(196,92,79,0.12), below: rgba(122,138,118,0.12) }`
+  - `[2]` 持仓盈亏 gap fill (data=totalPnls, fill target=0 dataset[0] realized, 形成 between 区域, 中性棕半透明 rgba(58,46,38,0.10))
+  - `[3]` 重叠区 fill (canvas 斜线 pattern, data=overlapData=min(realized,total) if 都>=0 else 0, fill target={value:0})
+- **canvas pattern (createPattern)**: 6×6 tile, 1px 斜线 (0,6) → (6,0), 颜色 accent-up 红 45% alpha
+- **chart-sub pnl-range 同步**: 末点持仓盈亏 (gap) 金额附在 date range 后
+- **tooltip 同步**: 三行展示 (已实现 / 总盈亏 / 持仓盈亏 gap)
+- **updatePnlTrendChartFull + appendChartsWith**: 同步扩展 4 个 dataset 数据 push 逻辑
+- 4 处版本号同步 v32.17
+
+---
+
 ## v32.15 · 2026-09-24 · settings tab 改 "最大占用本金" + chart-benchmark 同步
 
 - **settings tab 语义改名**: "账户资金 / 真实账户净资金" → "最大占用本金 (Max Invested Capital)"。input label / placeholder / 文案 / 当前算法描述 同步更新

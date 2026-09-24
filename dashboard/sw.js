@@ -9,7 +9,7 @@
 // v21: 删 v20 全部装饰 (太丑: 4 角啃一口 + 短刻线像订书钉 + 中点圆印像眼睛), 只留 hero 1px border (CSS 已自带)
 // v22: 用户反馈 — 4 角斜切跟卡片直角冲突, 改为沿 4 边画 guilloche 编织花纹 (2 条 sine 互绕), 4 角留 6px 空白, stroke-linecap=round 让端点圆头丝滑过渡
 
-const CACHE_NAME = 'mavis-dashboard-v32-15';
+const CACHE_NAME = 'mavis-dashboard-v32-17';
 const ASSETS = [
   './',
   './index.html',

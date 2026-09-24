@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.15 (2026-09-24)
+ * Mavis Stock Tracker — Dashboard.js v32.17 (2026-09-24)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -913,15 +913,20 @@
     appendChartsWith(newDays) {
       if (!newDays || newDays.length === 0) return;
 
-      // pnlTrend: 3 datasets (红 area / 绿 area / 主 line). v32.8: 改用 realized_pnl (累计已实现盈亏)
+      // pnlTrend: 4 datasets (v32.17 双线 + gap + overlap pattern)
+      //   [0] 已实现盈亏 line, [1] 总盈亏 line, [2] 持仓盈亏 gap fill, [3] 重叠区 fill
       const c1 = this.charts.pnlTrend;
       if (c1) {
         newDays.forEach(r => {
-          const v = r.realized_pnl != null ? r.realized_pnl : r.total_pnl;  // v32.9: 优先 realized, fallback total (含 renderPnlTrendChart 首次渲染)
+          const realized = r.realized_pnl != null ? r.realized_pnl : r.total_pnl;
+          const total = r.total_pnl != null ? r.total_pnl : 0;
+          // overlap: 两线同号部分 = min(realized, total) if 都 >= 0 else 0
+          const overlap = (realized >= 0 && total >= 0) ? Math.min(realized, total) : 0;
           c1.data.labels.push(r.trade_date.substring(5));
-          c1.data.datasets[0].data.push(v >= 0 ? v : null);  // 红 area
-          c1.data.datasets[1].data.push(v < 0 ? v : null);   // 绿 area
-          c1.data.datasets[2].data.push(v);                    // 主 line
+          c1.data.datasets[0].data.push(realized);
+          c1.data.datasets[1].data.push(total);
+          c1.data.datasets[2].data.push(total);   // gap fill same x as total
+          c1.data.datasets[3].data.push(overlap);
         });
         c1.update('none');  // 'none' = 不带动画
         console.log(`[charts] pnlTrend append ${newDays.length} day(s), labels=${c1.data.labels.length}`);
@@ -957,11 +962,18 @@
     updatePnlTrendChartFull(series) {
       const c = this.charts.pnlTrend;
       if (!c) return;
-      c.data.labels = series.map(r => r.trade_date.substring(5));
-      // v32.9: 改用 realized_pnl (累计已实现盈亏) 替代 total_pnl
-      c.data.datasets[0].data = series.map(r => { const v = r.realized_pnl != null ? r.realized_pnl : r.total_pnl; return v >= 0 ? v : null; });
-      c.data.datasets[1].data = series.map(r => { const v = r.realized_pnl != null ? r.realized_pnl : r.total_pnl; return v < 0 ? v : null; });
-      c.data.datasets[2].data = series.map(r => r.realized_pnl != null ? r.realized_pnl : r.total_pnl);
+      const labels = series.map(r => r.trade_date.substring(5));
+      const realizedPnls = series.map(r => r.realized_pnl != null ? r.realized_pnl : r.total_pnl);
+      const totalPnls = series.map(r => r.total_pnl != null ? r.total_pnl : 0);
+      const overlapData = realizedPnls.map((r, i) => {
+        const t = totalPnls[i];
+        return (r >= 0 && t >= 0) ? Math.min(r, t) : 0;
+      });
+      c.data.labels = labels;
+      c.data.datasets[0].data = realizedPnls;
+      c.data.datasets[1].data = totalPnls;
+      c.data.datasets[2].data = totalPnls;
+      c.data.datasets[3].data = overlapData;
       c.update('none');
       console.log(`[charts] pnlTrend full update, labels=${c.data.labels.length}`);
     },
@@ -1049,57 +1061,53 @@
         return;
       }
       const labels = series.map(s => s.trade_date.substring(5)); // MM-DD
-      // v32.9: 跟 updatePnlTrendChartFull / appendChartsWith 一致, 优先 realized_pnl fallback total_pnl
-      const pnls = series.map(s => s.realized_pnl != null ? s.realized_pnl : s.total_pnl);
+      // v32.17: 双线 (realized 累计已实现 + total 累计总盈亏) + gap fill (持仓盈亏) + overlap pattern
+      const realizedPnls = series.map(s => s.realized_pnl != null ? s.realized_pnl : s.total_pnl);
+      const totalPnls = series.map(s => s.total_pnl != null ? s.total_pnl : 0);
+      // overlap: 两线同号部分 = min(realized, total) if 都 >= 0 else 0 (realized 累计总 >= 0, 所以此值通常 = total >= 0 时 min)
+      const overlapData = realizedPnls.map((r, i) => {
+        const t = totalPnls[i];
+        return (r >= 0 && t >= 0) ? Math.min(r, t) : 0;
+      });
       const isMobile = this._isMobile();
       const maxTicks = isMobile ? 5 : 10;
 
-      // sub line: date range
+      // sub line: date range + 末点持仓盈亏 (gap)
       const rangeEl = $('pnl-range');
       if (rangeEl && series.length > 0) {
-        rangeEl.textContent = `${series[0].trade_date} → ${series[series.length-1].trade_date}`;
+        const lastIdx = series.length - 1;
+        const gapLast = (totalPnls[lastIdx] || 0) - (realizedPnls[lastIdx] || 0);
+        const sign = gapLast >= 0 ? '+' : '';
+        rangeEl.textContent = `${series[0].trade_date} → ${series[lastIdx].trade_date} · 末点持仓盈亏 ${sign}${gapLast.toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} 元`;
       }
       const daysEl = $('pnl-days-count');
       if (daysEl) daysEl.textContent = series.length;
 
-      // 折线图按 0 基准线分段面积: y>=0 红 (accent-up #C45C4F), y<0 绿 (accent-down #7A8A76)
+      // canvas pattern for overlap 区域 — 细斜线
       const ctx = el.getContext('2d');
-      // 用 3 datasets: 红 area + 绿 area + 主 line (line 不 fill)
-      // 红 area 只在 y>=0 时有值 (其余 null), 绿 area 只在 y<0 时有值
-      const redData = pnls.map(v => v >= 0 ? v : null);
-      const greenData = pnls.map(v => v < 0 ? v : null);
+      function makeDiagonalPattern(c) {
+        const pat = document.createElement('canvas');
+        pat.width = 6;
+        pat.height = 6;
+        const pc = pat.getContext('2d');
+        pc.strokeStyle = 'rgba(196, 92, 79, 0.45)';  // accent-up 红, 半透明
+        pc.lineWidth = 1;
+        pc.beginPath();
+        pc.moveTo(0, 6);
+        pc.lineTo(6, 0);
+        pc.stroke();
+        return c.createPattern(pat, 'repeat');
+      }
 
       this.charts.pnlTrend = new Chart(ctx, {
         type: 'line',
         data: {
           labels,
           datasets: [
-            // 红 area (y>=0) — 高透明红
+            // [0] 已实现盈亏 line (主, 不 fill, 深色)
             {
-              label: '正面积',
-              data: redData,
-              borderWidth: 0,
-              fill: { target: { value: 0 } },
-              backgroundColor: 'rgba(196, 92, 79, 0.16)',  // accent-up #C45C4F @ 16%
-              pointRadius: 0,
-              tension: 0.3,
-              order: 3,
-            },
-            // 绿 area (y<0) — 高透明绿
-            {
-              label: '负面积',
-              data: greenData,
-              borderWidth: 0,
-              fill: { target: { value: 0 } },
-              backgroundColor: 'rgba(122, 138, 118, 0.16)',  // accent-down #7A8A76 @ 16%
-              pointRadius: 0,
-              tension: 0.3,
-              order: 4,
-            },
-            // 主 line (line 不 fill, 跨 0 连续)
-            {
-              label: '总 P&L',
-              data: pnls,
+              label: '已实现盈亏',
+              data: realizedPnls,
               borderColor: '#1A1A1A',
               borderWidth: 1.5,
               fill: false,
@@ -1110,6 +1118,47 @@
               pointHoverBorderColor: '#FFFFFF',
               pointHoverBorderWidth: 2,
               order: 1,
+            },
+            // [1] 总盈亏 line (主, fill 到 y=0, A 股惯例涨红跌绿)
+            {
+              label: '总盈亏',
+              data: totalPnls,
+              borderColor: '#C45C4F',  // accent-up 红
+              borderWidth: 1.5,
+              fill: {
+                target: { value: 0 },
+                above: 'rgba(196, 92, 79, 0.12)',   // y>0 红 (涨)
+                below: 'rgba(122, 138, 118, 0.12)', // y<0 绿 (跌)
+              },
+              tension: 0.3,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: '#C45C4F',
+              pointHoverBorderColor: '#FFFFFF',
+              pointHoverBorderWidth: 2,
+              order: 2,
+            },
+            // [2] 持仓盈亏 gap fill (between dataset[0] realized 和 dataset[1] total, 中性色半透明)
+            {
+              label: '持仓盈亏 (gap)',
+              data: totalPnls,  // gap fill 用 total 数据 + target: 0 (dataset[0]) 形成 between 区域
+              borderWidth: 0,
+              fill: { target: 0 },  // fill to dataset[0] = realized, 形成 gap (持仓盈亏)
+              backgroundColor: 'rgba(58, 46, 38, 0.10)',  // accent-engrave 深棕半透明
+              pointRadius: 0,
+              tension: 0.3,
+              order: 3,
+            },
+            // [3] 重叠区 fill (canvas 斜线 pattern, min(realized, total) 同号部分)
+            {
+              label: '已实现 + 总盈亏 重叠',
+              data: overlapData,
+              borderWidth: 0,
+              fill: { target: { value: 0 } },
+              backgroundColor: makeDiagonalPattern(ctx),
+              pointRadius: 0,
+              tension: 0.3,
+              order: 4,
             },
           ],
         },
@@ -1137,13 +1186,17 @@
                   return series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
                 },
                 label: (ctx) => {
-                  // v32.10: chart-pnl-trend 显示 realized_pnl (累计已实现盈亏), 但 tooltip
-                  // 改回显示持仓盈亏 (total_pnl - 当日浮盈), 跟 chart line 解耦 —
-                  // user 9-24 反馈 "悬浮窗应该还是持仓盈亏金额的数字"
+                  // v32.17: tooltip 同步显示 realized + total + gap (持仓盈亏)
                   const i = ctx.dataIndex;
-                  const pnl = series[i].total_pnl;
-                  const sign = pnl >= 0 ? '+' : '';
-                  return '持仓盈亏: ' + sign + pnl.toLocaleString('zh-CN', {minimumFractionDigits: 2}) + ' 元';
+                  const r = realizedPnls[i] || 0;
+                  const t = totalPnls[i] || 0;
+                  const f = t - r;
+                  const fmtN = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', {minimumFractionDigits: 2});
+                  return [
+                    '已实现: ' + fmtN(r) + ' 元',
+                    '总盈亏: ' + fmtN(t) + ' 元',
+                    '持仓盈亏 (gap): ' + fmtN(f) + ' 元'
+                  ];
                 }
               }
             }
