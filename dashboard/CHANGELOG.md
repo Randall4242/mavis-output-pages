@@ -4,6 +4,16 @@
 
 ---
 
+## v32.12 · 2026-09-24 · 回退 v32.11 净投入默认算法
+
+- **后端 summary.total_pnl_pct 默认回退 initial_principal**: v32.11 把默认分母改 net_invested (= 当前 active 持仓总成本), 但 user 9-24 反馈 "算法没追踪加钱, 算不准"。回退到累计买入 (initial_principal) 当默认分母
+- **chart-benchmark my_portfolio.cum_pct 同步回退**: v32.11 改 net_invested 算法, 现在回退到 initial_principal
+- **settings tab 文案更新**: 描述改 "你去找银行/券商账户算真实净资金, 填这里当 override"
+- **保留字段**: net_invested / total_pnl_pct_net 字段保留供前端 reference
+- 4 处版本号同步 v32.12
+
+---
+
 ## v32.11 · 2026-09-24 · 总盈亏% 分母改净投入
 
 - **后端 summary 默认分母改 net_invested (净投入)**: user 9-24 反馈 "同一笔钱反复买卖, 累计投入做分母偏大", 选 (c) 算法。render_dashboard.py compute_summary 加 `net_invested` 字段 (= 当前 active 持仓总成本 = 还留在市场里的钱), `summary.total_pnl_pct` 默认改基于 net_invested 算。同时输出 `total_pnl_pct_initial` (旧, 累计投入) 和 `total_pnl_pct_net` (新, 净投入), initial_principal 字段保留向后兼容
