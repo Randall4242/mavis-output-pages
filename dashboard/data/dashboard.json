@@ -1,20 +1,20 @@
 {
   "meta": {
-    "generated_at": "2026-09-23T17:04:26+08:00",
-    "trade_date": "2026-09-23",
+    "generated_at": "2026-09-24T10:44:49+08:00",
+    "trade_date": "2026-09-24",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -1589.0,
-    "floating_pnl_pct": -7.47,
+    "floating_pnl_abs": -2208.0,
+    "floating_pnl_pct": -10.38,
     "realized_pnl_abs": 873.2,
     "realized_pnl_pct": 3.14,
-    "total_pnl_abs": -715.8,
-    "total_pnl_pct": -1.46,
+    "total_pnl_abs": -1334.8,
+    "total_pnl_pct": -2.72,
     "initial_principal": 49064.3,
-    "excess_csi300_pct": -0.93,
-    "excess_sh_pct": 0.84
+    "excess_csi300_pct": 1.35,
+    "excess_sh_pct": 2.73
   },
   "holdings": [
     {
@@ -22,26 +22,26 @@
       "name": "春秋航空",
       "shares": 100,
       "cost": 41.97,
-      "close": 41.94,
-      "prev_close": 41.88,
-      "change_pct": 0.14,
-      "change_amount": 0.06,
-      "daily_pnl": 6.0,
-      "pnl_abs": -3.0,
-      "pnl_pct": -0.0715
+      "close": 40.69,
+      "prev_close": 41.62,
+      "change_pct": -2.23,
+      "change_amount": -0.93,
+      "daily_pnl": -93.0,
+      "pnl_abs": -128.0,
+      "pnl_pct": -3.0498
     },
     {
       "code": "600884",
       "name": "杉杉股份",
       "shares": 1300,
       "cost": 13.14,
-      "close": 11.92,
-      "prev_close": 11.26,
-      "change_pct": 5.86,
-      "change_amount": 0.66,
-      "daily_pnl": 858.0,
-      "pnl_abs": -1586.0,
-      "pnl_pct": -9.2846
+      "close": 11.54,
+      "prev_close": 11.92,
+      "change_pct": -3.19,
+      "change_amount": -0.38,
+      "daily_pnl": -494.0,
+      "pnl_abs": -2080.0,
+      "pnl_pct": -12.1766
     }
   ],
   "closed_holdings": [
@@ -169,6 +169,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 0.0,
       "cost_basis": "carry_forward"
     },
     {
@@ -177,6 +178,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 0.0,
       "cost_basis": "carry_forward"
     },
     {
@@ -185,6 +187,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 0.0,
       "cost_basis": "carry_forward"
     },
     {
@@ -193,6 +196,7 @@
       "total_mkt": 1332.0,
       "total_pnl": -4.5,
       "total_pct": -0.34,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -201,6 +205,7 @@
       "total_mkt": 1385.1,
       "total_pnl": 48.6,
       "total_pct": 3.64,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -209,6 +214,7 @@
       "total_mkt": 1351.8,
       "total_pnl": 15.3,
       "total_pct": 1.14,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -217,6 +223,7 @@
       "total_mkt": 1410.3,
       "total_pnl": 73.8,
       "total_pct": 5.52,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -225,6 +232,7 @@
       "total_mkt": 1383.3,
       "total_pnl": 46.8,
       "total_pct": 3.5,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -233,6 +241,7 @@
       "total_mkt": 1358.1,
       "total_pnl": 21.6,
       "total_pct": 1.62,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -241,6 +250,7 @@
       "total_mkt": 1341.9,
       "total_pnl": 5.4,
       "total_pct": 0.4,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -249,6 +259,7 @@
       "total_mkt": 3523.6,
       "total_pnl": 109.5,
       "total_pct": 3.21,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -257,6 +268,7 @@
       "total_mkt": 3537.4,
       "total_pnl": 123.3,
       "total_pct": 3.61,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -265,6 +277,7 @@
       "total_mkt": 3583.4,
       "total_pnl": 169.3,
       "total_pct": 4.96,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -273,6 +286,7 @@
       "total_mkt": 3475.3,
       "total_pnl": 61.2,
       "total_pct": 1.79,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -281,6 +295,7 @@
       "total_mkt": 3422.4,
       "total_pnl": 8.3,
       "total_pct": 0.24,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -289,6 +304,7 @@
       "total_mkt": 3259.1,
       "total_pnl": -155.0,
       "total_pct": -4.54,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -297,6 +313,7 @@
       "total_mkt": 3420.1,
       "total_pnl": 6.0,
       "total_pct": 0.18,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -305,6 +322,7 @@
       "total_mkt": 3438.5,
       "total_pnl": 24.4,
       "total_pct": 0.71,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -313,6 +331,7 @@
       "total_mkt": 3399.4,
       "total_pnl": -14.7,
       "total_pct": -0.43,
+      "realized_pnl": 0.0,
       "cost_basis": "real"
     },
     {
@@ -321,6 +340,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -329,6 +349,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -337,6 +358,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -345,6 +367,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -353,6 +376,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -361,6 +385,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -369,6 +394,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -377,6 +403,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -385,6 +412,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -393,6 +421,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -401,6 +430,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -409,6 +439,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -417,6 +448,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -425,6 +457,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -433,6 +466,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -441,6 +475,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -449,6 +484,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -457,6 +493,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -465,6 +502,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -473,6 +511,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -481,6 +520,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -489,6 +529,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -497,6 +538,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -505,6 +547,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -513,6 +556,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -521,6 +565,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -529,6 +574,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -537,6 +583,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -545,6 +592,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -553,6 +601,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -561,6 +610,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -569,6 +619,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -577,6 +628,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -585,6 +637,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -593,6 +646,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -601,6 +655,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -609,6 +664,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -617,6 +673,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -625,6 +682,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -633,6 +691,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -641,6 +700,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -649,6 +709,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -657,6 +718,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -665,6 +727,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -673,6 +736,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -681,6 +745,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -689,6 +754,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -697,6 +763,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -705,6 +772,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -713,6 +781,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -721,6 +790,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -729,6 +799,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -737,6 +808,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -745,6 +817,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -753,6 +826,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -761,6 +835,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -769,6 +844,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -777,6 +853,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -785,6 +862,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -793,6 +871,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -801,6 +880,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -809,6 +889,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 125.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -817,6 +898,7 @@
       "total_mkt": 8598.2,
       "total_pnl": -531.0,
       "total_pct": -5.82,
+      "realized_pnl": 125.2,
       "cost_basis": "real"
     },
     {
@@ -825,6 +907,7 @@
       "total_mkt": 26462.8,
       "total_pnl": 251.6,
       "total_pct": 0.96,
+      "realized_pnl": 125.2,
       "cost_basis": "real"
     },
     {
@@ -833,6 +916,7 @@
       "total_mkt": 26113.2,
       "total_pnl": -98.0,
       "total_pct": -0.37,
+      "realized_pnl": 125.2,
       "cost_basis": "real"
     },
     {
@@ -841,6 +925,7 @@
       "total_mkt": 23989.8,
       "total_pnl": -1.4,
       "total_pct": -0.01,
+      "realized_pnl": 172.2,
       "cost_basis": "real"
     },
     {
@@ -849,6 +934,7 @@
       "total_mkt": 18402.0,
       "total_pnl": 0.6,
       "total_pct": 0.0,
+      "realized_pnl": 577.6,
       "cost_basis": "real"
     },
     {
@@ -857,6 +943,7 @@
       "total_mkt": 24531.0,
       "total_pnl": 205.6,
       "total_pct": 0.85,
+      "realized_pnl": 577.6,
       "cost_basis": "real"
     },
     {
@@ -865,6 +952,7 @@
       "total_mkt": 17541.0,
       "total_pnl": -860.4,
       "total_pct": -4.68,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -873,6 +961,7 @@
       "total_mkt": 16794.0,
       "total_pnl": -1607.4,
       "total_pct": -8.74,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -881,6 +970,7 @@
       "total_mkt": 16632.0,
       "total_pnl": -1769.4,
       "total_pct": -9.62,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -889,6 +979,7 @@
       "total_mkt": 16897.0,
       "total_pnl": -1504.4,
       "total_pct": -8.18,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -897,6 +988,7 @@
       "total_mkt": 17136.0,
       "total_pnl": -1265.4,
       "total_pct": -6.88,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -905,6 +997,7 @@
       "total_mkt": 17126.0,
       "total_pnl": -1275.4,
       "total_pct": -6.93,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -913,6 +1006,7 @@
       "total_mkt": 17104.0,
       "total_pnl": -1297.4,
       "total_pct": -7.05,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -921,6 +1015,7 @@
       "total_mkt": 16615.0,
       "total_pnl": -1786.4,
       "total_pct": -9.71,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -929,6 +1024,7 @@
       "total_mkt": 16048.0,
       "total_pnl": -2353.4,
       "total_pct": -12.79,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -937,6 +1033,7 @@
       "total_mkt": 17499.0,
       "total_pnl": -902.4,
       "total_pct": -4.9,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -945,6 +1042,7 @@
       "total_mkt": 17633.0,
       "total_pnl": -768.4,
       "total_pct": -4.18,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -953,6 +1051,7 @@
       "total_mkt": 17925.0,
       "total_pnl": -476.4,
       "total_pct": -2.59,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -961,6 +1060,7 @@
       "total_mkt": 17293.0,
       "total_pnl": -1108.4,
       "total_pct": -6.02,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -969,6 +1069,7 @@
       "total_mkt": 17823.0,
       "total_pnl": -578.4,
       "total_pct": -3.14,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -977,6 +1078,7 @@
       "total_mkt": 17719.0,
       "total_pnl": -682.4,
       "total_pct": -3.71,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -985,6 +1087,7 @@
       "total_mkt": 18353.0,
       "total_pnl": -48.4,
       "total_pct": -0.26,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -993,6 +1096,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
+      "realized_pnl": 508.6,
       "cost_basis": "carry_forward"
     },
     {
@@ -1001,6 +1105,7 @@
       "total_mkt": 20935.0,
       "total_pnl": -1885.4,
       "total_pct": -8.26,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1009,6 +1114,7 @@
       "total_mkt": 21194.0,
       "total_pnl": -1626.4,
       "total_pct": -7.13,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1017,6 +1123,7 @@
       "total_mkt": 21385.0,
       "total_pnl": -1435.4,
       "total_pct": -6.29,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1025,6 +1132,7 @@
       "total_mkt": 21367.0,
       "total_pnl": -1453.4,
       "total_pct": -6.37,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1033,6 +1141,7 @@
       "total_mkt": 21633.0,
       "total_pnl": -1187.4,
       "total_pct": -5.2,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1041,6 +1150,7 @@
       "total_mkt": 21556.0,
       "total_pnl": -1264.4,
       "total_pct": -5.54,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1049,6 +1159,7 @@
       "total_mkt": 21446.0,
       "total_pnl": -1374.4,
       "total_pct": -6.02,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1057,6 +1168,7 @@
       "total_mkt": 21210.0,
       "total_pnl": -1610.4,
       "total_pct": -7.06,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1065,6 +1177,7 @@
       "total_mkt": 21230.0,
       "total_pnl": -1590.4,
       "total_pct": -6.97,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1073,6 +1186,7 @@
       "total_mkt": 20859.0,
       "total_pnl": -1961.4,
       "total_pct": -8.59,
+      "realized_pnl": 508.6,
       "cost_basis": "real"
     },
     {
@@ -1081,6 +1195,7 @@
       "total_mkt": 19516.0,
       "total_pnl": -1985.0,
       "total_pct": -9.23,
+      "realized_pnl": 594.2,
       "cost_basis": "real"
     },
     {
@@ -1089,6 +1204,7 @@
       "total_mkt": 19404.0,
       "total_pnl": -2097.0,
       "total_pct": -9.75,
+      "realized_pnl": 594.2,
       "cost_basis": "real"
     },
     {
@@ -1097,6 +1213,7 @@
       "total_mkt": 15015.0,
       "total_pnl": -2067.0,
       "total_pct": -12.1,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1105,6 +1222,7 @@
       "total_mkt": 15106.0,
       "total_pnl": -1976.0,
       "total_pct": -11.57,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1113,6 +1231,7 @@
       "total_mkt": 15015.0,
       "total_pnl": -2067.0,
       "total_pct": -12.1,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1121,6 +1240,7 @@
       "total_mkt": 14885.0,
       "total_pnl": -2197.0,
       "total_pct": -12.86,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1129,6 +1249,7 @@
       "total_mkt": 14521.0,
       "total_pnl": -2561.0,
       "total_pct": -14.99,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1137,6 +1258,7 @@
       "total_mkt": 14534.0,
       "total_pnl": -2548.0,
       "total_pct": -14.92,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1145,6 +1267,7 @@
       "total_mkt": 18425.0,
       "total_pnl": -2556.0,
       "total_pct": -12.18,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1153,6 +1276,7 @@
       "total_mkt": 18453.0,
       "total_pnl": -2528.0,
       "total_pct": -12.05,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1161,6 +1285,7 @@
       "total_mkt": 18183.0,
       "total_pnl": -2798.0,
       "total_pct": -13.34,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1169,6 +1294,7 @@
       "total_mkt": 22644.0,
       "total_pnl": -2534.0,
       "total_pct": -10.06,
+      "realized_pnl": 596.2,
       "cost_basis": "real"
     },
     {
@@ -1177,6 +1303,16 @@
       "total_mkt": 19690.0,
       "total_pnl": -1589.0,
       "total_pct": -7.47,
+      "realized_pnl": 873.2,
+      "cost_basis": "real"
+    },
+    {
+      "trade_date": "2026-09-24",
+      "total_cost": 21279.0,
+      "total_mkt": 19045.0,
+      "total_pnl": -2234.0,
+      "total_pct": -10.5,
+      "realized_pnl": 873.2,
       "cost_basis": "real"
     }
   ],
@@ -1686,6 +1822,10 @@
       {
         "trade_date": "2026-09-18",
         "cum_pct": -3.95
+      },
+      {
+        "trade_date": "2026-09-23",
+        "cum_pct": -1.46
       }
     ],
     "sh": [
@@ -2108,6 +2248,10 @@
       {
         "trade_date": "2026-09-18",
         "pct_from_baseline": -4.79
+      },
+      {
+        "trade_date": "2026-09-23",
+        "pct_from_baseline": -4.19
       }
     ],
     "sz": [
@@ -2530,6 +2674,10 @@
       {
         "trade_date": "2026-09-18",
         "pct_from_baseline": -4.79
+      },
+      {
+        "trade_date": "2026-09-23",
+        "pct_from_baseline": -4.19
       }
     ],
     "csi300": [
@@ -3032,6 +3180,10 @@
       {
         "trade_date": "2026-09-18",
         "pct_from_baseline": -3.02
+      },
+      {
+        "trade_date": "2026-09-23",
+        "pct_from_baseline": -2.81
       }
     ]
   }
