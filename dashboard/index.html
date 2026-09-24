@@ -1501,12 +1501,38 @@
 </div><!-- /page-closed-trades -->
 <div class="tab-page" id="page-settings">
 
-<!-- ============ TAB: 设置 (placeholder) ============ -->
+<!-- ============ TAB: 设置 (account funds) ============ -->
 <section class="tab-pane" id="tab-settings">
-  <div style="padding: 80px 24px; text-align: center; color: var(--ink-muted);">
-    <div style="font-size: 32px; margin-bottom: 16px;">⚙️</div>
-    <div style="font-size: 16px; color: var(--ink-secondary);">设置: 即将上线</div>
-    <div style="font-size: 13px; margin-top: 8px;">(主题切换 / 数据源配置 / 提醒 — 暂未实现)</div>
+  <div style="padding: 32px 24px; max-width: 540px; margin: 0 auto;">
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em;">⚙️ 账户资金</div>
+    <div style="font-size: 13px; color: var(--ink-secondary); line-height: 1.6; margin-bottom: 24px;">
+        你反复买入卖出同一笔钱时, 用累计投入做分母会偏大。<br>
+        在这里填入你账户里实际的资金 (含历史加钱), dashboard 会用它重新算盈亏百分比, 反映"账户本身的涨跌"。
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px; padding: 20px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-card);">
+      <label style="font-size: 13px; color: var(--ink-secondary);">
+        账户资金 (元) — 用于计算盈亏百分比的真实分母
+      </label>
+      <input type="number" id="account-funds-input" placeholder="留空则用累计投入 (49064.3)"
+             step="0.01" min="0"
+             style="font-size: 18px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 4px; font-family: 'JetBrains Mono', monospace;">
+      <div style="font-size: 11px; color: var(--ink-muted);">
+        保存到浏览器本地, 不上传到服务器
+      </div>
+      <button id="account-funds-clear" style="font-size: 12px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 4px; background: transparent; color: var(--ink-secondary); cursor: pointer;">
+        清空 (回到累计投入)
+      </button>
+    </div>
+
+    <div style="margin-top: 24px; padding: 16px; border: 1px solid var(--border); border-radius: 4px; background: rgba(0,0,0,0.02); font-size: 12px; line-height: 1.7; color: var(--ink-secondary);">
+      <strong style="color: var(--ink-primary);">当前算法:</strong><br>
+      • <strong>持仓盈亏%</strong>: 当日浮盈 / 当前持仓成本<br>
+      • <strong>已实现盈亏%</strong>: 累计已实现 / 历史卖出本金<br>
+      • <strong>总盈亏%</strong>: (浮盈 + 已实现) / 账户资金 (你设的数字, 留空 = 累计投入)<br>
+      <br>
+      <span style="color: var(--ink-muted);">总盈亏% 现在 = (floating + realized) / account_funds × 100</span>
+    </div>
   </div>
 </section>
 
@@ -1518,7 +1544,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.9 · 2026-09-24 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.10 · 2026-09-24 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1526,6 +1552,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.9"></script>
+<script src="dashboard.js?v=32.10"></script>
 </body>
 </html>

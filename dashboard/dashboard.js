@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.9 (2026-09-24)
+ * Mavis Stock Tracker — Dashboard.js v32.10 (2026-09-24)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -596,11 +596,52 @@
         tAmt.classList.remove('up', 'down', 'neutral');
         tAmt.classList.add(pnlClass(tp));
       }
+      // v32.10: total_pnl_pct 优先用 localStorage account_funds 算
+      // (没设 → fallback 后端 summary.total_pnl_pct, 即基于累计投入 initial_principal)
       const tPct = $('total-pct');
       if (tPct) {
-        tPct.textContent = fmtPct(s.total_pnl_pct);
+        const tPctVal = (this.accountFunds && this.accountFunds > 0)
+          ? Math.round((tp / this.accountFunds) * 10000) / 100
+          : s.total_pnl_pct;
+        tPct.textContent = fmtPct(tPctVal);
         tPct.classList.remove('up', 'down', 'neutral');
         tPct.classList.add(pnlClass(tp));
+      }
+    },
+
+    // v32.10: 账户资金 (本地设置, 用户在 settings tab 输入, 用于覆写总盈亏% 分母)
+    accountFunds: null,
+    initAccountFunds() {
+      try {
+        const saved = localStorage.getItem('mavis.accountFunds');
+        this.accountFunds = saved ? parseFloat(saved) : null;
+      } catch (e) { this.accountFunds = null; }
+      const input = $('account-funds-input');
+      if (input) {
+        if (this.accountFunds) input.value = this.accountFunds.toString();
+        input.addEventListener('change', () => {
+          const v = parseFloat(input.value);
+          if (!isNaN(v) && v > 0) {
+            localStorage.setItem('mavis.accountFunds', String(v));
+            this.accountFunds = v;
+            this.toast('已保存账户资金 ¥' + v.toLocaleString('zh-CN') + ' · 总盈亏% 已更新');
+          } else {
+            localStorage.removeItem('mavis.accountFunds');
+            this.accountFunds = null;
+            this.toast('已清空账户资金 · 总盈亏% 回到累计投入');
+          }
+          if (this.data) this.renderThreeSeg(this.data);
+        });
+      }
+      const clearBtn = $('account-funds-clear');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          localStorage.removeItem('mavis.accountFunds');
+          this.accountFunds = null;
+          if (input) input.value = '';
+          this.toast('已清空账户资金 · 总盈亏% 回到累计投入');
+          if (this.data) this.renderThreeSeg(this.data);
+        });
       }
     },
 
@@ -1068,10 +1109,13 @@
                   return series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
                 },
                 label: (ctx) => {
+                  // v32.10: chart-pnl-trend 显示 realized_pnl (累计已实现盈亏), 但 tooltip
+                  // 改回显示持仓盈亏 (total_pnl - 当日浮盈), 跟 chart line 解耦 —
+                  // user 9-24 反馈 "悬浮窗应该还是持仓盈亏金额的数字"
                   const i = ctx.dataIndex;
-                  const pnl = pnls[i];
+                  const pnl = series[i].total_pnl;
                   const sign = pnl >= 0 ? '+' : '';
-                  return sign + pnl.toLocaleString('zh-CN', {minimumFractionDigits: 2}) + ' 元';
+                  return '持仓盈亏: ' + sign + pnl.toLocaleString('zh-CN', {minimumFractionDigits: 2}) + ' 元';
                 }
               }
             }
@@ -1262,6 +1306,7 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       App.bindNavTabs();
+      App.initAccountFunds();  // v32.10: settings tab 账户资金输入
       App.load();
     });
   } else {

@@ -4,6 +4,14 @@
 
 ---
 
+## v32.10 · 2026-09-24 · tooltip 改回持仓盈亏 + 账户资金设置
+
+- **chart-pnl-trend tooltip 改回持仓盈亏**: v32.8/v32.9 chart line 改 realized_pnl (累计已实现), tooltip 跟 chart line 一致也用 realized_pnl。user 9-24 反馈 "悬浮窗应该还是持仓盈亏金额的数字" — tooltip 跟 chart line 解耦, tooltip 改读 `series[i].total_pnl` (当日浮盈, 即持仓盈亏)
+- **settings tab 启用 (账户资金)**: 用户 "同一笔钱反复买卖, 累计投入做分母偏大" 反馈 → 加 settings input "账户资金 (元)", localStorage 保存 (`mavis.accountFunds`), renderThreeSeg 用它覆写总盈亏% `(floating + realized) / account_funds × 100`。留空 → fallback 后端累计投入 (`summary.total_pnl_pct`)。3 tab 三段式 "③ 总投资盈亏" 卡片百分比跟着改
+- 4 处版本号同步 v32.10
+
+---
+
 ## v32.9 · 2026-09-24 · 用户反馈修 3 处
 
 - **chart-pnl-trend 首次渲染也用 realized_pnl**: v32.8 只改了 `appendChartsWith` + `updatePnlTrendChartFull` 两条路径, 但 `renderPnlTrendChart` (首次 new Chart) 仍用 `s.total_pnl` → 刷新页面后图表显示持仓盈亏, 切 closed-trades 再切回 analysis 才走 `updatePnlTrendChartFull` 切回 realized_pnl。v32.9 把 `renderPnlTrendChart` 也改 `realized_pnl != null ? realized_pnl : total_pnl`, 三条路径一致
