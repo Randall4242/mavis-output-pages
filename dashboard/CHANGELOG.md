@@ -4,6 +4,18 @@
 
 ---
 
+## v32.20 · 2026-09-25 · chart-pnl-trend 双线形态 (实线/虚线) + segment 染色
+
+- **dataset[0] 已实现盈亏**: 实线 (borderDash: []) + `segment.borderColor` 按 y 正负变色 (A 股惯例涨红跌绿) — 之前 borderColor 固定 `#1A1A1A` 深色, 现在按中点 y 判断 (segment (p0.y + p1.y) / 2 >= 0 → 红 `rgba(196,92,79,0.85)`, < 0 → 绿 `rgba(122,138,118,0.85)`)
+- **dataset[1] 总盈亏**: 虚线 (borderDash: [5, 3] 跟 chart-benchmark 上证指数样式一致) + 同 segment 染色 (跟 realized 同 A 股惯例)
+- **borderWidth**: 1.5 → 1.8 (实线 vs 虚线更清晰)
+- **dataset[1] fill 透明度降低**: 0.12 → 0.10 (让虚线更突出, 不被 fill 区域掩盖)
+- **pointHoverBackgroundColor**: 改为固定 `#1A1A1A` 深色 (避免 hover 时按 y 变色导致视觉混乱, hover 点稳定)
+- **不影响**: tooltip filter (`datasetIndex === 1`), gapConnectorPlugin, 3 datasets 数, updatePnlTrendChartFull + appendChartsWith 同步 push (只改 dataset definition, 数据 push 不变)
+- 4 处版本号同步 v32.20
+
+---
+
 ## v32.19 · 2026-09-25 · chart-pnl-trend 重构 (双线 fill + connector + tooltip filter)
 
 - **chart-pnl-trend 大重构**:

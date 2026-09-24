@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.19 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.20 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1169,40 +1169,56 @@
         data: {
           labels,
           datasets: [
-            // [0] 已实现盈亏 line + fill (A 股惯例涨红跌绿)
+            // [0] 已实现盈亏 line + fill (A 股惯例涨红跌绿) — 实线, line 本身颜色按 y 正负变色
             {
               label: '已实现盈亏',
               data: realizedPnls,
-              borderColor: '#1A1A1A',
-              borderWidth: 1.5,
+              borderColor: 'rgba(196, 92, 79, 0.85)',  // 默认红 (segment 染色覆盖)
+              borderWidth: 1.8,
+              borderDash: [],  // 实线
               fill: {
                 target: { value: 0 },
                 above: 'rgba(196, 92, 79, 0.12)',   // y>0 红 (A 股涨)
                 below: 'rgba(122, 138, 118, 0.12)', // y<0 绿 (A 股跌)
               },
-              tension: 0.3,
-              pointRadius: 0,
-              pointHoverRadius: 4,
-              pointHoverBackgroundColor: '#1A1A1A',
-              pointHoverBorderColor: '#FFFFFF',
-              pointHoverBorderWidth: 2,
-              order: 1,
-            },
-            // [1] 总盈亏 line + fill (A 股惯例涨红跌绿)
-            {
-              label: '总盈亏',
-              data: totalPnls,
-              borderColor: '#C45C4F',  // accent-up 红
-              borderWidth: 1.5,
-              fill: {
-                target: { value: 0 },
-                above: 'rgba(196, 92, 79, 0.12)',   // y>0 红 (涨)
-                below: 'rgba(122, 138, 118, 0.12)', // y<0 绿 (跌)
+              // v32.20: line 本身按 y 正负变色 (A 股惯例涨红跌绿) — segment 中点判断
+              segment: {
+                borderColor: ctx => {
+                  const midY = (ctx.p0.parsed.y + ctx.p1.parsed.y) / 2;
+                  return midY >= 0 ? 'rgba(196, 92, 79, 0.85)' : 'rgba(122, 138, 118, 0.85)';
+                }
               },
               tension: 0.3,
               pointRadius: 0,
               pointHoverRadius: 4,
-              pointHoverBackgroundColor: '#C45C4F',
+              pointHoverBackgroundColor: '#1A1A1A',  // hover 点固定深色
+              pointHoverBorderColor: '#FFFFFF',
+              pointHoverBorderWidth: 2,
+              order: 1,
+            },
+            // [1] 总盈亏 line + fill (A 股惯例涨红跌绿) — 虚线, line 本身颜色按 y 正负变色
+            {
+              label: '总盈亏',
+              data: totalPnls,
+              borderColor: 'rgba(196, 92, 79, 0.85)',  // 默认红
+              borderWidth: 1.8,
+              borderDash: [5, 3],  // 短虚线 (跟 chart-benchmark 上证指数样式一致)
+              fill: {
+                target: { value: 0 },
+                above: 'rgba(196, 92, 79, 0.10)',   // y>0 红 (涨) — 透明度低一点让虚线突出
+                below: 'rgba(122, 138, 118, 0.10)', // y<0 绿 (跌)
+              },
+              // v32.20: line 本身按 y 正负变色 (A 股惯例涨红跌绿) — segment 中点判断
+              segment: {
+                borderColor: ctx => {
+                  const midY = (ctx.p0.parsed.y + ctx.p1.parsed.y) / 2;
+                  return midY >= 0 ? 'rgba(196, 92, 79, 0.85)' : 'rgba(122, 138, 118, 0.85)';
+                }
+              },
+              tension: 0.3,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              pointHoverBackgroundColor: '#1A1A1A',  // hover 点固定深色
               pointHoverBorderColor: '#FFFFFF',
               pointHoverBorderWidth: 2,
               order: 2,
