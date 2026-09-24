@@ -4,6 +4,26 @@
 
 ---
 
+## v32.19 · 2026-09-25 · chart-pnl-trend 重构 (双线 fill + connector + tooltip filter)
+
+- **chart-pnl-trend 大重构**:
+  - dataset 数 4 → 3: **删 [2] gap fill dataset** (按 user 反馈, gap 改用右侧 connector)
+  - dataset[0] realized line + **fill { target: { value: 0 }, above: rgba(196,92,79,0.12) 红 / below: rgba(122,138,118,0.12) 绿 }** (A 股惯例涨红跌绿, 之前 fill false 现在加 fill)
+  - dataset[1] total line + fill (A 股惯例) — 保留 v32.17 逻辑
+  - dataset[2] overlap pattern (canvas 斜线) — 从 [3] 移到 [2]
+- **右侧大括号 connector plugin** (新 `gapConnectorPlugin`):
+  - Chart.js v4 自定义 plugin, `afterDatasetsDraw` 钩子
+  - 在 chart area 右外侧画 `{` 大括号: 顶/底两条短横线 + 中心尖角 (深棕 accent-engrave #3A2E26)
+  - 中间竖排文字 "持仓盈亏 ±X.XX 元" (canvas `ctx.rotate(-Math.PI/2)` + fillText, 11px JetBrains Mono)
+  - 几何: chartArea.right + 6 (braceX) → +14 (braceW) → +8 (labelX 竖排文字起点), 大括号宽 14px, 文字起点 braceX+22
+  - gap < 1 元不画 (避免两线末点重叠)
+  - options.layout.right: 90 给 connector + 竖排文字留位置
+- **tooltip filter 保留** v32.18 双保险: datasetIndex === 1 + label callback datasetIndex !== 1 return ''
+- **不影响**: updatePnlTrendChartFull + appendChartsWith 同步 3 dataset push, chart 还在 page-analysis, changeTab 渲染逻辑不变
+- 4 处版本号同步 v32.19
+
+---
+
 ## v32.18 · 2026-09-25 · chart-pnl-trend tooltip 重复条目修
 
 - **bug**: v32.17 tooltip `label` callback 对 4 个 dataset (realized / total / gap fill / overlap fill) 都触发,每次返回 3 行 → 4×3=12 行重复显示

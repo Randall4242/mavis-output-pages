@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.18 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.19 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -913,8 +913,9 @@
     appendChartsWith(newDays) {
       if (!newDays || newDays.length === 0) return;
 
-      // pnlTrend: 4 datasets (v32.17 双线 + gap + overlap pattern)
-      //   [0] 已实现盈亏 line, [1] 总盈亏 line, [2] 持仓盈亏 gap fill, [3] 重叠区 fill
+      // pnlTrend: 3 datasets (v32.19: 删 gap fill dataset[2], 改用右侧 connector plugin)
+      //   [0] 已实现盈亏 line + fill, [1] 总盈亏 line + fill, [2] 重叠区 fill (斜线)
+      // gap (持仓盈亏) 不再用 fill, 改用 plugin afterDatasetsDraw 在右侧画大括号 connector
       const c1 = this.charts.pnlTrend;
       if (c1) {
         newDays.forEach(r => {
@@ -925,8 +926,7 @@
           c1.data.labels.push(r.trade_date.substring(5));
           c1.data.datasets[0].data.push(realized);
           c1.data.datasets[1].data.push(total);
-          c1.data.datasets[2].data.push(total);   // gap fill same x as total
-          c1.data.datasets[3].data.push(overlap);
+          c1.data.datasets[2].data.push(overlap);
         });
         c1.update('none');  // 'none' = 不带动画
         console.log(`[charts] pnlTrend append ${newDays.length} day(s), labels=${c1.data.labels.length}`);
@@ -972,8 +972,7 @@
       c.data.labels = labels;
       c.data.datasets[0].data = realizedPnls;
       c.data.datasets[1].data = totalPnls;
-      c.data.datasets[2].data = totalPnls;
-      c.data.datasets[3].data = overlapData;
+      c.data.datasets[2].data = overlapData;
       c.update('none');
       console.log(`[charts] pnlTrend full update, labels=${c.data.labels.length}`);
     },
@@ -1061,7 +1060,8 @@
         return;
       }
       const labels = series.map(s => s.trade_date.substring(5)); // MM-DD
-      // v32.17: 双线 (realized 累计已实现 + total 累计总盈亏) + gap fill (持仓盈亏) + overlap pattern
+      // v32.19: 双线 (realized 累计已实现 + total 累计总盈亏) + overlap pattern
+      // gap (持仓盈亏) 不再用 fill, 改用 plugin afterDatasetsDraw 在右侧画大括号 connector + 竖排文字
       const realizedPnls = series.map(s => s.realized_pnl != null ? s.realized_pnl : s.total_pnl);
       const totalPnls = series.map(s => s.total_pnl != null ? s.total_pnl : 0);
       // overlap: 两线同号部分 = min(realized, total) if 都 >= 0 else 0 (realized 累计总 >= 0, 所以此值通常 = total >= 0 时 min)
@@ -1099,18 +1099,87 @@
         return c.createPattern(pat, 'repeat');
       }
 
+      // v32.19: 右侧大括号 connector plugin (持仓盈亏 = total - realized, 末点)
+      // 大括号从 chart area 右外侧画, 中间竖排 "持仓盈亏 ±X.XX 元" 文字
+      const gapConnectorPlugin = {
+        id: 'gapConnector',
+        afterDatasetsDraw(chart) {
+          const cctx = chart.ctx;
+          const cArea = chart.chartArea;
+          if (!cArea) return;
+          const realizedSeries = chart.data.datasets[0].data;
+          const totalSeries = chart.data.datasets[1].data;
+          if (!realizedSeries.length || !totalSeries.length) return;
+          const lastIdx = realizedSeries.length - 1;
+          const realizedLast = realizedSeries[lastIdx];
+          const totalLast = totalSeries[lastIdx];
+          if (realizedLast == null || totalLast == null) return;
+          const gap = totalLast - realizedLast;
+          if (Math.abs(gap) < 1) return;  // gap 太小不画 (避免重叠)
+
+          const yScale = chart.scales.y;
+          const realizedY = yScale.getPixelForValue(realizedLast);
+          const totalY = yScale.getPixelForValue(totalLast);
+          const topY = Math.min(realizedY, totalY);
+          const botY = Math.max(realizedY, totalY);
+
+          // 大括号 `{` 几何: 两条短横线 (top/bottom) + 中心尖角
+          const braceX = cArea.right + 6;
+          const braceW = 14;
+          const tipX = braceX - 3;
+
+          cctx.save();
+          cctx.strokeStyle = '#3A2E26';  // accent-engrave 深棕铜版画
+          cctx.lineWidth = 1.2;
+          cctx.lineCap = 'round';
+          cctx.lineJoin = 'round';
+          cctx.beginPath();
+          // 顶部横线 (大括号上端)
+          cctx.moveTo(braceX, topY);
+          cctx.lineTo(braceX + braceW, topY);
+          // 底部横线 (大括号下端)
+          cctx.moveTo(braceX, botY);
+          cctx.lineTo(braceX + braceW, botY);
+          // 中心尖角 (从顶部到中心到底部)
+          cctx.moveTo(braceX, topY);
+          cctx.lineTo(tipX, (topY + botY) / 2);
+          cctx.lineTo(braceX, botY);
+          cctx.stroke();
+
+          // 竖排文字 "持仓盈亏 ±X.XX 元" 中心位置
+          const labelX = braceX + braceW + 8;
+          const labelY = (topY + botY) / 2;
+          cctx.save();
+          cctx.translate(labelX, labelY);
+          cctx.rotate(-Math.PI / 2);  // 竖排 (逆时针 90°)
+          cctx.fillStyle = '#3A2E26';
+          cctx.font = '11px JetBrains Mono';
+          cctx.textAlign = 'center';
+          cctx.textBaseline = 'middle';
+          const sign = gap >= 0 ? '+' : '';
+          cctx.fillText(`持仓盈亏 ${sign}${gap.toFixed(2)} 元`, 0, 0);
+          cctx.restore();
+
+          cctx.restore();
+        }
+      };
+
       this.charts.pnlTrend = new Chart(ctx, {
         type: 'line',
         data: {
           labels,
           datasets: [
-            // [0] 已实现盈亏 line (主, 不 fill, 深色)
+            // [0] 已实现盈亏 line + fill (A 股惯例涨红跌绿)
             {
               label: '已实现盈亏',
               data: realizedPnls,
               borderColor: '#1A1A1A',
               borderWidth: 1.5,
-              fill: false,
+              fill: {
+                target: { value: 0 },
+                above: 'rgba(196, 92, 79, 0.12)',   // y>0 红 (A 股涨)
+                below: 'rgba(122, 138, 118, 0.12)', // y<0 绿 (A 股跌)
+              },
               tension: 0.3,
               pointRadius: 0,
               pointHoverRadius: 4,
@@ -1119,7 +1188,7 @@
               pointHoverBorderWidth: 2,
               order: 1,
             },
-            // [1] 总盈亏 line (主, fill 到 y=0, A 股惯例涨红跌绿)
+            // [1] 总盈亏 line + fill (A 股惯例涨红跌绿)
             {
               label: '总盈亏',
               data: totalPnls,
@@ -1138,18 +1207,7 @@
               pointHoverBorderWidth: 2,
               order: 2,
             },
-            // [2] 持仓盈亏 gap fill (between dataset[0] realized 和 dataset[1] total, 中性色半透明)
-            {
-              label: '持仓盈亏 (gap)',
-              data: totalPnls,  // gap fill 用 total 数据 + target: 0 (dataset[0]) 形成 between 区域
-              borderWidth: 0,
-              fill: { target: 0 },  // fill to dataset[0] = realized, 形成 gap (持仓盈亏)
-              backgroundColor: 'rgba(58, 46, 38, 0.10)',  // accent-engrave 深棕半透明
-              pointRadius: 0,
-              tension: 0.3,
-              order: 3,
-            },
-            // [3] 重叠区 fill (canvas 斜线 pattern, min(realized, total) 同号部分)
+            // [2] 重叠区 fill (canvas 斜线 pattern, min(realized, total) 同号部分)
             {
               label: '已实现 + 总盈亏 重叠',
               data: overlapData,
@@ -1158,7 +1216,7 @@
               backgroundColor: makeDiagonalPattern(ctx),
               pointRadius: 0,
               tension: 0.3,
-              order: 4,
+              order: 3,
             },
           ],
         },
@@ -1166,6 +1224,10 @@
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
+          layout: {
+            // v32.19: 右侧 padding 给大括号 connector + 竖排文字留位置 (约 80px)
+            right: 90,
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
@@ -1185,8 +1247,7 @@
                   const i = ctx[0].dataIndex;
                   return series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
                 },
-                // v32.17.1: filter 过滤掉 fill datasets (gap + overlap) 避免重复 4×3 行
-                // 只让 dataset[1] (总盈亏 line) 进 tooltip, 输出完整三行
+                // v32.19: filter 过滤掉 overlap fill dataset, 只让 dataset[1] (总盈亏 line) 进 tooltip, 输出完整三行
                 filter: (tooltipItem) => tooltipItem.datasetIndex === 1,
                 label: (ctx) => {
                   if (ctx.datasetIndex !== 1) return '';
@@ -1228,7 +1289,9 @@
               }
             }
           }
-        }
+        },
+        // v32.19: 注册右侧大括号 connector plugin (持仓盈亏 = total - realized, 末点)
+        plugins: [gapConnectorPlugin],
       });
     },
 
