@@ -4,6 +4,15 @@
 
 ---
 
+## v32.11 · 2026-09-24 · 总盈亏% 分母改净投入
+
+- **后端 summary 默认分母改 net_invested (净投入)**: user 9-24 反馈 "同一笔钱反复买卖, 累计投入做分母偏大", 选 (c) 算法。render_dashboard.py compute_summary 加 `net_invested` 字段 (= 当前 active 持仓总成本 = 还留在市场里的钱), `summary.total_pnl_pct` 默认改基于 net_invested 算。同时输出 `total_pnl_pct_initial` (旧, 累计投入) 和 `total_pnl_pct_net` (新, 净投入), initial_principal 字段保留向后兼容
+- **chart-benchmark my_portfolio 同步改 net_invested 算法**: 每日 cum_pct = 当日 active 持仓成本 (动态) 做分母, 跟 summary 同口径。历史每个日期 net_invested 不同, 反映"当时还在市场里的钱的盈亏率"。末条 = summary.total_pnl_pct 跟 user 期望对齐 (v32.9 已 include today)
+- **settings tab 文案更新**: 描述改 "默认用净投入算总盈亏%, 同一笔钱反复买卖不会重复计", placeholder 改 "留空: 净投入 (当前持仓总成本)"
+- 4 处版本号同步 v32.11
+
+---
+
 ## v32.10 · 2026-09-24 · tooltip 改回持仓盈亏 + 账户资金设置
 
 - **chart-pnl-trend tooltip 改回持仓盈亏**: v32.8/v32.9 chart line 改 realized_pnl (累计已实现), tooltip 跟 chart line 一致也用 realized_pnl。user 9-24 反馈 "悬浮窗应该还是持仓盈亏金额的数字" — tooltip 跟 chart line 解耦, tooltip 改读 `series[i].total_pnl` (当日浮盈, 即持仓盈亏)
