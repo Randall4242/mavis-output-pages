@@ -4,6 +4,15 @@
 
 ---
 
+## v32.9 · 2026-09-24 · 用户反馈修 3 处
+
+- **chart-pnl-trend 首次渲染也用 realized_pnl**: v32.8 只改了 `appendChartsWith` + `updatePnlTrendChartFull` 两条路径, 但 `renderPnlTrendChart` (首次 new Chart) 仍用 `s.total_pnl` → 刷新页面后图表显示持仓盈亏, 切 closed-trades 再切回 analysis 才走 `updatePnlTrendChartFull` 切回 realized_pnl。v32.9 把 `renderPnlTrendChart` 也改 `realized_pnl != null ? realized_pnl : total_pnl`, 三条路径一致
+- **closed-trades tab CSS 改 class selector**: v32.8 用 `.seg:nth-of-type(2)` 还是错的 — 5 元素全是 div, nth-of-type 按 tag name 算 div 选第二个 div = `seg-op-plus` (一个 `+`), 不是 seg, 卡片显示 + 没数字。v32.9 给 3 个 seg 加显式 class (`seg-floating` / `seg-realized` / `seg-total`), CSS 改用 `.seg-realized` selector, 不靠 nth-* 位置选择
+- **chart-benchmark include today (跟 summary 卡片同口径)**: 后端 `compute_benchmark_from_holding_pnl` 老 9-18 行为把 series 截到 `yesterday`, 所以 `my_portfolio` 末条是 9-23 cum_pct (-1.46%), 跟今天三段式 summary 总盈亏 (9-24 -2.72%) 差 1 个交易日。v32.9 删 `if d <= yesterday` 截断, my_portfolio 末条 = today cum_pct = summary.total_pnl_pct 同口径
+- 4 处版本号同步 v32.9
+
+---
+
 ## v32.8 · 2026-09-24 · 用户反馈调整
 
 - **chart-pnl-trend 改用 realized_pnl 序列**: dashboard.js `appendChartsWith` + `updatePnlTrendChartFull` 优先读 `pnl_series[].realized_pnl`(后端新增字段),fallback `total_pnl`。index.html chart-title 改"已实现盈亏 · 累计",section-title 改"已实现盈亏趋势"

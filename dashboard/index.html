@@ -633,14 +633,14 @@
   /* closed-trades 只显示中段 (已实现盈亏), 隐藏头尾 seg + 算式运算符
      v24.0: 修 nth-child 选错 bug
      v25.0: 改 flex column + center 居中
-     v27.0: grid 从 5 列 (3 seg + 2 seg-op) 改为 3 列 (3 seg, .seg-op 移出 grid 改 absolute),
-     已实现 seg 现在是 .seg:nth-child(2) (旧 nth-child(3) 已无对应元素),
-     持仓 nth-child(1), 总投 nth-child(3) (旧 nth-child(5) 已无对应元素)
-     v32.8: 实际 HTML 仍有 5 元素 (seg / seg-op / seg / seg-op / seg), nth-child(2) 是 seg-op 不命中.
-     改用 class selector: 隐藏所有 .seg, 只显示 .seg:nth-of-type(2) (第二个 seg 元素, 不算 seg-op) */
+     v27.0: grid 从 5 列 (3 seg + 2 seg-op) 改为 3 列 (3 seg, .seg-op 移出 grid 改 absolute)
+     v32.8: 试 .seg:nth-of-type(2), 但 5 元素全是 div, nth-of-type 算 tag 算 div,
+     还是选到第二个 div (seg-op-plus), 不是 seg-realized, 卡片显示 + 没数字
+     v32.9: 给 3 个 seg 加显式 class (seg-floating / seg-realized / seg-total),
+     CSS 用 class selector, 不靠 nth-* 位置选择 */
   .summary[data-tab-mode="closed-trades"] .three-seg .seg-op,
   .summary[data-tab-mode="closed-trades"] .three-seg .seg { display: none; }
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-of-type(2) {
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg-realized {
     /* v25.0: 改 flex column + center 居中, 替代 baseline 单行 (user 反馈已实现盈亏卡片
        内容需居中, baseline 对齐 + flex-wrap 看起来元素错位不卡片化) */
     display: flex;
@@ -1364,21 +1364,21 @@
   <h2 class="section-title summary-h2 summary-h2-three">三段式盈亏 <span class="count">3 segments</span></h2>
 
   <div class="three-seg">
-    <div class="seg">
+    <div class="seg seg-floating">
       <div class="seg-label">① 持仓盈亏 · 浮盈</div>
       <div class="seg-amount" id="floating-amount">—</div>
       <div class="seg-percent" id="floating-pct">—</div>
       <div class="seg-denominator">vs 当前持仓成本</div>
     </div>
     <div class="seg-op seg-op-plus" aria-hidden="true">+</div>
-    <div class="seg">
+    <div class="seg seg-realized">
       <div class="seg-label">② 已实现盈亏</div>
       <div class="seg-amount" id="realized-amount">—</div>
       <div class="seg-percent" id="realized-pct">—</div>
       <div class="seg-denominator">vs 历史消耗本金</div>
     </div>
     <div class="seg-op seg-op-equals" aria-hidden="true">=</div>
-    <div class="seg">
+    <div class="seg seg-total">
       <div class="seg-label">③ 总投资盈亏</div>
       <div class="seg-amount" id="total-amount">—</div>
       <div class="seg-percent" id="total-pct">—</div>
@@ -1518,7 +1518,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.8 · 2026-09-24 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.9 · 2026-09-24 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1526,6 +1526,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.7"></script>
+<script src="dashboard.js?v=32.9"></script>
 </body>
 </html>
