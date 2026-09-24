@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.20 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.21 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -964,7 +964,11 @@
       if (!c) return;
       const labels = series.map(r => r.trade_date.substring(5));
       const realizedPnls = series.map(r => r.realized_pnl != null ? r.realized_pnl : r.total_pnl);
-      const totalPnls = series.map(r => r.total_pnl != null ? r.total_pnl : 0);
+      const totalPnls = series.map(r => {
+        const floating = r.total_pnl != null ? r.total_pnl : 0;
+        const realized = r.realized_pnl != null ? r.realized_pnl : 0;
+        return floating + realized;
+      });
       const overlapData = realizedPnls.map((r, i) => {
         const t = totalPnls[i];
         return (r >= 0 && t >= 0) ? Math.min(r, t) : 0;
@@ -1060,10 +1064,14 @@
         return;
       }
       const labels = series.map(s => s.trade_date.substring(5)); // MM-DD
-      // v32.19: 双线 (realized 累计已实现 + total 累计总盈亏) + overlap pattern
+      // v32.21: 双线 (realized 累计已实现 + total 累计总盈亏 = total_pnl + realized_pnl)
       // gap (持仓盈亏) 不再用 fill, 改用 plugin afterDatasetsDraw 在右侧画大括号 connector + 竖排文字
       const realizedPnls = series.map(s => s.realized_pnl != null ? s.realized_pnl : s.total_pnl);
-      const totalPnls = series.map(s => s.total_pnl != null ? s.total_pnl : 0);
+      const totalPnls = series.map(s => {
+        const floating = s.total_pnl != null ? s.total_pnl : 0;
+        const realized = s.realized_pnl != null ? s.realized_pnl : 0;
+        return floating + realized;
+      });
       // overlap: 两线同号部分 = min(realized, total) if 都 >= 0 else 0 (realized 累计总 >= 0, 所以此值通常 = total >= 0 时 min)
       const overlapData = realizedPnls.map((r, i) => {
         const t = totalPnls[i];
