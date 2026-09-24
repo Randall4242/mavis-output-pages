@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.17 (2026-09-24)
+ * Mavis Stock Tracker — Dashboard.js v32.18 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1185,8 +1185,11 @@
                   const i = ctx[0].dataIndex;
                   return series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
                 },
+                // v32.17.1: filter 过滤掉 fill datasets (gap + overlap) 避免重复 4×3 行
+                // 只让 dataset[1] (总盈亏 line) 进 tooltip, 输出完整三行
+                filter: (tooltipItem) => tooltipItem.datasetIndex === 1,
                 label: (ctx) => {
-                  // v32.17: tooltip 同步显示 realized + total + gap (持仓盈亏)
+                  if (ctx.datasetIndex !== 1) return '';
                   const i = ctx.dataIndex;
                   const r = realizedPnls[i] || 0;
                   const t = totalPnls[i] || 0;

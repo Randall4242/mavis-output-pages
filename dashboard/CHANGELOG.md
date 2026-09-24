@@ -4,6 +4,17 @@
 
 ---
 
+## v32.18 · 2026-09-25 · chart-pnl-trend tooltip 重复条目修
+
+- **bug**: v32.17 tooltip `label` callback 对 4 个 dataset (realized / total / gap fill / overlap fill) 都触发,每次返回 3 行 → 4×3=12 行重复显示
+- **修法**:
+  - 加 `filter` callback: `tooltipItem.datasetIndex === 1` — 只让 dataset[1] (总盈亏 line) 进 tooltip, fill datasets (gap / overlap) 整行过滤
+  - `label` callback 加双保险: `ctx.datasetIndex !== 1` 直接返回 `''`
+- **效果**: tooltip 只显示 3 行 (已实现 / 总盈亏 / 持仓盈亏 gap)
+- 4 处版本号同步 v32.18
+
+---
+
 ## v32.17 · 2026-09-25 · chart-pnl-trend 改 "盈亏 gap" 双线 + gap fill + overlap pattern
 
 - **section-title 改**: "已实现盈亏趋势" → "盈亏 gap", chart-title 改 "已实现 vs 总盈亏 · 持仓盈亏 = 两线 gap"
