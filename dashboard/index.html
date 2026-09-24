@@ -635,11 +635,12 @@
      v25.0: 改 flex column + center 居中
      v27.0: grid 从 5 列 (3 seg + 2 seg-op) 改为 3 列 (3 seg, .seg-op 移出 grid 改 absolute),
      已实现 seg 现在是 .seg:nth-child(2) (旧 nth-child(3) 已无对应元素),
-     持仓 nth-child(1), 总投 nth-child(3) (旧 nth-child(5) 已无对应元素) */
+     持仓 nth-child(1), 总投 nth-child(3) (旧 nth-child(5) 已无对应元素)
+     v32.8: 实际 HTML 仍有 5 元素 (seg / seg-op / seg / seg-op / seg), nth-child(2) 是 seg-op 不命中.
+     改用 class selector: 隐藏所有 .seg, 只显示 .seg:nth-of-type(2) (第二个 seg 元素, 不算 seg-op) */
   .summary[data-tab-mode="closed-trades"] .three-seg .seg-op,
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(1),
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(3) { display: none; }
-  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-child(2) {
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg { display: none; }
+  .summary[data-tab-mode="closed-trades"] .three-seg .seg:nth-of-type(2) {
     /* v25.0: 改 flex column + center 居中, 替代 baseline 单行 (user 反馈已实现盈亏卡片
        内容需居中, baseline 对齐 + flex-wrap 看起来元素错位不卡片化) */
     display: flex;
@@ -1412,11 +1413,11 @@
   <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
 </div>
 
-<h2 class="section-title">累计盈亏趋势 <span class="count">近 <span id="pnl-days-count">30</span> 天</span></h2>
+<h2 class="section-title">已实现盈亏趋势 <span class="count">近 <span id="pnl-days-count">30</span> 天</span></h2>
 
 <div class="chart-card">
   <div class="chart-header">
-    <div class="chart-title">总 P&L · 累计</div>
+    <div class="chart-title">已实现盈亏 · 累计</div>
     <div class="chart-sub" id="pnl-range">—</div>
   </div>
   <div class="chart-canvas-wrap">
@@ -1517,7 +1518,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.7 · 2026-09-23 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.8 · 2026-09-24 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->

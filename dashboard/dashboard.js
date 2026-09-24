@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.7 (2026-09-23)
+ * Mavis Stock Tracker — Dashboard.js v32.8 (2026-09-24)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -860,11 +860,11 @@
     appendChartsWith(newDays) {
       if (!newDays || newDays.length === 0) return;
 
-      // pnlTrend: 3 datasets (红 area / 绿 area / 主 line)
+      // pnlTrend: 3 datasets (红 area / 绿 area / 主 line). v32.8: 改用 realized_pnl (累计已实现盈亏)
       const c1 = this.charts.pnlTrend;
       if (c1) {
         newDays.forEach(r => {
-          const v = r.total_pnl;
+          const v = r.realized_pnl != null ? r.realized_pnl : r.total_pnl;  // v32.8: 优先 realized, fallback total
           c1.data.labels.push(r.trade_date.substring(5));
           c1.data.datasets[0].data.push(v >= 0 ? v : null);  // 红 area
           c1.data.datasets[1].data.push(v < 0 ? v : null);   // 绿 area
@@ -905,9 +905,10 @@
       const c = this.charts.pnlTrend;
       if (!c) return;
       c.data.labels = series.map(r => r.trade_date.substring(5));
-      c.data.datasets[0].data = series.map(r => r.total_pnl >= 0 ? r.total_pnl : null);
-      c.data.datasets[1].data = series.map(r => r.total_pnl < 0 ? r.total_pnl : null);
-      c.data.datasets[2].data = series.map(r => r.total_pnl);
+      // v32.8: 改用 realized_pnl (累计已实现盈亏) 替代 total_pnl
+      c.data.datasets[0].data = series.map(r => { const v = r.realized_pnl != null ? r.realized_pnl : r.total_pnl; return v >= 0 ? v : null; });
+      c.data.datasets[1].data = series.map(r => { const v = r.realized_pnl != null ? r.realized_pnl : r.total_pnl; return v < 0 ? v : null; });
+      c.data.datasets[2].data = series.map(r => r.realized_pnl != null ? r.realized_pnl : r.total_pnl);
       c.update('none');
       console.log(`[charts] pnlTrend full update, labels=${c.data.labels.length}`);
     },

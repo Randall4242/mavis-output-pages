@@ -4,6 +4,15 @@
 
 ---
 
+## v32.8 · 2026-09-24 · 用户反馈调整
+
+- **chart-pnl-trend 改用 realized_pnl 序列**: dashboard.js `appendChartsWith` + `updatePnlTrendChartFull` 优先读 `pnl_series[].realized_pnl`(后端新增字段),fallback `total_pnl`。index.html chart-title 改"已实现盈亏 · 累计",section-title 改"已实现盈亏趋势"
+- **closed-trades tab CSS nth-child bug**: v24.0 + v27.0 累积错位,三段 HTML 5 元素 (seg/seg-op/seg/seg-op/seg),nth-child(2) 选到 seg-op-plus,seg 都没选中,实际显示 nth-child(5) 也就是"③ 总投资盈亏",headpiece 标题写"已实现盈亏"。改用 `.seg:nth-of-type(2)` (第二个 seg 元素,不算 seg-op),现在 closed-trades tab 正确显示"② 已实现盈亏"数字 (+873.2)
+- **后端 pnl_series 加 realized_pnl**: render_dashboard.py compute_pnl_series 算累计已实现盈亏 (FIFO 配对),每条 pnl_series 加 `realized_pnl` 字段,跟 summary.realized_pnl_abs (今日 +873.2) 一致
+- 4 处版本号同步 v32.8
+
+---
+
 ## v32.6 · 2026-09-23 · cleanup
 
 plan **P4-C** + **P4-D** 实施
