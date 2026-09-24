@@ -1501,18 +1501,18 @@
 </div><!-- /page-closed-trades -->
 <div class="tab-page" id="page-settings">
 
-<!-- ============ TAB: 设置 (account funds) ============ -->
+<!-- ============ TAB: 设置 (max invested capital) ============ -->
 <section class="tab-pane" id="tab-settings">
   <div style="padding: 32px 24px; max-width: 540px; margin: 0 auto;">
-    <div style="font-size: 24px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em;">⚙️ 账户资金</div>
+    <div style="font-size: 24px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.01em;">⚙️ 最大占用本金</div>
     <div style="font-size: 13px; color: var(--ink-secondary); line-height: 1.6; margin-bottom: 24px;">
         默认用"累计买入"算总盈亏% (历史所有买入金额), 反映"我一共投入了多少"。<br>
-        你可以填一个<strong>真实账户净资金</strong> (∑入金 − ∑出金), 用它算"账户本身的盈亏率"。
+        你可以填一个<strong>最大占用本金 (Max Invested Capital)</strong> — 你账户里真实占用的本金上限, 用它算"账户本身的盈亏率"。
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 16px; padding: 20px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg-card);">
       <label style="font-size: 13px; color: var(--ink-secondary);">
-        账户真实净资金 (元) — 留空则用累计买入 (initial_principal)
+        最大占用本金 (元) — 留空则用累计买入 (initial_principal)
       </label>
       <input type="number" id="account-funds-input" placeholder="留空: 累计买入 (49064.3)"
              step="0.01" min="0"
@@ -1526,13 +1526,14 @@
     </div>
 
     <div style="margin-top: 24px; padding: 16px; border: 1px solid var(--border); border-radius: 4px; background: rgba(0,0,0,0.02); font-size: 12px; line-height: 1.7; color: var(--ink-secondary);">
-      <strong style="color: var(--ink-primary);">当前算法 (v32.12):</strong><br>
+      <strong style="color: var(--ink-primary);">当前算法 (v32.15):</strong><br>
       • <strong>持仓盈亏%</strong>: 当日浮盈 / 当前持仓成本<br>
       • <strong>已实现盈亏%</strong>: 累计已实现 / 历史卖出本金<br>
       • <strong>总盈亏%</strong> (默认): (浮盈 + 已实现) / <strong>累计买入</strong> (initial_principal)<br>
-      • <strong>总盈亏%</strong> (填了数字): (浮盈 + 已实现) / 你设的"真实净资金"<br>
+      • <strong>总盈亏%</strong> (填了数字): (浮盈 + 已实现) / 你设的"最大占用本金" (Max Invested Capital)<br>
+      • <strong>累计收益率 vs 大盘</strong> (我的持仓 line): 末条数字同步用最大占用本金算 (其他日期按 cum_pct 走势)<br>
       <br>
-      <span style="color: var(--ink-muted);">真实净资金 = ∑入金 − ∑出金, 你去银行/券商账户能查到。<br>
+      <span style="color: var(--ink-muted);">最大占用本金 = 你账户里真实占用的本金上限, 你去银行/券商账户能查到。<br>
       填这个能反映"账户本身的盈亏率", 不受反复买卖同一笔钱影响。</span>
     </div>
   </div>
@@ -1546,7 +1547,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.14 · 2026-09-24 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.15 · 2026-09-24 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1554,6 +1555,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.14"></script>
+<script src="dashboard.js?v=32.15"></script>
 </body>
 </html>

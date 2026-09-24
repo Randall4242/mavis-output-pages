@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.14 (2026-09-24)
+ * Mavis Stock Tracker — Dashboard.js v32.15 (2026-09-24)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -610,6 +610,7 @@
     },
 
     // v32.10: 账户资金 (本地设置, 用户在 settings tab 输入, 用于覆写总盈亏% 分母)
+    // v32.15: 语义改 "最大占用本金 (Max Invested Capital)" — 内部变量 / localStorage key 保留向后兼容
     accountFunds: null,
     initAccountFunds() {
       try {
@@ -624,13 +625,19 @@
           if (!isNaN(v) && v > 0) {
             localStorage.setItem('mavis.accountFunds', String(v));
             this.accountFunds = v;
-            this.toast('已保存账户资金 ¥' + v.toLocaleString('zh-CN') + ' · 总盈亏% 已更新');
+            this.toast('已保存最大占用本金 ¥' + v.toLocaleString('zh-CN') + ' · 总盈亏% / 累计收益率 vs 大盘 已更新');
           } else {
             localStorage.removeItem('mavis.accountFunds');
             this.accountFunds = null;
-            this.toast('已清空账户资金 · 总盈亏% 回到累计投入');
+            this.toast('已清空最大占用本金 · 总盈亏% 回到累计投入');
           }
-          if (this.data) this.renderThreeSeg(this.data);
+          if (this.data) {
+            this.renderThreeSeg(this.data);
+            // v32.15: chart-benchmark legend label 末条也用 accountFunds 算, 同步触发
+            if (this.charts.benchmark && this.dataCache && this.dataCache.benchmark) {
+              this.updateBenchmarkChartFull(this.dataCache.benchmark);
+            }
+          }
         });
       }
       const clearBtn = $('account-funds-clear');
@@ -639,8 +646,13 @@
           localStorage.removeItem('mavis.accountFunds');
           this.accountFunds = null;
           if (input) input.value = '';
-          this.toast('已清空账户资金 · 总盈亏% 回到累计投入');
-          if (this.data) this.renderThreeSeg(this.data);
+          this.toast('已清空最大占用本金 · 总盈亏% 回到累计投入');
+          if (this.data) {
+            this.renderThreeSeg(this.data);
+            if (this.charts.benchmark && this.dataCache && this.dataCache.benchmark) {
+              this.updateBenchmarkChartFull(this.dataCache.benchmark);
+            }
+          }
         });
       }
     },
@@ -965,8 +977,24 @@
       c.data.datasets[0].data = my.map(r => r.cum_pct);
       if (c.data.datasets[1]) c.data.datasets[1].data = labels.map((_, i) => shMap[my[i].trade_date] ?? null);
       if (c.data.datasets[2]) c.data.datasets[2].data = labels.map((_, i) => csiMap[my[i].trade_date] ?? null);
+      // v32.15: dataset[0].label 末条数字也同步用 max invested capital 算 (跟 summary 卡片同口径)
+      c.data.datasets[0].label = `我的总盈亏 (含已实现) (${this._computeMyPctLabel()})`;
       c.update('none');
       console.log(`[charts] benchmark full update, labels=${c.data.labels.length}`);
+    },
+
+    // v32.15: 算我的总盈亏% 末条 label (chart legend / dataset[0].label 共享)
+    // 优先用 accountFunds (settings 填的 max invested capital), 没设 → fallback cum_pct 末条
+    _computeMyPctLabel() {
+      const bench = (this.dataCache && this.dataCache.benchmark) || {};
+      const my = bench.my_portfolio || [];
+      const cumPctLast = my.length > 0 ? my[my.length - 1].cum_pct : null;
+      if (this.accountFunds && this.accountFunds > 0 && this.data && this.data.summary) {
+        const tp = this.data.summary.total_pnl_abs;
+        const myPctLast = Math.round((tp / this.accountFunds) * 10000) / 100;
+        return fmtPct(myPctLast);
+      }
+      return cumPctLast != null ? fmtPct(cumPctLast) : '—';
     },
 
     // 移动端检测兜底: 旧 WebView / 某些 Android 浏览器可能没 window.matchMedia, 之前 v22.8 在 raf 回调里抛错被吞
@@ -1177,7 +1205,8 @@
 
       const datasets = [
         {
-          label: `我的总盈亏 (含已实现) (${fmtPct(myData[myData.length - 1])})`,
+          // v32.15: 末条数字同步用 max invested capital 算 (跟 summary 卡片同口径)
+          label: `我的总盈亏 (含已实现) (${this._computeMyPctLabel()})`,
           data: myData,
           borderColor: '#1A1A1A',
           backgroundColor: 'rgba(26,26,26,0.06)',

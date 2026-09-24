@@ -4,6 +4,18 @@
 
 ---
 
+## v32.15 · 2026-09-24 · settings tab 改 "最大占用本金" + chart-benchmark 同步
+
+- **settings tab 语义改名**: "账户资金 / 真实账户净资金" → "最大占用本金 (Max Invested Capital)"。input label / placeholder / 文案 / 当前算法描述 同步更新
+- **chart-benchmark 累计收益率 vs 大盘同步**: legend label 末条 / dataset[0].label 数字改用 settings 填的"最大占用本金"算总盈亏率 (跟 summary 三段式卡片同口径)。**chart line 数据不变** (历史 cum_pct 走势保留), 只末条数字跟 settings 走
+- **抽 `_computeMyPctLabel()` helper**: 优先级 `accountFunds > 0 → (total_pnl_abs / accountFunds) × 100`,否则 fallback `cum_pct 末条`
+- **trigger 同步**: `initAccountFunds()` 的 input change / clear button 现在同时调用 `renderThreeSeg` + `updateBenchmarkChartFull`, 改 settings 后 legend label 实时更新不用刷新页面
+- **localStorage key 保留向后兼容**: 仍是 `mavis.accountFunds` (内部变量名 `this.accountFunds` 也保留),只 UI 文案 + 算法解释改了语义。CHANGELOG 标出这是"语义改名, 数据无破坏"
+- **toast 文案同步**: "已保存账户资金" → "已保存最大占用本金", 多提一句"累计收益率 vs 大盘 已更新"
+- 4 处版本号同步 v32.15
+
+---
+
 ## v32.14 · 2026-09-24 · chart-benchmark label 文案修 + workflow tee/logging
 
 - **chart-benchmark legend label 文案修**: 原 "我的持仓 (-2.89%)" 末条数值是 `summary.total_pnl_pct` (= 浮亏 + 已实现 / 累计买入,v32.9 改 include today 后),但 label "我的持仓" 让 user 误以为是 `floating_pnl_pct` (持仓浮亏 / 当前持仓成本, -10.77%)。改 label 为 "我的总盈亏 (含已实现) (-2.89%)" 让数字口径明确。**数据不变**(myData 仍用 cum_pct 末条, v32.9 设计意图保留,跟 summary 卡片同口径)
