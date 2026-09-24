@@ -920,7 +920,8 @@
       if (c1) {
         newDays.forEach(r => {
           const realized = r.realized_pnl != null ? r.realized_pnl : r.total_pnl;
-          const total = r.total_pnl != null ? r.total_pnl : 0;
+          // v32.21: total = 累计已实现 + 当日持仓浮盈 (累计总盈亏), 不是 pnl_series.total_pnl (当日浮盈)
+          const total = realized + (r.total_pnl != null ? r.total_pnl : 0);
           // overlap: 两线同号部分 = min(realized, total) if 都 >= 0 else 0
           const overlap = (realized >= 0 && total >= 0) ? Math.min(realized, total) : 0;
           c1.data.labels.push(r.trade_date.substring(5));

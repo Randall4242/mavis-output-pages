@@ -4,6 +4,26 @@
 
 ---
 
+## v32.21 · 2026-09-25 · chart-pnl-trend 总盈亏线数据口径修正 (user 9-25 反馈画错)
+
+- **bug**: chart-pnl-trend dataset[1] "总盈亏金额线" 实际画的是持仓盈亏金额 (= pnl_series.total_pnl 当日浮盈), 不是 user 想要的"总盈亏 = 浮盈 + 累计已实现"
+- **字段语义澄清** (实测 render_dashboard.py compute_pnl_series line 484 / 492):
+  - `pnl_series.total_pnl` = 当日持仓浮盈 (mkt - cost), **不含**已实现
+  - `pnl_series.realized_pnl` = 累计已实现 (FIFO 累计)
+  - 累计总盈亏 = `realized_pnl + total_pnl` (跟 summary.total_pnl_abs 同口径)
+- **修法** (3 处同步, appendChartsWith 是补漏的):
+  - `renderPnlTrendChart`: totalPnls 改为 `realized + floating`
+  - `updatePnlTrendChartFull`: 同步
+  - `appendChartsWith`: **同步** (user 9-25 第一次 commit 漏了, 我这次补)
+- **gap 公式不变**: gap = dataset[1] - dataset[0] = floating, 右侧 connector + pnl-range + tooltip 全部仍正确
+- **9-24 末条数据校验**:
+  - dataset[0] realized: +873.20 (累计已实现)
+  - dataset[1] total: **-1,418.80** (累计总盈亏 = +873.20 + -2,292.00, 跟 summary.total_pnl_abs -1418 一致)
+  - gap (持仓盈亏): -2,292.00
+- 4 处版本号同步 v32.21 (user commit 已同步, 我这次只补 appendChartsWith + CHANGELOG)
+
+---
+
 ## v32.20 · 2026-09-25 · chart-pnl-trend 双线形态 (实线/虚线) + segment 染色
 
 - **dataset[0] 已实现盈亏**: 实线 (borderDash: []) + `segment.borderColor` 按 y 正负变色 (A 股惯例涨红跌绿) — 之前 borderColor 固定 `#1A1A1A` 深色, 现在按中点 y 判断 (segment (p0.y + p1.y) / 2 >= 0 → 红 `rgba(196,92,79,0.85)`, < 0 → 绿 `rgba(122,138,118,0.85)`)
