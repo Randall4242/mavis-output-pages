@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.12 (2026-09-24)
+ * Mavis Stock Tracker — Dashboard.js v32.14 (2026-09-24)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1177,7 +1177,7 @@
 
       const datasets = [
         {
-          label: `我的持仓 (${fmtPct(myData[myData.length - 1])})`,
+          label: `我的总盈亏 (含已实现) (${fmtPct(myData[myData.length - 1])})`,
           data: myData,
           borderColor: '#1A1A1A',
           backgroundColor: 'rgba(26,26,26,0.06)',

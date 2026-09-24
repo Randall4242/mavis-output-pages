@@ -4,6 +4,15 @@
 
 ---
 
+## v32.14 · 2026-09-24 · chart-benchmark label 文案修 + workflow tee/logging
+
+- **chart-benchmark legend label 文案修**: 原 "我的持仓 (-2.89%)" 末条数值是 `summary.total_pnl_pct` (= 浮亏 + 已实现 / 累计买入,v32.9 改 include today 后),但 label "我的持仓" 让 user 误以为是 `floating_pnl_pct` (持仓浮亏 / 当前持仓成本, -10.77%)。改 label 为 "我的总盈亏 (含已实现) (-2.89%)" 让数字口径明确。**数据不变**(myData 仍用 cum_pct 末条, v32.9 设计意图保留,跟 summary 卡片同口径)
+- **workflow tee/logging (后端, mavis-output 仓 commit ce55f7f)**: Render dashboard.json step 加 `set -o pipefail + python3 ... 2>&1 | tee render.log`, 失败时 Python 退出码传播。upload-artifact 同时上传 data/dashboard.json + render.log, user 可下载 artifact 看完整 Python stdout/stderr trace,排查 workflow 失败更便利
+- **front + back 双仓机制变化**: 公开仓 `dashboard/` 实际是 frontend 开发源 + production serve (v32.8 → v32.12 直接推公开仓), mavis-output 仓根 `dashboard/` 是死代码(v32.7 时代脱钩 5 个版本)。HANDOFF.md 模型过时但本项目按实际工作流走
+- 4 处版本号同步 v32.14 (line 2 / query string / CACHE_NAME / footer)
+
+---
+
 ## v32.12 · 2026-09-24 · 回退 v32.11 净投入默认算法
 
 - **后端 summary.total_pnl_pct 默认回退 initial_principal**: v32.11 把默认分母改 net_invested (= 当前 active 持仓总成本), 但 user 9-24 反馈 "算法没追踪加钱, 算不准"。回退到累计买入 (initial_principal) 当默认分母
