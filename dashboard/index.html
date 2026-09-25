@@ -963,6 +963,10 @@
     border: 1px solid var(--border);
     border-radius: 4px;
   }
+  /* v32.28: mobile (S24 360px) 减小 chart-card padding, 给表格更多横向空间 */
+  @media (max-width: 480px) {
+    .chart-card { padding: 16px 12px 12px; }
+  }
   .chart-header {
     display: flex;
     align-items: baseline;
@@ -984,25 +988,28 @@
     position: relative;
     height: 280px;
   }
-  /* v32.27: 最近 5 个日期速览 (6 列 × 4 行, 数字右对齐 + letter-spacing 避免符号重叠) */
+  /* v32.28: 最近 5 个日期速览 (横向溢出 + 滚动条, 列宽根据内容自适应不重叠) */
   .pnl-recent-5 {
     display: grid;
-    grid-template-columns: minmax(32px, auto) repeat(5, minmax(0, 1fr));
+    grid-template-columns: minmax(32px, max-content) repeat(5, minmax(72px, max-content));
+    /* v32.28: 列宽最小 72px, 内容大时 max-content 让列宽撑开, 容器溢出时横向滚动 */
     gap: 6px;
     margin-top: 14px;
     padding: 10px 6px;
     border-top: 1px dashed var(--border);
     border-bottom: 1px dashed var(--border);
     font-family: 'JetBrains Mono', monospace;
+    overflow-x: auto;  /* v32.28: 横向滚动条, 让列宽超出容器宽度时仍可读 */
+    -webkit-overflow-scrolling: touch;
   }
   .pnl-recent-5 .pnl-recent-cell {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;  /* v32.27: 数字右对齐, 避免溢出到下一列 */
+    align-items: flex-end;
     gap: 2px;
     padding: 4px 2px;
     border-right: 1px dashed #F0EFEB;
-    min-width: 0;
+    min-width: 72px;  /* v32.28: 跟 grid 一致, 强制最小宽度 */
   }
   .pnl-recent-5 .pnl-recent-cell:last-child {
     border-right: none;
@@ -1013,14 +1020,13 @@
     letter-spacing: 0.02em;
     margin-bottom: 2px;
     white-space: nowrap;
-    align-self: flex-end;  /* v32.27: 日期也右对齐 */
+    align-self: flex-end;
   }
   .pnl-recent-5 .pnl-recent-val {
     font-size: 11px;
     font-weight: 500;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    /* v32.27: letter-spacing 给符号 (-/+,/.) 留呼吸空间, 避免跟数字连写 */
     letter-spacing: 0.04em;
   }
   .pnl-recent-5 .pnl-recent-val.up { color: #C45C4F; }
@@ -1036,13 +1042,13 @@
     font-weight: 600;
     letter-spacing: 0.02em;
   }
-  /* v32.27: mobile (S24 360px) 字号缩 + gap 加大 */
+  /* v32.28: mobile (S24 360px) 字号缩, 列宽最小值不变, 用户需横向滚动看完整 */
   @media (max-width: 480px) {
-    .pnl-recent-5 { padding: 8px 2px; gap: 4px; grid-template-columns: minmax(28px, auto) repeat(5, minmax(0, 1fr)); }
+    .pnl-recent-5 { padding: 8px 2px; gap: 4px; }
     .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
     .pnl-recent-5 .pnl-recent-val { font-size: 9px; letter-spacing: 0.05em; }
     .pnl-recent-5 .pnl-recent-label { font-size: 9px; padding: 2px 4px 2px 1px; }
-    .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; }
+    .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; min-width: 64px; }
   }
   /* v32.24: press-and-drag tooltip 容器 (绝对定位, chart 底部 x 轴 tick labels 之上, 居中显示在 dragged x 上) */
   .pnl-trend-tooltip {
@@ -1638,7 +1644,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.27 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.28 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1646,6 +1652,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.27"></script>
+<script src="dashboard.js?v=32.28"></script>
 </body>
 </html>

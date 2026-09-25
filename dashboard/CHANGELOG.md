@@ -4,6 +4,20 @@
 
 ---
 
+## v32.28 · 2026-09-25 · pnl-recent-5 拉长 + 横向滚动条 — 解决数字重叠
+
+- **user 反馈**: v32.27 letter-spacing + 字号缩小后仍重叠, 希望整体拉长表格
+- **根因**: S24 360px viewport, chart-card padding 24px×2, 可用 ~280px, 5 列每列 ~50px 装不下 `-1,931.80` (9 字符)
+- **修法**:
+  - **`.pnl-recent-5` grid 列宽** 改 `minmax(72px, max-content)`: 列宽根据内容自适应, 最小 72px, 数字自然撑开
+  - **`.pnl-recent-5` overflow-x: auto**: 内容超出容器宽度时横向滚动条 (-webkit-overflow-scrolling: touch 让 iOS 滚动顺滑)
+  - **`.chart-card` mobile padding** 减小 28/24 → 16/12 (max-width: 480px), 给表格多 24px 横向空间
+  - **mobile cell min-width** 64px, 字号 9px + letter-spacing 0.05em 保留
+- **预期**: 数字在每列内独立成块, 列间通过滚动条交互, 数字精度保留 (`-1,931.80` 不再被压缩)
+- 4 处版本号同步 v32.28
+
+---
+
 ## v32.27 · 2026-09-25 · pnl-recent-5 数字太密 — 加 letter-spacing + 右对齐 + gap 加大
 
 - **user 反馈**: S24 截图显示数字符号 (-/+,/.) 跟数字紧贴重叠, 千位分隔符看不清, 列间无空隙

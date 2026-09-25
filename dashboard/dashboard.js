@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.27 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.28 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1415,10 +1415,11 @@
         });
       }
 
-      // v32.26: 最近 5 个日期速览 (6 列: 1 标签列 + 5 数据列, 4 行: 日期 + 3 数字)
+      // v32.28: 最近 5 个日期速览 (6 列 × 4 行, 横向溢出 + 滚动条让列宽够用)
       // 顺序: 最旧 → 最新 (跟 chart x 轴方向一致)
       const recent5El = document.getElementById('pnl-recent-5');
       if (recent5El) {
+        // v32.28: 恢复完整精度 (不 k 缩写), 列宽根据内容自适应, 超出容器时横向滚动
         const fmt = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', { minimumFractionDigits: 2 });
         const last5 = series.slice(-5);
         // 4 行 × 6 列 (1 label + 5 data), grid auto-flow row 按顺序填
