@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.23 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.24 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1173,19 +1173,18 @@
         }
       };
 
-      // v32.22: vertical line marker plugin — tooltip hover 时画竖线在 chart 区域
+      // v32.24: vertical line marker plugin — press-and-drag 时画竖线在 chart 区域 (读 chart._pnlTrendHoverIdx)
       const verticalLinePlugin = {
         id: 'verticalLine',
         afterDatasetsDraw(chart) {
-          const tooltip = chart.tooltip;
-          if (!tooltip || !tooltip._active || tooltip._active.length === 0) return;
-          // 只取 dataset[1] (总盈亏) 的 active item 决定 x 位置
-          const active = tooltip._active.find(a => a.datasetIndex === 1) || tooltip._active[0];
-          if (!active || !active.element) return;
+          const idx = chart._pnlTrendHoverIdx;
+          if (idx == null) return;
+          const xScale = chart.scales.x;
+          if (!xScale) return;
+          const x = xScale.getPixelForValue(idx);
           const cctx = chart.ctx;
           const cArea = chart.chartArea;
           if (!cArea) return;
-          const x = active.element.x;
           cctx.save();
           cctx.beginPath();
           cctx.moveTo(x, cArea.top);
@@ -1273,57 +1272,16 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
+          // v32.24: 不依赖 chart 内置 tooltip — 关闭 hover 触发, 改用下方 canvas mousedown/moveup 手控制
+          interaction: { mode: 'nearest', intersect: false },
+          events: [],  // 关闭所有内置 events (hover/click/move 都不再触发)
           layout: {
             // v32.19: 右侧 padding 给大括号 connector + 竖排文字留位置 (约 80px)
             right: 90,
           },
           plugins: {
             legend: { display: false },
-            tooltip: {
-              // v32.22: 关闭内置 tooltip 渲染, 改用 external HTML tooltip (顶部对齐, 不挡 chart)
-              enabled: false,
-              external: (context) => {
-                const tooltipModel = context.tooltip;
-                const tooltipEl = document.getElementById('pnl-trend-tooltip');
-                if (!tooltipEl) return;
-                if (tooltipModel.opacity === 0) {
-                  tooltipEl.style.opacity = 0;
-                  tooltipEl.style.pointerEvents = 'none';
-                  return;
-                }
-                // 渲染 tooltip 内容 (3 行: 已实现 / 总盈亏 / 持仓盈亏 gap)
-                const i = tooltipModel.dataPoints[0].index;
-                const r = realizedPnls[i] || 0;
-                const t = totalPnls[i] || 0;
-                const f = t - r;
-                const fmtN = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', {minimumFractionDigits: 2});
-                const title = series[i].trade_date + (series[i].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
-                tooltipEl.innerHTML = `
-                  <div class="pnl-tooltip-title">${title}</div>
-                  <div class="pnl-tooltip-line">已实现: ${fmtN(r)} 元</div>
-                  <div class="pnl-tooltip-line">总盈亏: ${fmtN(t)} 元</div>
-                  <div class="pnl-tooltip-line">持仓盈亏 (gap): ${fmtN(f)} 元</div>
-                `;
-                // 位置: 绝对定位 (CSS 已设 position: absolute)
-                // left = hovered x (chart canvas wrapper 内的相对坐标), top 固定 4px (chart area 顶部上方)
-                tooltipEl.style.opacity = 1;
-                tooltipEl.style.left = tooltipModel.caretX + 'px';
-                tooltipEl.style.top = '4px';
-              }
-            }
-          },
-          // v32.22: 点击 x 轴位置 → 持久显示该日期 tooltip
-          onClick: (event, elements, chart) => {
-            if (!elements || elements.length === 0) return;
-            // 取最近 dataset (dataset[1] 总盈亏) 的元素, 获取 index
-            const idx = elements[0].index;
-            // 模拟 hover 持久显示: setActiveElements
-            chart.tooltip.setActiveElements(
-              [{ datasetIndex: 1, index: idx }],
-              { x: chart.scales.x.getPixelForValue(idx), y: 0 }
-            );
-            chart.update();
+            tooltip: { enabled: false },  // 关闭内置 tooltip
           },
           scales: {
             x: {
@@ -1353,6 +1311,109 @@
         // v32.19: 注册右侧大括号 connector plugin (持仓盈亏 = total - realized, 末点)
         plugins: [gapConnectorPlugin, verticalLinePlugin],
       });
+
+      // v32.24: press-and-drag tooltip — 按住画布拖动显示 tooltip, 松开消失
+      // 类似 desktop 图表工具的 crosshair drag: mousedown 出现, mousemove 跟随, mouseup 消失
+      const pnlTrendChart = this.charts.pnlTrend;
+      const tooltipEl = document.getElementById('pnl-trend-tooltip');
+      if (!tooltipEl) {
+        console.warn('[pnl-trend] tooltip container not found');
+      } else {
+        let isDragging = false;
+        const fmtN = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', { minimumFractionDigits: 2 });
+        const showAt = (clientX, clientY) => {
+          const rect = el.getBoundingClientRect();
+          const localX = clientX - rect.left;
+          // clamp 到 chart area 宽度内
+          const clampedX = Math.max(0, Math.min(localX, rect.width));
+          // 找最近 data index (x scale 是 category, getValueForPixel 拿 interpolated index value, round 拿最近)
+          const xScale = pnlTrendChart.scales.x;
+          const value = xScale.getValueForPixel(clampedX);
+          const idx = Math.max(0, Math.min(labels.length - 1, Math.round(value)));
+          const r = realizedPnls[idx] || 0;
+          const t = totalPnls[idx] || 0;
+          const f = t - r;
+          const title = series[idx].trade_date + (series[idx].cost_basis === 'carry_forward' ? ' · 假设回填' : '');
+          tooltipEl.innerHTML = `
+            <div class="pnl-tooltip-title">${title}</div>
+            <div class="pnl-tooltip-line">已实现: ${fmtN(r)} 元</div>
+            <div class="pnl-tooltip-line">总盈亏: ${fmtN(t)} 元</div>
+            <div class="pnl-tooltip-line">持仓盈亏 (gap): ${fmtN(f)} 元</div>
+          `;
+          // left = local x (canvas wrapper 内), transform translateX(-50%) 让 tooltip 居中
+          tooltipEl.style.left = clampedX + 'px';
+          tooltipEl.style.opacity = 1;
+          // 设 chart._pnlTrendHoverIdx 让 verticalLinePlugin 画竖线
+          pnlTrendChart._pnlTrendHoverIdx = idx;
+          pnlTrendChart.update('none');  // 'none' = 不动画, 立刻 redraw
+        };
+        const hide = () => {
+          tooltipEl.style.opacity = 0;
+          pnlTrendChart._pnlTrendHoverIdx = null;
+          pnlTrendChart.update('none');
+        };
+
+        // mousedown: 启动 drag
+        el.addEventListener('mousedown', (e) => {
+          // 只响应 canvas 内 (非 tooltip 等其他元素)
+          if (e.target !== el) return;
+          e.preventDefault();  // 阻止默认 drag (text select 等)
+          isDragging = true;
+          showAt(e.clientX, e.clientY);
+        });
+        // touchstart (移动端)
+        el.addEventListener('touchstart', (e) => {
+          if (e.target !== el) return;
+          if (e.touches.length === 0) return;
+          isDragging = true;
+          const t = e.touches[0];
+          showAt(t.clientX, t.clientY);
+          e.preventDefault();
+        }, { passive: false });
+
+        // document 级 mousemove (拖出 canvas 也能继续)
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          // 检查 mouse 还在 canvas wrapper 内
+          const rect = el.getBoundingClientRect();
+          if (e.clientX < rect.left || e.clientX > rect.right ||
+              e.clientY < rect.top || e.clientY > rect.bottom) {
+            // 拖出 canvas 边界 → 隐藏
+            hide();
+            isDragging = false;
+            return;
+          }
+          showAt(e.clientX, e.clientY);
+        });
+        // document 级 touchmove
+        document.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          if (e.touches.length === 0) return;
+          const t = e.touches[0];
+          const rect = el.getBoundingClientRect();
+          if (t.clientX < rect.left || t.clientX > rect.right ||
+              t.clientY < rect.top || t.clientY > rect.bottom) {
+            hide();
+            isDragging = false;
+            return;
+          }
+          showAt(t.clientX, t.clientY);
+          e.preventDefault();
+        }, { passive: false });
+
+        // mouseup: 结束 drag
+        document.addEventListener('mouseup', () => {
+          if (!isDragging) return;
+          isDragging = false;
+          hide();
+        });
+        // touchend: 结束 drag
+        document.addEventListener('touchend', () => {
+          if (!isDragging) return;
+          isDragging = false;
+          hide();
+        });
+      }
     },
 
     renderBenchmarkChart(bench) {

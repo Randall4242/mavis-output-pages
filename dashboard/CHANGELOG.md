@@ -4,6 +4,20 @@
 
 ---
 
+## v32.24 · 2026-09-25 · chart-pnl-trend tooltip 改 press-and-drag 模式 + 位置改底部 x 轴上方
+
+- **user 反馈**: v32.22 tooltip 在 chart 顶部 (top: 4px) 不对, user 期望 tooltip 在 **chart 底部 x 轴 tick labels 之上** (贴合日期轴), 并且触发模式改 **press-and-drag** (按住显示 + 拖动跟随 + 松开消失)
+- **修法**:
+  - **CSS**: `.pnl-trend-tooltip` 改 `bottom: 30px` (相对 chart-canvas-wrap, 即 x 轴 tick labels 之上, 可伸进 chart area ~30px 挡底部少量图, 不挡折线)
+  - **JS**: 完全删 chart 内置 tooltip (events: [] + interaction: nearest + tooltip.enabled: false), 改用 canvas mousedown/mousemove/mouseup + touchstart/move/end 手控制
+  - **verticalLinePlugin** 改读 `chart._pnlTrendHoverIdx` (Mavis 状态), 不再读 `tooltip._active`
+  - **拖出 canvas 边界自动隐藏** (document 级 mouseup/touchend)
+  - **pointermove 跟随**: document mousemove / touchmove, clamp 到 canvas rect 内, x scale `getValueForPixel` 找最近 label index, `Math.round` 拿最近整数 index
+- **没改**: dataset 结构 (3 个 datasets 跟 v32.21 一致), chart 其它配置 (gap connector plugin / fill / borderDash 等)
+- 4 处版本号同步 v32.24
+
+---
+
 ## v32.23 · 2026-09-25 · sw.js cache-bust 修 github.io CDN stale 问题
 
 - **bug**: user 反馈过了一整个晚上 (8.5h) 浏览器还显示 v32.21, push 过的 v32.22 实际已经上仓 (raw.githubusercontent.com dashboard.js 是 v32.22, sw.js CACHE_NAME = v32-22), 但 live github.io 还 serve v32.21

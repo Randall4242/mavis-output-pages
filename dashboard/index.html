@@ -984,9 +984,10 @@
     position: relative;
     height: 280px;
   }
-  /* v32.22: external tooltip 容器 (绝对定位, chart 顶部对齐, 居中显示在 hovered x 上) */
+  /* v32.24: press-and-drag tooltip 容器 (绝对定位, chart 底部 x 轴 tick labels 之上, 居中显示在 dragged x 上) */
   .pnl-trend-tooltip {
     position: absolute;
+    bottom: 30px;  /* chart-canvas-wrap 底部上方 30px, 即 x 轴 tick labels 之上 */
     background: #1A1A1A;
     color: #F7F7F5;
     font-family: 'JetBrains Mono', monospace;
@@ -997,7 +998,7 @@
     pointer-events: none;
     opacity: 0;
     z-index: 5;
-    transform: translateX(-50%);  /* 居中对齐 hovered x */
+    transform: translateX(-50%);  /* 居中对齐 dragged x */
     white-space: nowrap;
     transition: opacity 0.12s ease-out;
   }
@@ -1575,7 +1576,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.23 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.24 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1583,6 +1584,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.23"></script>
+<script src="dashboard.js?v=32.24"></script>
 </body>
 </html>
