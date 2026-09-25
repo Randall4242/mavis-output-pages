@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.32 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.33 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1498,10 +1498,10 @@
       const isMobile = this._isMobile();
       const maxTicks = isMobile ? 5 : 10;
 
-      // v32.31: 复用 chart-pnl-trend 规范
-      // - 我的持仓: 实线, segment.borderColor 按 y 正负变色 (A 股惯例涨红跌绿), fill: false 不遮挡其他线
-      // - 上证指数: 短虚线, segment.borderColor 按 y 正负变色, fill target 0 红/绿淡
-      // - 沪深 300: 点线, segment.borderColor 按 y 正负变色, fill target 0 红/绿淡
+      // v32.33: 折线 + 覆盖面积规则
+      // - 我的持仓 (dataset[0]): 实线 + fill target 0 红/绿淡 (A 股惯例涨红跌绿)
+      // - 上证指数 (dataset[1]): 短虚线 + segment.borderColor 按 y 正负变色, fill: false 无覆盖面积
+      // - 沪深 300 (dataset[2]): 点线 + segment.borderColor 按 y 正负变色, fill: false 无覆盖面积
       const segmentUpDown = (ctx) => {
         const midY = (ctx.p0.parsed.y + ctx.p1.parsed.y) / 2;
         return midY >= 0 ? 'rgba(196, 92, 79, 0.85)' : 'rgba(122, 138, 118, 0.85)';
@@ -1513,7 +1513,12 @@
           borderColor: 'rgba(196, 92, 79, 0.85)',  // 默认红 (segment 染色覆盖)
           borderWidth: 2,
           borderDash: [],  // 实线
-          fill: false,  // 不填 (避免遮挡指数线)
+          // v32.33: 仅我的持仓覆盖面积有颜色, y>=0 红 y<=0 绿 (target 0)
+          fill: {
+            target: { value: 0 },
+            above: 'rgba(196, 92, 79, 0.10)',
+            below: 'rgba(122, 138, 118, 0.10)',
+          },
           pointRadius: 0,
           pointHoverRadius: 4,
           pointHoverBackgroundColor: '#1A1A1A',
@@ -1530,11 +1535,7 @@
           borderColor: 'rgba(196, 92, 79, 0.85)',
           borderWidth: 1.5,
           borderDash: [5, 3],  // 短虚线
-          fill: {
-            target: { value: 0 },
-            above: 'rgba(196, 92, 79, 0.10)',
-            below: 'rgba(122, 138, 118, 0.10)',
-          },
+          fill: false,  // v32.33: 上证指数覆盖面积无颜色, 仅折线 segment.borderColor 按 y 正负变色
           pointRadius: 0,
           pointHoverRadius: 4,
           pointHoverBackgroundColor: '#1A1A1A',
@@ -1552,11 +1553,7 @@
           borderColor: 'rgba(196, 92, 79, 0.85)',
           borderWidth: 1.5,
           borderDash: [2, 4],  // 点线
-          fill: {
-            target: { value: 0 },
-            above: 'rgba(196, 92, 79, 0.10)',
-            below: 'rgba(122, 138, 118, 0.10)',
-          },
+          fill: false,  // v32.33: 沪深 300 覆盖面积无颜色, 仅折线 segment.borderColor 按 y 正负变色
           pointRadius: 0,
           pointHoverRadius: 4,
           pointHoverBackgroundColor: '#1A1A1A',

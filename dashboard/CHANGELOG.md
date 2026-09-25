@@ -4,6 +4,20 @@
 
 ---
 
+## v32.33 · 2026-09-25 · chart-benchmark fill 规则 — 仅我的持仓覆盖面积有颜色
+
+- **user 反馈**: chart-benchmark 三个数据集的覆盖面积都填了红/绿淡, 视觉太乱
+  - 仅**我的持仓**覆盖面积有颜色 (y>=0 红, y<=0 绿, target 0)
+  - **上证指数 + 沪深 300** 折线颜色按 y 正负变色 (segment.borderColor) 但**覆盖面积无颜色** (fill: false)
+- **改动**:
+  - **我的持仓 fill**: `false` → **`{ target: 0, above: rgba(196,92,79,0.10), below: rgba(122,138,118,0.10) }`** (跟 pnl-trend dataset[1] 同款)
+  - **上证指数 fill**: `{ target: 0, above: ..., below: ... }` → **`false`** (覆盖面积无颜色)
+  - **沪深 300 fill**: `{ target: 0, above: ..., below: ... }` → **`false`** (覆盖面积无颜色)
+  - 折线 segment.borderColor 保持 v32.31 (按 y 正负变色), 不动
+- 4 处版本号同步 v32.33
+
+---
+
 ## v32.32 · 2026-09-25 · chart-benchmark "我的" 改用前端 runtime 公式 (删 backend cum_pct)
 
 - **user 反馈**: chart-benchmark "我的" 行的数字 (tooltip / 速览表格 / chart 线) 用 backend `cum_pct` (后端算法不可控), 但 user 想要严格的 (持仓盈亏 + 已实现) / 最大占用本金 公式
