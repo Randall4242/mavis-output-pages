@@ -4,6 +4,30 @@
 
 ---
 
+## v32.36 · 2026-09-25 · fillMissingTradingDates 时区 bug 修复 + seriesMap 用 filled pnl_series
+
+- **user 反馈**:
+  1. **9-21 / 9-22 没回填** — 我说做了 fillMissingTradingDates 但实测只补了 9-21 (漏了 9-22 + 误补了 9-20 周日)
+  2. **chart-benchmark 最近三天数据不见了** — "我的"行 9-22 显示空 (因为 seriesMap lookup 9-22 失败)
+- **根因 1 (时区 bug)**:
+  - `new Date('2026-09-18T00:00:00')` 默认本地时区 (Asia/Shanghai = UTC+8)
+  - `toISOString()` 输出 UTC date (会少 8 小时, 即 -1 天)
+  - `getDay()` 读本地时区 weekday
+  - 三者时区不一致, 导致 `dd.setDate(dd.getDate() + 1)` 后 dd 显示日期错位, weekday 判断错位
+  - **后果**: 9-18 周五 → 9-23 周三 之间本应补 9-21 周一 + 9-22 周二, 实际只补了 9-20 周日 (错误) + 9-21 周一 (漏了 9-22)
+- **根因 2 (seriesMap lookup)**:
+  - renderBenchmarkChart 内部 `seriesMap` 用 raw `this.data.pnl_series` 建, 没经过 fillMissingTradingDates
+  - 9-22 不在 raw pnl_series 里, seriesMap['2026-09-22'] = undefined
+  - myData[9-22] = null (if (!s || !denom) 短路), 速览表格 9-22 cell 显示空
+- **修法**:
+  - **`fillMissingTradingDates`** 改用 UTC 全程 (`Date.UTC()` + `getUTCDay()` + `setUTCDate()`), 避免时区漂移
+  - **`_filledBenchmark()`**: 先 fill pnl_series, build `this._seriesMap` (含 9-21/9-22 fill slot), 再 fill my/sh/csi
+  - **`renderBenchmarkChart` / `appendChartsWith`**: seriesMap 用 `this._seriesMap` (filled), 不用 raw pnl_series
+- **实测** (UTC 时区): 9-18 Fri → 9-21 Mon → 9-22 Tue → 9-23 Wed ✅ 全部正确
+- 4 处版本号同步 v32.36
+
+---
+
 ## v32.35 · 2026-09-25 · 前端自动补齐缺失交易日 + 我的持仓 fallback 到 initial_principal
 
 - **user 反馈**:

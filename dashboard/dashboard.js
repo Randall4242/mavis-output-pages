@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.35 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.36 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -201,25 +201,31 @@
     }
     return filled;
   };
-  // v32.35: 补齐缺失的交易日 — backend pipeline 偶尔漏生成某天数据 (例如 9-21/9-22), 前端自动检测并插入 + 用前一个 item 的数据 fill
-  // 跳过周末 (周六周日不算交易日), 用周一到周五检测
-  // 返回 { filled: [{...item, trade_date, cost_basis: 'carry_forward'}, ...], missing: ['2026-09-21', ...] }
+  // v32.36: 补齐缺失的交易日 — backend pipeline 偶尔漏生成某天数据 (例如 9-21/9-22), 前端自动检测并插入 + 用前一个 item 的数据 fill
+  // 跳过周末 (周六周日不算交易日)
+  // v32.36 修时区 bug: 之前用 `new Date(s + 'T00:00:00')` 默认本地时区, `toISOString()` 用 UTC, 跟 `getDay()` 本地时区不一致
+  // 导致 9-18 周五 → 9-21 周一 之间漏补 9-22, 误补 9-20 (周日). 改用 Date.UTC + getUTCDay / setUTCDate 全程 UTC
+  // 返回 { filled: [{...item, trade_date, cost_basis: 'carry_forward'}, ...], missing: ['2026-09-21', '2026-09-22', ...] }
   const fillMissingTradingDates = (items) => {
     if (items.length < 2) return { filled: items.slice(), missing: [] };
     const result = [];
     const missing = [];
-    const dt = (s) => new Date(s + 'T00:00:00');
+    // UTC 时区 — 避免 Asia/Shanghai timezone drift 让 getDay 跟 toISOString 不一致
+    const parse = (s) => {
+      const [y, m, d] = s.split('-').map(Number);
+      return new Date(Date.UTC(y, m - 1, d));
+    };
     const fmt = (d) => d.toISOString().slice(0, 10);
     for (let i = 0; i < items.length; i++) {
       if (i > 0) {
-        const prevDate = dt(items[i - 1].trade_date);
-        const currDate = dt(items[i].trade_date);
-        const d = new Date(prevDate);
-        d.setDate(d.getDate() + 1);
-        while (d < currDate) {
-          const wd = d.getDay();  // 0=日, 6=六
+        const prevDate = parse(items[i - 1].trade_date);
+        const currDate = parse(items[i].trade_date);
+        const dd = new Date(prevDate);
+        dd.setUTCDate(dd.getUTCDate() + 1);
+        while (dd < currDate) {
+          const wd = dd.getUTCDay();  // 0=日, 6=六
           if (wd !== 0 && wd !== 6) {
-            const dtStr = fmt(d);
+            const dtStr = fmt(dd);
             result.push({
               ...items[i - 1],
               trade_date: dtStr,
@@ -227,7 +233,7 @@
             });
             missing.push(dtStr);
           }
-          d.setDate(d.getDate() + 1);
+          dd.setUTCDate(dd.getUTCDate() + 1);
         }
       }
       result.push(items[i]);
@@ -995,7 +1001,8 @@
         const myMap = new Map((bench.my_portfolio || []).map(r => [r.trade_date, r]));
         const shMap = new Map((bench.sh || []).map(r => [r.trade_date, r]));
         const csiMap = new Map((bench.csi300 || []).map(r => [r.trade_date, r]));
-        const seriesMap = new Map(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
+        // v32.36: 用 _seriesMap (由 _filledBenchmark 填充, 含 9-21/9-22 fill slot), 不用 raw pnl_series
+        const seriesMap = this._seriesMap || new Map(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
         const denom = this._getMyPctDenom();
         newDays.forEach(r => {
           const fullDate = r.trade_date;
@@ -1099,7 +1106,7 @@
         && !!(this.data && this.data.summary && this.data.summary.initial_principal);
     },
 
-    // v32.35: 补齐缺失的交易日, 返回填充后的 series + missing dates
+    // v32.36: 补齐缺失的交易日, 返回填充后的 series + missing dates
     // 用于 chart-pnl-trend (pnl_series) + chart-benchmark (my_portfolio / sh / csi300)
     _filledPnlSeries() {
       const series = (this.data && this.data.pnl_series) || [];
@@ -1109,6 +1116,9 @@
     },
     _filledBenchmark() {
       const bench = (this.data && this.data.benchmark) || {};
+      // v32.36 关键: 先 fill pnl_series, 这样 seriesMap 才含 9-21/9-22, 否则 renderBenchmarkChart 算 myData 时 seriesMap lookup 失败
+      const filledPnl = this._filledPnlSeries();
+      this._seriesMap = Object.fromEntries(filledPnl.map(s => [s.trade_date, s]));
       const myRes = fillMissingTradingDates(bench.my_portfolio || []);
       const shRes = fillMissingTradingDates(bench.sh || []);
       const csiRes = fillMissingTradingDates(bench.csi300 || []);
@@ -1628,7 +1638,8 @@
       // v32.32: 彻底删 backend cum_pct, 改用前端 runtime 公式:
       //   my_pct[i] = (pnl_series[i].total_pnl + pnl_series[i].realized_pnl) / accountFunds * 100
       // 没设 accountFunds → myData 全 null (chart 隐藏 "我的" 线, 提示去设置填)
-      const seriesMap = Object.fromEntries(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
+      // v32.36: 用 _seriesMap (由 _filledBenchmark 填充, 含 9-21/9-22 fill slot), 不用 raw pnl_series
+      const seriesMap = this._seriesMap || Object.fromEntries(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
       const denom = this._getMyPctDenom();
       const myData = my.map(r => {
         const s = seriesMap[r.trade_date];
