@@ -4,6 +4,18 @@
 
 ---
 
+## v32.30 · 2026-09-25 · pnl-recent-5 表格居中 + 数字/label 居中 (不再缩在左边)
+
+- **user 反馈**: v32.29 表格紧贴 chart-card 左边, 右侧 ~80px 空白不均衡, "缩在左边太丑"
+- **根因**: grid 默认 width: 100%, 列宽根据内容自适应 (max-content), 整体宽度比 chart-card 窄, 但 grid 默认从左开始排, 右侧空白
+- **修法**:
+  - **`.pnl-recent-5` width: fit-content** + **margin: 14px auto 0**: 表格按内容宽度渲染, 居中显示
+  - **`.pnl-recent-cell` align-items: center** + **`.pnl-recent-date` align-self: center** + **`.pnl-recent-label` text-align: center**: 数字 / 日期 / label 都居中, 视觉重心回到表格中心
+- **效果**: 表格水平居中, 左右空白均分, 数字不再贴右
+- 4 处版本号同步 v32.30
+
+---
+
 ## v32.29 · 2026-09-25 · pnl-recent-5 改 3 列 + 行名顺序 实/gap/总
 
 - **user 反馈**:

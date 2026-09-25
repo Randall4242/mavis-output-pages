@@ -988,12 +988,14 @@
     position: relative;
     height: 280px;
   }
-  /* v32.29: 最近 3 个日期速览 (4 列 × 4 行: 1 label + 3 data) — 不用滑动 */
+  /* v32.30: 最近 3 个日期速览 (4 列 × 4 行: 1 label + 3 data) — 表格居中 */
   .pnl-recent-5 {
     display: grid;
     grid-template-columns: minmax(32px, max-content) repeat(3, minmax(72px, max-content));
+    /* v32.30: 表格宽度按内容自适应 + 居中, 不再紧贴 chart-card 左边 */
+    width: fit-content;
+    margin: 14px auto 0;
     gap: 6px;
-    margin-top: 14px;
     padding: 10px 6px;
     border-top: 1px dashed var(--border);
     border-bottom: 1px dashed var(--border);
@@ -1002,7 +1004,7 @@
   .pnl-recent-5 .pnl-recent-cell {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;  /* v32.30: 数字居中, 视觉重心居中 */
     gap: 2px;
     padding: 4px 2px;
     border-right: 1px dashed #F0EFEB;
@@ -1017,7 +1019,7 @@
     letter-spacing: 0.02em;
     margin-bottom: 2px;
     white-space: nowrap;
-    align-self: flex-end;
+    align-self: center;  /* v32.30: 日期也居中 */
   }
   .pnl-recent-5 .pnl-recent-val {
     font-size: 11px;
@@ -1031,7 +1033,7 @@
   .pnl-recent-5 .pnl-recent-label {
     font-size: 10px;
     color: #A8A8A8;
-    text-align: right;
+    text-align: center;  /* v32.30: label 居中 */
     padding: 4px 6px 4px 2px;
     align-self: center;
     white-space: nowrap;
@@ -1039,7 +1041,7 @@
     font-weight: 600;
     letter-spacing: 0.02em;
   }
-  /* v32.29: mobile (S24 360px) 字号缩, 3 列够装下不需滑动 */
+  /* v32.30: mobile (S24 360px) 字号缩, 3 列够装下不需滑动 */
   @media (max-width: 480px) {
     .pnl-recent-5 { padding: 8px 2px; gap: 4px; grid-template-columns: minmax(28px, max-content) repeat(3, minmax(64px, max-content)); }
     .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
@@ -1641,7 +1643,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.29 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.30 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1649,6 +1651,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.29"></script>
+<script src="dashboard.js?v=32.30"></script>
 </body>
 </html>
