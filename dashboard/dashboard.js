@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.24 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.25 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1413,6 +1413,28 @@
           isDragging = false;
           hide();
         });
+      }
+
+      // v32.25: 最近 5 个日期速览 (5 列横向 × 3 行竖向)
+      // 取 series 末尾 5 个 (最新), 顺序: 最旧 → 最新 (跟 chart x 轴方向一致)
+      const recent5El = document.getElementById('pnl-recent-5');
+      if (recent5El) {
+        const fmt = (n) => (n >= 0 ? '+' : '') + n.toLocaleString('zh-CN', { minimumFractionDigits: 2 });
+        const last5 = series.slice(-5);
+        recent5El.innerHTML = last5.map((s, i) => {
+          const realIdx = series.length - 5 + i;
+          const r = realizedPnls[realIdx] || 0;
+          const t = totalPnls[realIdx] || 0;
+          const f = t - r;
+          return `
+            <div class="pnl-recent-cell">
+              <div class="pnl-recent-date">${s.trade_date.substring(5)}</div>
+              <div class="pnl-recent-val ${r >= 0 ? 'up' : 'down'}">${fmt(r)}</div>
+              <div class="pnl-recent-val ${t >= 0 ? 'up' : 'down'}">${fmt(t)}</div>
+              <div class="pnl-recent-val ${f >= 0 ? 'up' : 'down'}">${fmt(f)}</div>
+            </div>
+          `;
+        }).join('');
       }
     },
 

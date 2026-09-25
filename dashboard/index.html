@@ -984,6 +984,51 @@
     position: relative;
     height: 280px;
   }
+  /* v32.25: 最近 5 个日期速览 (5 列横向 × 3 行竖向, x 轴跟底部 chart-legend 之间) */
+  .pnl-recent-5 {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    margin-top: 14px;
+    padding: 10px 6px;
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pnl-recent-5 .pnl-recent-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 2px;
+    border-right: 1px dashed #F0EFEB;
+    min-width: 0;  /* 防止 grid 列内容溢出 */
+  }
+  .pnl-recent-5 .pnl-recent-cell:last-child {
+    border-right: none;
+  }
+  .pnl-recent-5 .pnl-recent-date {
+    color: #A8A8A8;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+    white-space: nowrap;
+  }
+  .pnl-recent-5 .pnl-recent-val {
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;  /* 等宽数字, 对齐 */
+  }
+  .pnl-recent-5 .pnl-recent-val.up { color: #C45C4F; }    /* A 股惯例涨红 */
+  .pnl-recent-5 .pnl-recent-val.down { color: #7A8A76; }  /* 跌绿 */
+  /* v32.25: mobile (S24 360px) 字号缩到 10px, no padding */
+  @media (max-width: 480px) {
+    .pnl-recent-5 { padding: 8px 2px; }
+    .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
+    .pnl-recent-5 .pnl-recent-val { font-size: 10px; }
+    .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; }
+  }
   /* v32.24: press-and-drag tooltip 容器 (绝对定位, chart 底部 x 轴 tick labels 之上, 居中显示在 dragged x 上) */
   .pnl-trend-tooltip {
     position: absolute;
@@ -1456,6 +1501,8 @@
       <div class="skeleton-bar"></div>
     </div>
   </div>
+  <!-- v32.25: 最近 5 个日期速览 (5 列横向 × 3 行竖向, x 轴跟底部 chart-legend 之间) -->
+  <div class="pnl-recent-5" id="pnl-recent-5"></div>
   <div class="chart-legend">
     <div class="chart-legend-note" id="carry-forward-note">
       <span class="legend-mark"></span>
@@ -1576,7 +1623,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.24 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.25 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1584,6 +1631,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.24"></script>
+<script src="dashboard.js?v=32.25"></script>
 </body>
 </html>

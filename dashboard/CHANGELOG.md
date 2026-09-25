@@ -4,6 +4,21 @@
 
 ---
 
+## v32.25 · 2026-09-25 · chart-pnl-trend 加最近 5 个日期速览 (5 列 × 3 行)
+
+- **user 反馈**: chart-pnl-trend 卡片 x 轴 tick labels 跟底部 chart-legend 之间加一块, 展示最近 5 个日期的 3 个数字 (已实现 / 总盈亏 / 持仓盈亏 gap)
+- **布局**:
+  - **横向 5 列** (grid-template-columns: repeat(5, minmax(0, 1fr))), 顺序 = 最旧 → 最新 (跟 chart x 轴方向一致)
+  - **每列 4 行**: 日期 (MM-DD, 灰) + 已实现 (红/绿) + 总盈亏 (红/绿) + 持仓盈亏 gap (红/绿)
+  - **A 股惯例着色**: y>=0 红 (#C45C4F), y<0 绿 (#7A8A76)
+  - **列分隔线**: 4 条 1px dashed (除最后一列), 跟 chart-legend dashed border 视觉一致
+  - **顶部 + 底部 dashed border**: 让这块跟 chart canvas / chart-legend 视觉分区
+- **mobile 适配** (max-width: 480px): 字号缩 (date 9px, val 10px), padding 缩
+- **数字格式**: `+873.20` / `-1,418.80` (跟 v32.24 tooltip 一致), 用 `font-variant-numeric: tabular-nums` 等宽对齐
+- 4 处版本号同步 v32.25
+
+---
+
 ## v32.24 · 2026-09-25 · chart-pnl-trend tooltip 改 press-and-drag 模式 + 位置改底部 x 轴上方
 
 - **user 反馈**: v32.22 tooltip 在 chart 顶部 (top: 4px) 不对, user 期望 tooltip 在 **chart 底部 x 轴 tick labels 之上** (贴合日期轴), 并且触发模式改 **press-and-drag** (按住显示 + 拖动跟随 + 松开消失)
