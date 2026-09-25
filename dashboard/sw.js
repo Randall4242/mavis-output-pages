@@ -12,7 +12,7 @@
 //         (之前 v32.22 推送 8.5h 后 live github.io 还是 v32.21, CDN 没 invalidate)
 //         install 用 cache: 'reload' 强制 fresh fetch, fetch 用 cache: 'no-store' + URL 加 _t 时间戳
 
-const CACHE_NAME = 'mavis-dashboard-v32-31';
+const CACHE_NAME = 'mavis-dashboard-v32-32';
 const ASSETS = [
   './',
   './index.html',

@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.31 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.32 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -935,20 +935,25 @@
 
       // benchmark: 找 my_portfolio / sh / csi300 里对应 trade_date 的 cum_pct / pct_from_baseline
       // v32.5: bench 3 个数组预转 Map (plan P3-D 性能优化), append N day 时 O(3N) → O(3 + N) lookup
+      // v32.32: 删 backend cum_pct, dataset 0 改用前端 runtime 公式 (持仓 + 已实现) / accountFunds
       const c2 = this.charts.benchmark;
       const bench = (this.dataCache && this.dataCache.benchmark) || {};
       if (c2) {
         const myMap = new Map((bench.my_portfolio || []).map(r => [r.trade_date, r]));
         const shMap = new Map((bench.sh || []).map(r => [r.trade_date, r]));
         const csiMap = new Map((bench.csi300 || []).map(r => [r.trade_date, r]));
+        const seriesMap = new Map(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
+        const denom = this.accountFunds && this.accountFunds > 0 ? this.accountFunds : null;
         newDays.forEach(r => {
           const fullDate = r.trade_date;
           const myR = myMap.get(fullDate);
           const shR = shMap.get(fullDate);
           const csiR = csiMap.get(fullDate);
           c2.data.labels.push(fullDate.substring(5));
-          // dataset 0: 我的持仓
-          c2.data.datasets[0].data.push(myR ? myR.cum_pct : null);
+          // dataset 0: 我的持仓 — runtime 公式 (持仓 + 已实现) / accountFunds
+          const s = seriesMap.get(fullDate);
+          const myVal = (s && denom) ? ((s.total_pnl || 0) + (s.realized_pnl || 0)) / denom * 100 : null;
+          c2.data.datasets[0].data.push(myVal);
           // dataset 1: 上证指数 (if exists)
           if (c2.data.datasets[1]) c2.data.datasets[1].data.push(shR ? shR.pct_from_baseline : null);
           // dataset 2: 沪深 300 (if exists)
@@ -989,8 +994,16 @@
       const labels = my.map(r => r.trade_date.substring(5));
       const shMap = Object.fromEntries((bench.sh || []).map(r => [r.trade_date, r.pct_from_baseline]));
       const csiMap = Object.fromEntries((bench.csi300 || []).map(r => [r.trade_date, r.pct_from_baseline]));
+      // v32.32: 跟 renderBenchmarkChart 一致, 删 backend cum_pct, 用前端 runtime 公式
+      const seriesMap = Object.fromEntries(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
+      const denom = this.accountFunds && this.accountFunds > 0 ? this.accountFunds : null;
       c.data.labels = labels;
-      c.data.datasets[0].data = my.map(r => r.cum_pct);
+      c.data.datasets[0].data = my.map(r => {
+        const s = seriesMap[r.trade_date];
+        if (!s || !denom) return null;
+        const abs = (s.total_pnl || 0) + (s.realized_pnl || 0);
+        return (abs / denom) * 100;
+      });
       if (c.data.datasets[1]) c.data.datasets[1].data = labels.map((_, i) => shMap[my[i].trade_date] ?? null);
       if (c.data.datasets[2]) c.data.datasets[2].data = labels.map((_, i) => csiMap[my[i].trade_date] ?? null);
       // v32.15: dataset[0].label 末条数字也同步用 max invested capital 算 (跟 summary 卡片同口径)
@@ -1000,17 +1013,14 @@
     },
 
     // v32.15: 算我的总盈亏% 末条 label (chart legend / dataset[0].label 共享)
-    // 优先用 accountFunds (settings 填的 max invested capital), 没设 → fallback cum_pct 末条
+    // v32.32: 彻底删 backend cum_pct fallback, 严格用 (持仓 + 已实现) / accountFunds 公式
     _computeMyPctLabel() {
-      const bench = (this.dataCache && this.dataCache.benchmark) || {};
-      const my = bench.my_portfolio || [];
-      const cumPctLast = my.length > 0 ? my[my.length - 1].cum_pct : null;
       if (this.accountFunds && this.accountFunds > 0 && this.data && this.data.summary) {
         const tp = this.data.summary.total_pnl_abs;
         const myPctLast = Math.round((tp / this.accountFunds) * 10000) / 100;
         return fmtPct(myPctLast);
       }
-      return cumPctLast != null ? fmtPct(cumPctLast) : '—';
+      return '—';  // 没设 accountFunds → 显示 "—", 提示去设置填最大占用本金
     },
 
     // 移动端检测兜底: 旧 WebView / 某些 Android 浏览器可能没 window.matchMedia, 之前 v22.8 在 raf 回调里抛错被吞
@@ -1462,7 +1472,17 @@
       }
 
       const labels = my.map(r => r.trade_date.substring(5));
-      const myData = my.map(r => r.cum_pct);
+      // v32.32: 彻底删 backend cum_pct, 改用前端 runtime 公式:
+      //   my_pct[i] = (pnl_series[i].total_pnl + pnl_series[i].realized_pnl) / accountFunds * 100
+      // 没设 accountFunds → myData 全 null (chart 隐藏 "我的" 线, 提示去设置填)
+      const seriesMap = Object.fromEntries(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
+      const denom = this.accountFunds && this.accountFunds > 0 ? this.accountFunds : null;
+      const myData = my.map(r => {
+        const s = seriesMap[r.trade_date];
+        if (!s || !denom) return null;
+        const abs = (s.total_pnl || 0) + (s.realized_pnl || 0);
+        return (abs / denom) * 100;
+      });
       const lookup = (arr) => Object.fromEntries((arr || []).map(r => [r.trade_date, r.pct_from_baseline]));
       const shMap = lookup(bench.sh);
       const csiMap = lookup(bench.csi300);

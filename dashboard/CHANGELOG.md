@@ -4,6 +4,22 @@
 
 ---
 
+## v32.32 · 2026-09-25 · chart-benchmark "我的" 改用前端 runtime 公式 (删 backend cum_pct)
+
+- **user 反馈**: chart-benchmark "我的" 行的数字 (tooltip / 速览表格 / chart 线) 用 backend `cum_pct` (后端算法不可控), 但 user 想要严格的 (持仓盈亏 + 已实现) / 最大占用本金 公式
+- **改动**:
+  - **`renderBenchmarkChart` 删 backend cum_pct**: `myData` 改 runtime 公式 `(pnl_series[i].total_pnl + pnl_series[i].realized_pnl) / accountFunds * 100`
+  - **`updateBenchmarkChartFull` 同样改**: accountFunds change 时也用新公式 (之前用 backend cum_pct)
+  - **`_computeMyPctLabel` 删 backend cum_pct fallback**: 没设 accountFunds → 直接返回 `—`, 提示去设置填最大占用本金 (不再 fallback 到 backend)
+  - **chart-benchmark tooltip / 速览表格 "我的" 行**: 跟 myData 同步, 自动用新公式 (无需额外改动)
+- **未设 accountFunds 时**:
+  - chart "我的" 线全 null (Chart.js 隐藏, 只显示上证 + 沪深 300)
+  - benchmark-recent-3 表格 "我的" 行全 `—`
+  - summary 卡片的 我的总盈亏% 也显示 `—` (summary 卡片早就是用 accountFunds 算, 没设时显示兜底文字)
+- 4 处版本号同步 v32.32
+
+---
+
 ## v32.31 · 2026-09-25 · chart-benchmark 复用 chart-pnl-trend 规范
 
 - **user 反馈**: chart-benchmark (累计收益率 vs 大盘) 跟 chart-pnl-trend 视觉不一致, 复用 3 套规范
