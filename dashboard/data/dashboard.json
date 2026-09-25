@@ -1,22 +1,22 @@
 {
   "meta": {
-    "generated_at": "2026-09-24T23:26:51+08:00",
+    "generated_at": "2026-09-25T13:45:18+08:00",
     "trade_date": "2026-09-24",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -2292.0,
-    "floating_pnl_pct": -10.77,
-    "realized_pnl_abs": 873.2,
-    "realized_pnl_pct": 3.14,
-    "total_pnl_abs": -1418.8,
-    "total_pnl_pct": -2.89,
-    "total_pnl_pct_net": -6.67,
-    "initial_principal": 49064.3,
-    "net_invested": 21279.0,
-    "excess_csi300_pct": 1.6,
-    "excess_sh_pct": 2.47
+    "floating_pnl_abs": -2829.44,
+    "floating_pnl_pct": -8.04,
+    "realized_pnl_abs": 4638.4,
+    "realized_pnl_pct": 14.79,
+    "total_pnl_abs": 1808.96,
+    "total_pnl_pct": 2.72,
+    "total_pnl_pct_net": 5.14,
+    "initial_principal": 66583.9,
+    "net_invested": 35211.84,
+    "excess_csi300_pct": 6.33,
+    "excess_sh_pct": 5.88
   },
   "holdings": [
     {
@@ -35,15 +35,28 @@
     {
       "code": "600884",
       "name": "杉杉股份",
-      "shares": 1300,
-      "cost": 13.14,
+      "shares": 1900,
+      "cost": 13.3616,
       "close": 11.54,
       "prev_close": 11.92,
       "change_pct": -3.19,
       "change_amount": -0.38,
-      "daily_pnl": -494.0,
-      "pnl_abs": -2080.0,
-      "pnl_pct": -12.1766
+      "daily_pnl": -722.0,
+      "pnl_abs": -3461.04,
+      "pnl_pct": -13.6331
+    },
+    {
+      "code": "513780",
+      "name": "港股创新药ETF",
+      "shares": 3800,
+      "cost": 1.481,
+      "close": 1.703,
+      "prev_close": 1.757,
+      "change_pct": -3.07,
+      "change_amount": -0.054,
+      "daily_pnl": -205.2,
+      "pnl_abs": 843.6,
+      "pnl_pct": 14.9899
     }
   ],
   "closed_holdings": [
@@ -51,28 +64,28 @@
       "code": "600383",
       "name": "金地集团",
       "closed_at": "2026-09-23",
-      "cost_total": 2319.4,
-      "recv_total": 2466.0,
-      "realized_abs": 136.6,
-      "realized_pct": 5.89
+      "cost_total": 2308.0,
+      "recv_total": 3876.0,
+      "realized_abs": 1553.0,
+      "realized_pct": 67.29
     },
     {
       "code": "600755",
       "name": "厦门国贸",
-      "closed_at": "2026-09-23",
-      "cost_total": 6119.0,
-      "recv_total": 6402.0,
-      "realized_abs": 273.0,
-      "realized_pct": 4.46
+      "closed_at": "2026-09-21",
+      "cost_total": 7928.0,
+      "recv_total": 10417.0,
+      "realized_abs": 2469.0,
+      "realized_pct": 31.14
     },
     {
-      "code": "513780",
-      "name": "港股创新药ETF",
-      "closed_at": "2026-07-08",
-      "cost_total": 14927.9,
-      "recv_total": 15404.5,
-      "realized_abs": 461.6,
-      "realized_pct": 3.09
+      "code": "159755",
+      "name": "电池龙头ETF兴银",
+      "closed_at": "2026-03-10",
+      "cost_total": 537.0,
+      "recv_total": 552.0,
+      "realized_abs": 10.0,
+      "realized_pct": 1.86
     }
   ],
   "transactions_recent": [
@@ -86,11 +99,11 @@
     },
     {
       "trade_date": "2026-09-23",
-      "code": "600755",
-      "name": "厦门国贸",
+      "code": "601021",
+      "name": "春秋航空",
       "side": "sell",
-      "shares": 700,
-      "price": 5.9
+      "shares": 0,
+      "price": 0.33
     },
     {
       "trade_date": "2026-09-22",
@@ -99,6 +112,14 @@
       "side": "buy",
       "shares": 400,
       "price": 2.5
+    },
+    {
+      "trade_date": "2026-09-21",
+      "code": "600755",
+      "name": "厦门国贸",
+      "side": "sell",
+      "shares": 700,
+      "price": 5.9
     },
     {
       "trade_date": "2026-09-18",
@@ -117,7 +138,7 @@
       "price": 5.57
     },
     {
-      "trade_date": "2026-09-07",
+      "trade_date": "2026-09-04",
       "code": "601021",
       "name": "春秋航空",
       "side": "sell",
@@ -141,30 +162,148 @@
       "price": 44.19
     },
     {
-      "trade_date": "2026-07-08",
-      "code": "513780",
-      "name": "港股创新药ETF",
+      "trade_date": "2026-08-19",
+      "code": "600383",
+      "name": "金地集团",
       "side": "sell",
-      "shares": 4000,
-      "price": 1.465
-    },
-    {
-      "trade_date": "2026-07-07",
-      "code": "513780",
-      "name": "港股创新药ETF",
-      "side": "buy",
-      "shares": 4000,
-      "price": 1.481
+      "shares": 600,
+      "price": 2.35
     }
   ],
   "trade_summary": {
-    "buy_count": 11,
-    "sell_count": 8,
-    "total_buy_amount": 49099.3,
-    "total_sell_amount": 28658.5,
-    "total_fee": 75.0
+    "buy_count": 23,
+    "sell_count": 17,
+    "total_buy_amount": 66678.9,
+    "total_sell_amount": 36010.5,
+    "total_fee": 160.0
   },
   "pnl_series": [
+    {
+      "trade_date": "2026-02-02",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-03",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-04",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-05",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-06",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-09",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-10",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-11",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-12",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-13",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-24",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-25",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-26",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-02-27",
+      "total_cost": 0.0,
+      "total_mkt": 0.0,
+      "total_pnl": 0.0,
+      "total_pct": 0.0,
+      "realized_pnl": 0.0,
+      "cost_basis": "carry_forward"
+    },
     {
       "trade_date": "2026-03-02",
       "total_cost": 0.0,
@@ -199,7 +338,7 @@
       "total_pnl": -4.5,
       "total_pct": -0.34,
       "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-06",
@@ -208,7 +347,7 @@
       "total_pnl": 48.6,
       "total_pct": 3.64,
       "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-09",
@@ -217,7 +356,7 @@
       "total_pnl": 15.3,
       "total_pct": 1.14,
       "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-10",
@@ -225,8 +364,8 @@
       "total_mkt": 1410.3,
       "total_pnl": 73.8,
       "total_pct": 5.52,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-11",
@@ -234,8 +373,8 @@
       "total_mkt": 1383.3,
       "total_pnl": 46.8,
       "total_pct": 3.5,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-12",
@@ -243,8 +382,8 @@
       "total_mkt": 1358.1,
       "total_pnl": 21.6,
       "total_pct": 1.62,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-13",
@@ -252,8 +391,8 @@
       "total_mkt": 1341.9,
       "total_pnl": 5.4,
       "total_pct": 0.4,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-16",
@@ -261,8 +400,8 @@
       "total_mkt": 3523.6,
       "total_pnl": 109.5,
       "total_pct": 3.21,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-17",
@@ -270,8 +409,8 @@
       "total_mkt": 3537.4,
       "total_pnl": 123.3,
       "total_pct": 3.61,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-18",
@@ -279,8 +418,8 @@
       "total_mkt": 3583.4,
       "total_pnl": 169.3,
       "total_pct": 4.96,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-19",
@@ -288,8 +427,8 @@
       "total_mkt": 3475.3,
       "total_pnl": 61.2,
       "total_pct": 1.79,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-20",
@@ -297,8 +436,8 @@
       "total_mkt": 3422.4,
       "total_pnl": 8.3,
       "total_pct": 0.24,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-23",
@@ -306,8 +445,8 @@
       "total_mkt": 3259.1,
       "total_pnl": -155.0,
       "total_pct": -4.54,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-24",
@@ -315,8 +454,8 @@
       "total_mkt": 3420.1,
       "total_pnl": 6.0,
       "total_pct": 0.18,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-25",
@@ -324,8 +463,8 @@
       "total_mkt": 3438.5,
       "total_pnl": 24.4,
       "total_pct": 0.71,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-26",
@@ -333,8 +472,8 @@
       "total_mkt": 3399.4,
       "total_pnl": -14.7,
       "total_pct": -0.43,
-      "realized_pnl": 0.0,
-      "cost_basis": "real"
+      "realized_pnl": 10.0,
+      "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-03-27",
@@ -342,7 +481,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
-      "realized_pnl": 125.2,
+      "realized_pnl": 135.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -351,7 +490,7 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
-      "realized_pnl": 125.2,
+      "realized_pnl": 135.2,
       "cost_basis": "carry_forward"
     },
     {
@@ -360,967 +499,1032 @@
       "total_mkt": 0.0,
       "total_pnl": 0.0,
       "total_pct": 0.0,
-      "realized_pnl": 125.2,
+      "realized_pnl": 135.2,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-04-01",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 9387.0,
+      "total_pnl": -228.0,
+      "total_pct": -2.37,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-02",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 9198.0,
+      "total_pnl": -417.0,
+      "total_pct": -4.34,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-03",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 9107.0,
+      "total_pnl": -508.0,
+      "total_pct": -5.28,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-07",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 9128.0,
+      "total_pnl": -487.0,
+      "total_pct": -5.07,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-08",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 9569.0,
+      "total_pnl": -46.0,
+      "total_pct": -0.48,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-09",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 9800.0,
+      "total_pnl": 185.0,
+      "total_pct": 1.92,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-10",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10367.0,
+      "total_pnl": 752.0,
+      "total_pct": 7.82,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-13",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10619.0,
+      "total_pnl": 1004.0,
+      "total_pct": 10.44,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-14",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10801.0,
+      "total_pnl": 1186.0,
+      "total_pct": 12.33,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-15",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10668.0,
+      "total_pnl": 1053.0,
+      "total_pct": 10.95,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-16",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10325.0,
+      "total_pnl": 710.0,
+      "total_pct": 7.38,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-17",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10290.0,
+      "total_pnl": 675.0,
+      "total_pct": 7.02,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-20",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10122.0,
+      "total_pnl": 507.0,
+      "total_pct": 5.27,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-21",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10360.0,
+      "total_pnl": 745.0,
+      "total_pct": 7.75,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-22",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10612.0,
+      "total_pnl": 997.0,
+      "total_pct": 10.37,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-23",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10472.0,
+      "total_pnl": 857.0,
+      "total_pct": 8.91,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-24",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 10584.0,
+      "total_pnl": 969.0,
+      "total_pct": 10.08,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-27",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11158.0,
+      "total_pnl": 1543.0,
+      "total_pct": 16.05,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-28",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11032.0,
+      "total_pnl": 1417.0,
+      "total_pct": 14.74,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-29",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11830.0,
+      "total_pnl": 2215.0,
+      "total_pct": 23.04,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-04-30",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11655.0,
+      "total_pnl": 2040.0,
+      "total_pct": 21.22,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-06",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 12383.0,
+      "total_pnl": 2768.0,
+      "total_pct": 28.79,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-07",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11893.0,
+      "total_pnl": 2278.0,
+      "total_pct": 23.69,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-08",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11683.0,
+      "total_pnl": 2068.0,
+      "total_pct": 21.51,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-11",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11564.0,
+      "total_pnl": 1949.0,
+      "total_pct": 20.27,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-12",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 9615.0,
+      "total_mkt": 11284.0,
+      "total_pnl": 1669.0,
+      "total_pct": 17.36,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-13",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12703.0,
+      "total_mkt": 14392.0,
+      "total_pnl": 1689.0,
+      "total_pct": 13.3,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-14",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12703.0,
+      "total_mkt": 13782.0,
+      "total_pnl": 1079.0,
+      "total_pct": 8.49,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-15",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 15149.0,
+      "total_pnl": 960.0,
+      "total_pct": 6.77,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-18",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14968.0,
+      "total_pnl": 779.0,
+      "total_pct": 5.49,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-19",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14817.0,
+      "total_pnl": 628.0,
+      "total_pct": 4.43,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-20",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 15012.0,
+      "total_pnl": 823.0,
+      "total_pct": 5.8,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-21",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14499.0,
+      "total_pnl": 310.0,
+      "total_pct": 2.18,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-22",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14796.0,
+      "total_pnl": 607.0,
+      "total_pct": 4.28,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-25",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14487.0,
+      "total_pnl": 298.0,
+      "total_pct": 2.1,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-26",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 15998.0,
+      "total_mkt": 16425.0,
+      "total_pnl": 427.0,
+      "total_pct": 2.67,
+      "realized_pnl": 135.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-27",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14693.0,
+      "total_pnl": 504.0,
+      "total_pct": 3.55,
+      "realized_pnl": 112.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-28",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14803.0,
+      "total_pnl": 614.0,
+      "total_pct": 4.33,
+      "realized_pnl": 112.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-05-29",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14542.0,
+      "total_pnl": 353.0,
+      "total_pct": 2.49,
+      "realized_pnl": 112.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-01",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 14189.0,
+      "total_mkt": 14179.0,
+      "total_pnl": -10.0,
+      "total_pct": -0.07,
+      "realized_pnl": 112.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-02",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 12609.0,
+      "total_pnl": -270.0,
+      "total_pct": -2.1,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-03",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 12360.0,
+      "total_pnl": -519.0,
+      "total_pct": -4.03,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-04",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 12147.0,
+      "total_pnl": -732.0,
+      "total_pct": -5.68,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-05",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 12171.0,
+      "total_pnl": -708.0,
+      "total_pct": -5.5,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-08",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 11661.0,
+      "total_pnl": -1218.0,
+      "total_pct": -9.46,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-09",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 11826.0,
+      "total_pnl": -1053.0,
+      "total_pct": -8.18,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-10",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 12879.0,
+      "total_mkt": 11667.0,
+      "total_pnl": -1212.0,
+      "total_pct": -9.41,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-11",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 12636.6,
+      "total_pnl": -1238.4,
+      "total_pct": -8.93,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-12",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13123.4,
+      "total_pnl": -751.6,
+      "total_pct": -5.42,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-15",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13173.6,
+      "total_pnl": -701.4,
+      "total_pct": -5.06,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-16",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13256.6,
+      "total_pnl": -618.4,
+      "total_pct": -4.46,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-17",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13281.4,
+      "total_pnl": -593.6,
+      "total_pct": -4.28,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-18",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13155.0,
+      "total_pnl": -720.0,
+      "total_pct": -5.19,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-22",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13522.6,
+      "total_pnl": -352.4,
+      "total_pct": -2.54,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-23",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13556.0,
+      "total_pnl": -319.0,
+      "total_pct": -2.3,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-24",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
-      "cost_basis": "carry_forward"
+      "total_cost": 13875.0,
+      "total_mkt": 13770.0,
+      "total_pnl": -105.0,
+      "total_pct": -0.76,
+      "realized_pnl": 197.2,
+      "cost_basis": "real"
     },
     {
       "trade_date": "2026-06-25",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
+      "total_cost": 13875.0,
+      "total_mkt": 13429.2,
+      "total_pnl": -445.8,
+      "total_pct": -3.21,
+      "realized_pnl": 2416.2,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-26",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
+      "total_cost": 13875.0,
+      "total_mkt": 12838.2,
+      "total_pnl": -1036.8,
+      "total_pct": -7.47,
+      "realized_pnl": 2416.2,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-29",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 125.2,
+      "total_cost": 13875.0,
+      "total_mkt": 13230.2,
+      "total_pnl": -644.8,
+      "total_pct": -4.65,
+      "realized_pnl": 2416.2,
       "cost_basis": "carry_forward"
     },
     {
       "trade_date": "2026-06-30",
-      "total_cost": 9129.2,
-      "total_mkt": 8598.2,
-      "total_pnl": -531.0,
-      "total_pct": -5.82,
-      "realized_pnl": 125.2,
+      "total_cost": 22992.8,
+      "total_mkt": 21892.4,
+      "total_pnl": -1100.4,
+      "total_pct": -4.79,
+      "realized_pnl": 2416.2,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-01",
-      "total_cost": 26211.2,
-      "total_mkt": 26462.8,
-      "total_pnl": 251.6,
-      "total_pct": 0.96,
-      "realized_pnl": 125.2,
+      "total_cost": 40074.8,
+      "total_mkt": 39916.6,
+      "total_pnl": -158.2,
+      "total_pct": -0.39,
+      "realized_pnl": 2416.2,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-02",
-      "total_cost": 26211.2,
-      "total_mkt": 26113.2,
-      "total_pnl": -98.0,
-      "total_pct": -0.37,
-      "realized_pnl": 125.2,
+      "total_cost": 40074.8,
+      "total_mkt": 39469.4,
+      "total_pnl": -605.4,
+      "total_pct": -1.51,
+      "realized_pnl": 2416.2,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-03",
-      "total_cost": 23991.2,
-      "total_mkt": 23989.8,
-      "total_pnl": -1.4,
-      "total_pct": -0.01,
-      "realized_pnl": 172.2,
+      "total_cost": 37854.8,
+      "total_mkt": 37516.6,
+      "total_pnl": -338.2,
+      "total_pct": -0.89,
+      "realized_pnl": 2463.2,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-06",
-      "total_cost": 18401.4,
-      "total_mkt": 18402.0,
-      "total_pnl": 0.6,
-      "total_pct": 0.0,
-      "realized_pnl": 577.6,
+      "total_cost": 38208.8,
+      "total_mkt": 38204.4,
+      "total_pnl": -4.4,
+      "total_pct": -0.01,
+      "realized_pnl": 2888.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-07",
-      "total_cost": 24325.4,
-      "total_mkt": 24531.0,
-      "total_pnl": 205.6,
-      "total_pct": 0.85,
-      "realized_pnl": 577.6,
+      "total_cost": 38208.8,
+      "total_mkt": 38154.2,
+      "total_pnl": -54.6,
+      "total_pct": -0.14,
+      "realized_pnl": 2888.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-08",
-      "total_cost": 18401.4,
-      "total_mkt": 17541.0,
-      "total_pnl": -860.4,
-      "total_pct": -4.68,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30572.2,
+      "total_pnl": -1750.6,
+      "total_pct": -5.42,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-09",
-      "total_cost": 18401.4,
-      "total_mkt": 16794.0,
-      "total_pnl": -1607.4,
-      "total_pct": -8.74,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 29540.2,
+      "total_pnl": -2782.6,
+      "total_pct": -8.61,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-10",
-      "total_cost": 18401.4,
-      "total_mkt": 16632.0,
-      "total_pnl": -1769.4,
-      "total_pct": -9.62,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 29426.38,
+      "total_pnl": -2896.42,
+      "total_pct": -8.96,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-13",
-      "total_cost": 18401.4,
-      "total_mkt": 16897.0,
-      "total_pnl": -1504.4,
-      "total_pct": -8.18,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 29791.6,
+      "total_pnl": -2531.2,
+      "total_pct": -7.83,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-14",
-      "total_cost": 18401.4,
-      "total_mkt": 17136.0,
-      "total_pnl": -1265.4,
-      "total_pct": -6.88,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30235.2,
+      "total_pnl": -2087.6,
+      "total_pct": -6.46,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-15",
-      "total_cost": 18401.4,
-      "total_mkt": 17126.0,
-      "total_pnl": -1275.4,
-      "total_pct": -6.93,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30376.0,
+      "total_pnl": -1946.8,
+      "total_pct": -6.02,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-16",
-      "total_cost": 18401.4,
-      "total_mkt": 17104.0,
-      "total_pnl": -1297.4,
-      "total_pct": -7.05,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30261.6,
+      "total_pnl": -2061.2,
+      "total_pct": -6.38,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-17",
-      "total_cost": 18401.4,
-      "total_mkt": 16615.0,
-      "total_pnl": -1786.4,
-      "total_pct": -9.71,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 29209.8,
+      "total_pnl": -3113.0,
+      "total_pct": -9.63,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-20",
-      "total_cost": 18401.4,
-      "total_mkt": 16048.0,
-      "total_pnl": -2353.4,
-      "total_pct": -12.79,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 28604.6,
+      "total_pnl": -3718.2,
+      "total_pct": -11.5,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-21",
-      "total_cost": 18401.4,
-      "total_mkt": 17499.0,
-      "total_pnl": -902.4,
-      "total_pct": -4.9,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30745.0,
+      "total_pnl": -1577.8,
+      "total_pct": -4.88,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-22",
-      "total_cost": 18401.4,
-      "total_mkt": 17633.0,
-      "total_pnl": -768.4,
-      "total_pct": -4.18,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30976.4,
+      "total_pnl": -1346.4,
+      "total_pct": -4.17,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-23",
-      "total_cost": 18401.4,
-      "total_mkt": 17925.0,
-      "total_pnl": -476.4,
-      "total_pct": -2.59,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 31415.6,
+      "total_pnl": -907.2,
+      "total_pct": -2.81,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-24",
-      "total_cost": 18401.4,
-      "total_mkt": 17293.0,
-      "total_pnl": -1108.4,
-      "total_pct": -6.02,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30417.0,
+      "total_pnl": -1905.8,
+      "total_pct": -5.9,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-27",
-      "total_cost": 18401.4,
-      "total_mkt": 17823.0,
-      "total_pnl": -578.4,
-      "total_pct": -3.14,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 31205.4,
+      "total_pnl": -1117.4,
+      "total_pct": -3.46,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-28",
-      "total_cost": 18401.4,
-      "total_mkt": 17719.0,
-      "total_pnl": -682.4,
-      "total_pct": -3.71,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 30981.2,
+      "total_pnl": -1341.6,
+      "total_pct": -4.15,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-07-29",
-      "total_cost": 18401.4,
-      "total_mkt": 18353.0,
-      "total_pnl": -48.4,
-      "total_pct": -0.26,
-      "realized_pnl": 508.6,
+      "total_cost": 32322.8,
+      "total_mkt": 31971.0,
+      "total_pnl": -351.8,
+      "total_pct": -1.09,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
-      "trade_date": "2026-08-19",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
-      "realized_pnl": 508.6,
-      "cost_basis": "carry_forward"
-    },
-    {
       "trade_date": "2026-08-20",
-      "total_cost": 22820.4,
-      "total_mkt": 20935.0,
-      "total_pnl": -1885.4,
-      "total_pct": -8.26,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33171.2,
+      "total_pnl": -2262.6,
+      "total_pct": -6.39,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-21",
-      "total_cost": 22820.4,
-      "total_mkt": 21194.0,
-      "total_pnl": -1626.4,
-      "total_pct": -7.13,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33550.6,
+      "total_pnl": -1883.2,
+      "total_pct": -5.31,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-24",
-      "total_cost": 22820.4,
-      "total_mkt": 21385.0,
-      "total_pnl": -1435.4,
-      "total_pct": -6.29,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33679.2,
+      "total_pnl": -1754.6,
+      "total_pct": -4.95,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-25",
-      "total_cost": 22820.4,
-      "total_mkt": 21367.0,
-      "total_pnl": -1453.4,
-      "total_pct": -6.37,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33800.4,
+      "total_pnl": -1633.4,
+      "total_pct": -4.61,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-26",
-      "total_cost": 22820.4,
-      "total_mkt": 21633.0,
-      "total_pnl": -1187.4,
-      "total_pct": -5.2,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 34215.4,
+      "total_pnl": -1218.4,
+      "total_pct": -3.44,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-27",
-      "total_cost": 22820.4,
-      "total_mkt": 21556.0,
-      "total_pnl": -1264.4,
-      "total_pct": -5.54,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 34198.6,
+      "total_pnl": -1235.2,
+      "total_pct": -3.49,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-28",
-      "total_cost": 22820.4,
-      "total_mkt": 21446.0,
-      "total_pnl": -1374.4,
-      "total_pct": -6.02,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33896.0,
+      "total_pnl": -1537.8,
+      "total_pct": -4.34,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-08-31",
-      "total_cost": 22820.4,
-      "total_mkt": 21210.0,
-      "total_pnl": -1610.4,
-      "total_pct": -7.06,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33386.2,
+      "total_pnl": -2047.6,
+      "total_pct": -5.78,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-01",
-      "total_cost": 22820.4,
-      "total_mkt": 21230.0,
-      "total_pnl": -1590.4,
-      "total_pct": -6.97,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 33337.6,
+      "total_pnl": -2096.2,
+      "total_pct": -5.92,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-02",
-      "total_cost": 22820.4,
-      "total_mkt": 20859.0,
-      "total_pnl": -1961.4,
-      "total_pct": -8.59,
-      "realized_pnl": 508.6,
+      "total_cost": 35433.8,
+      "total_mkt": 32860.2,
+      "total_pnl": -2573.6,
+      "total_pct": -7.26,
+      "realized_pnl": 2857.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-03",
-      "total_cost": 21501.0,
-      "total_mkt": 19516.0,
-      "total_pnl": -1985.0,
-      "total_pct": -9.23,
-      "realized_pnl": 594.2,
+      "total_cost": 35433.8,
+      "total_mkt": 33080.6,
+      "total_pnl": -2353.2,
+      "total_pct": -6.64,
+      "realized_pnl": 4359.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-04",
-      "total_cost": 21501.0,
-      "total_mkt": 19404.0,
-      "total_pnl": -2097.0,
-      "total_pct": -9.75,
-      "realized_pnl": 594.2,
+      "total_cost": 31014.8,
+      "total_mkt": 28412.6,
+      "total_pnl": -2602.2,
+      "total_pct": -8.39,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-07",
-      "total_cost": 17082.0,
-      "total_mkt": 15015.0,
-      "total_pnl": -2067.0,
-      "total_pct": -12.1,
-      "realized_pnl": 596.2,
+      "total_cost": 31014.8,
+      "total_mkt": 28336.6,
+      "total_pnl": -2678.2,
+      "total_pct": -8.64,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-08",
-      "total_cost": 17082.0,
-      "total_mkt": 15106.0,
-      "total_pnl": -1976.0,
-      "total_pct": -11.57,
-      "realized_pnl": 596.2,
+      "total_cost": 31014.8,
+      "total_mkt": 28515.2,
+      "total_pnl": -2499.6,
+      "total_pct": -8.06,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-09",
-      "total_cost": 17082.0,
-      "total_mkt": 15015.0,
-      "total_pnl": -2067.0,
-      "total_pct": -12.1,
-      "realized_pnl": 596.2,
+      "total_cost": 31014.8,
+      "total_mkt": 28256.8,
+      "total_pnl": -2758.0,
+      "total_pct": -8.89,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-10",
-      "total_cost": 17082.0,
-      "total_mkt": 14885.0,
-      "total_pnl": -2197.0,
-      "total_pct": -12.86,
-      "realized_pnl": 596.2,
+      "total_cost": 31014.8,
+      "total_mkt": 27907.2,
+      "total_pnl": -3107.6,
+      "total_pct": -10.02,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-11",
-      "total_cost": 17082.0,
-      "total_mkt": 14521.0,
-      "total_pnl": -2561.0,
-      "total_pct": -14.99,
-      "realized_pnl": 596.2,
+      "total_cost": 31014.8,
+      "total_mkt": 27268.8,
+      "total_pnl": -3746.0,
+      "total_pct": -12.08,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-14",
-      "total_cost": 17082.0,
-      "total_mkt": 14534.0,
-      "total_pnl": -2548.0,
-      "total_pct": -14.92,
-      "realized_pnl": 596.2,
+      "total_cost": 31014.8,
+      "total_mkt": 27550.0,
+      "total_pnl": -3464.8,
+      "total_pct": -11.17,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-15",
-      "total_cost": 20981.0,
-      "total_mkt": 18425.0,
-      "total_pnl": -2556.0,
-      "total_pct": -12.18,
-      "realized_pnl": 596.2,
+      "total_cost": 34913.8,
+      "total_mkt": 31374.8,
+      "total_pnl": -3539.0,
+      "total_pct": -10.14,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-16",
-      "total_cost": 20981.0,
-      "total_mkt": 18453.0,
-      "total_pnl": -2528.0,
-      "total_pct": -12.05,
-      "realized_pnl": 596.2,
+      "total_cost": 34913.8,
+      "total_mkt": 31380.0,
+      "total_pnl": -3533.8,
+      "total_pct": -10.12,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-17",
-      "total_cost": 20981.0,
-      "total_mkt": 18183.0,
-      "total_pnl": -2798.0,
-      "total_pct": -13.34,
-      "realized_pnl": 596.2,
+      "total_cost": 34913.8,
+      "total_mkt": 31118.2,
+      "total_pnl": -3795.6,
+      "total_pct": -10.87,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-18",
-      "total_cost": 25178.0,
-      "total_mkt": 22644.0,
-      "total_pnl": -2534.0,
-      "total_pct": -10.06,
-      "realized_pnl": 596.2,
+      "total_cost": 39110.8,
+      "total_mkt": 35713.2,
+      "total_pnl": -3397.6,
+      "total_pct": -8.69,
+      "realized_pnl": 4361.4,
       "cost_basis": "real"
     },
     {
+      "trade_date": "2026-09-21",
+      "total_cost": 29584.0,
+      "total_mkt": 25461.0,
+      "total_pnl": -4123.0,
+      "total_pct": -13.94,
+      "realized_pnl": 4587.4,
+      "cost_basis": "carry_forward"
+    },
+    {
+      "trade_date": "2026-09-22",
+      "total_cost": 30584.0,
+      "total_mkt": 26550.0,
+      "total_pnl": -4034.0,
+      "total_pct": -13.19,
+      "realized_pnl": 4587.4,
+      "cost_basis": "carry_forward"
+    },
+    {
       "trade_date": "2026-09-23",
-      "total_cost": 21279.0,
-      "total_mkt": 19690.0,
-      "total_pnl": -1589.0,
-      "total_pct": -7.47,
-      "realized_pnl": 873.2,
+      "total_cost": 35211.8,
+      "total_mkt": 33518.6,
+      "total_pnl": -1693.2,
+      "total_pct": -4.81,
+      "realized_pnl": 4638.4,
       "cost_basis": "real"
     },
     {
       "trade_date": "2026-09-24",
-      "total_cost": 21279.0,
-      "total_mkt": 18987.0,
-      "total_pnl": -2292.0,
-      "total_pct": -10.77,
-      "realized_pnl": 873.2,
+      "total_cost": 35211.8,
+      "total_mkt": 32382.4,
+      "total_pnl": -2829.4,
+      "total_pct": -8.04,
+      "realized_pnl": 4638.4,
       "cost_basis": "real"
     }
   ],
   "benchmark": {
-    "first_buy_date": "2026-03-05",
+    "first_buy_date": "2026-02-02",
     "my_portfolio": [
+      {
+        "trade_date": "2026-02-02",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-03",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-04",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-05",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-06",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-09",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-10",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-11",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-12",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-13",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-24",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-25",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-26",
+        "cum_pct": 0.0
+      },
+      {
+        "trade_date": "2026-02-27",
+        "cum_pct": 0.0
+      },
       {
         "trade_date": "2026-03-02",
         "cum_pct": 0.0
@@ -1339,55 +1543,55 @@
       },
       {
         "trade_date": "2026-03-06",
-        "cum_pct": 0.1
+        "cum_pct": 0.07
       },
       {
         "trade_date": "2026-03-09",
-        "cum_pct": 0.03
-      },
-      {
-        "trade_date": "2026-03-10",
-        "cum_pct": 0.15
-      },
-      {
-        "trade_date": "2026-03-11",
-        "cum_pct": 0.1
-      },
-      {
-        "trade_date": "2026-03-12",
-        "cum_pct": 0.04
-      },
-      {
-        "trade_date": "2026-03-13",
-        "cum_pct": 0.01
-      },
-      {
-        "trade_date": "2026-03-16",
-        "cum_pct": 0.22
-      },
-      {
-        "trade_date": "2026-03-17",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-03-18",
-        "cum_pct": 0.34
-      },
-      {
-        "trade_date": "2026-03-19",
-        "cum_pct": 0.12
-      },
-      {
-        "trade_date": "2026-03-20",
         "cum_pct": 0.02
       },
       {
+        "trade_date": "2026-03-10",
+        "cum_pct": 0.13
+      },
+      {
+        "trade_date": "2026-03-11",
+        "cum_pct": 0.09
+      },
+      {
+        "trade_date": "2026-03-12",
+        "cum_pct": 0.05
+      },
+      {
+        "trade_date": "2026-03-13",
+        "cum_pct": 0.02
+      },
+      {
+        "trade_date": "2026-03-16",
+        "cum_pct": 0.18
+      },
+      {
+        "trade_date": "2026-03-17",
+        "cum_pct": 0.2
+      },
+      {
+        "trade_date": "2026-03-18",
+        "cum_pct": 0.27
+      },
+      {
+        "trade_date": "2026-03-19",
+        "cum_pct": 0.11
+      },
+      {
+        "trade_date": "2026-03-20",
+        "cum_pct": 0.03
+      },
+      {
         "trade_date": "2026-03-23",
-        "cum_pct": -0.32
+        "cum_pct": -0.22
       },
       {
         "trade_date": "2026-03-24",
-        "cum_pct": 0.01
+        "cum_pct": 0.02
       },
       {
         "trade_date": "2026-03-25",
@@ -1395,1813 +1599,2033 @@
       },
       {
         "trade_date": "2026-03-26",
-        "cum_pct": -0.03
+        "cum_pct": -0.01
       },
       {
         "trade_date": "2026-03-27",
-        "cum_pct": 0.25
+        "cum_pct": 0.2
       },
       {
         "trade_date": "2026-03-30",
-        "cum_pct": 0.25
+        "cum_pct": 0.2
       },
       {
         "trade_date": "2026-03-31",
-        "cum_pct": 0.25
+        "cum_pct": 0.2
       },
       {
         "trade_date": "2026-04-01",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-02",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-03",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-07",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-08",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-09",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-10",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-13",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-14",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-15",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-16",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-17",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-20",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-21",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-22",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-23",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-24",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-27",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-28",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-29",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-04-30",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-06",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-07",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-08",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-11",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-12",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-13",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-14",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-15",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-18",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-19",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-20",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-21",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-22",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-25",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-26",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-27",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-28",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-05-29",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-01",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-02",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-03",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-04",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-05",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-08",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-09",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-10",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-11",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-12",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-15",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-16",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-17",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-18",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-22",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-23",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-24",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-25",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-26",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-29",
-        "cum_pct": 0.25
-      },
-      {
-        "trade_date": "2026-06-30",
-        "cum_pct": -0.83
-      },
-      {
-        "trade_date": "2026-07-01",
-        "cum_pct": 0.77
-      },
-      {
-        "trade_date": "2026-07-02",
-        "cum_pct": 0.06
-      },
-      {
-        "trade_date": "2026-07-03",
-        "cum_pct": 0.35
-      },
-      {
-        "trade_date": "2026-07-06",
-        "cum_pct": 1.18
-      },
-      {
-        "trade_date": "2026-07-07",
-        "cum_pct": 1.6
-      },
-      {
-        "trade_date": "2026-07-08",
-        "cum_pct": -0.72
-      },
-      {
-        "trade_date": "2026-07-09",
-        "cum_pct": -2.24
-      },
-      {
-        "trade_date": "2026-07-10",
-        "cum_pct": -2.57
-      },
-      {
-        "trade_date": "2026-07-13",
-        "cum_pct": -2.03
-      },
-      {
-        "trade_date": "2026-07-14",
-        "cum_pct": -1.54
-      },
-      {
-        "trade_date": "2026-07-15",
-        "cum_pct": -1.56
-      },
-      {
-        "trade_date": "2026-07-16",
-        "cum_pct": -1.61
-      },
-      {
-        "trade_date": "2026-07-17",
-        "cum_pct": -2.6
-      },
-      {
-        "trade_date": "2026-07-20",
-        "cum_pct": -3.76
-      },
-      {
-        "trade_date": "2026-07-21",
-        "cum_pct": -0.8
-      },
-      {
-        "trade_date": "2026-07-22",
-        "cum_pct": -0.53
-      },
-      {
-        "trade_date": "2026-07-23",
-        "cum_pct": 0.07
-      },
-      {
-        "trade_date": "2026-07-24",
-        "cum_pct": -1.22
-      },
-      {
-        "trade_date": "2026-07-27",
         "cum_pct": -0.14
       },
       {
+        "trade_date": "2026-04-02",
+        "cum_pct": -0.42
+      },
+      {
+        "trade_date": "2026-04-03",
+        "cum_pct": -0.56
+      },
+      {
+        "trade_date": "2026-04-07",
+        "cum_pct": -0.53
+      },
+      {
+        "trade_date": "2026-04-08",
+        "cum_pct": 0.13
+      },
+      {
+        "trade_date": "2026-04-09",
+        "cum_pct": 0.48
+      },
+      {
+        "trade_date": "2026-04-10",
+        "cum_pct": 1.33
+      },
+      {
+        "trade_date": "2026-04-13",
+        "cum_pct": 1.71
+      },
+      {
+        "trade_date": "2026-04-14",
+        "cum_pct": 1.98
+      },
+      {
+        "trade_date": "2026-04-15",
+        "cum_pct": 1.78
+      },
+      {
+        "trade_date": "2026-04-16",
+        "cum_pct": 1.27
+      },
+      {
+        "trade_date": "2026-04-17",
+        "cum_pct": 1.22
+      },
+      {
+        "trade_date": "2026-04-20",
+        "cum_pct": 0.96
+      },
+      {
+        "trade_date": "2026-04-21",
+        "cum_pct": 1.32
+      },
+      {
+        "trade_date": "2026-04-22",
+        "cum_pct": 1.7
+      },
+      {
+        "trade_date": "2026-04-23",
+        "cum_pct": 1.49
+      },
+      {
+        "trade_date": "2026-04-24",
+        "cum_pct": 1.66
+      },
+      {
+        "trade_date": "2026-04-27",
+        "cum_pct": 2.52
+      },
+      {
+        "trade_date": "2026-04-28",
+        "cum_pct": 2.33
+      },
+      {
+        "trade_date": "2026-04-29",
+        "cum_pct": 3.52
+      },
+      {
+        "trade_date": "2026-04-30",
+        "cum_pct": 3.26
+      },
+      {
+        "trade_date": "2026-05-06",
+        "cum_pct": 4.35
+      },
+      {
+        "trade_date": "2026-05-07",
+        "cum_pct": 3.62
+      },
+      {
+        "trade_date": "2026-05-08",
+        "cum_pct": 3.3
+      },
+      {
+        "trade_date": "2026-05-11",
+        "cum_pct": 3.13
+      },
+      {
+        "trade_date": "2026-05-12",
+        "cum_pct": 2.71
+      },
+      {
+        "trade_date": "2026-05-13",
+        "cum_pct": 2.74
+      },
+      {
+        "trade_date": "2026-05-14",
+        "cum_pct": 1.82
+      },
+      {
+        "trade_date": "2026-05-15",
+        "cum_pct": 1.64
+      },
+      {
+        "trade_date": "2026-05-18",
+        "cum_pct": 1.37
+      },
+      {
+        "trade_date": "2026-05-19",
+        "cum_pct": 1.14
+      },
+      {
+        "trade_date": "2026-05-20",
+        "cum_pct": 1.44
+      },
+      {
+        "trade_date": "2026-05-21",
+        "cum_pct": 0.67
+      },
+      {
+        "trade_date": "2026-05-22",
+        "cum_pct": 1.11
+      },
+      {
+        "trade_date": "2026-05-25",
+        "cum_pct": 0.65
+      },
+      {
+        "trade_date": "2026-05-26",
+        "cum_pct": 0.84
+      },
+      {
+        "trade_date": "2026-05-27",
+        "cum_pct": 0.92
+      },
+      {
+        "trade_date": "2026-05-28",
+        "cum_pct": 1.09
+      },
+      {
+        "trade_date": "2026-05-29",
+        "cum_pct": 0.7
+      },
+      {
+        "trade_date": "2026-06-01",
+        "cum_pct": 0.15
+      },
+      {
+        "trade_date": "2026-06-02",
+        "cum_pct": -0.11
+      },
+      {
+        "trade_date": "2026-06-03",
+        "cum_pct": -0.48
+      },
+      {
+        "trade_date": "2026-06-04",
+        "cum_pct": -0.8
+      },
+      {
+        "trade_date": "2026-06-05",
+        "cum_pct": -0.77
+      },
+      {
+        "trade_date": "2026-06-08",
+        "cum_pct": -1.53
+      },
+      {
+        "trade_date": "2026-06-09",
+        "cum_pct": -1.28
+      },
+      {
+        "trade_date": "2026-06-10",
+        "cum_pct": -1.52
+      },
+      {
+        "trade_date": "2026-06-11",
+        "cum_pct": -1.56
+      },
+      {
+        "trade_date": "2026-06-12",
+        "cum_pct": -0.83
+      },
+      {
+        "trade_date": "2026-06-15",
+        "cum_pct": -0.76
+      },
+      {
+        "trade_date": "2026-06-16",
+        "cum_pct": -0.63
+      },
+      {
+        "trade_date": "2026-06-17",
+        "cum_pct": -0.59
+      },
+      {
+        "trade_date": "2026-06-18",
+        "cum_pct": -0.78
+      },
+      {
+        "trade_date": "2026-06-22",
+        "cum_pct": -0.23
+      },
+      {
+        "trade_date": "2026-06-23",
+        "cum_pct": -0.18
+      },
+      {
+        "trade_date": "2026-06-24",
+        "cum_pct": 0.14
+      },
+      {
+        "trade_date": "2026-06-25",
+        "cum_pct": 2.96
+      },
+      {
+        "trade_date": "2026-06-26",
+        "cum_pct": 2.07
+      },
+      {
+        "trade_date": "2026-06-29",
+        "cum_pct": 2.66
+      },
+      {
+        "trade_date": "2026-06-30",
+        "cum_pct": 1.97
+      },
+      {
+        "trade_date": "2026-07-01",
+        "cum_pct": 3.39
+      },
+      {
+        "trade_date": "2026-07-02",
+        "cum_pct": 2.72
+      },
+      {
+        "trade_date": "2026-07-03",
+        "cum_pct": 3.19
+      },
+      {
+        "trade_date": "2026-07-06",
+        "cum_pct": 4.33
+      },
+      {
+        "trade_date": "2026-07-07",
+        "cum_pct": 4.25
+      },
+      {
+        "trade_date": "2026-07-08",
+        "cum_pct": 1.66
+      },
+      {
+        "trade_date": "2026-07-09",
+        "cum_pct": 0.11
+      },
+      {
+        "trade_date": "2026-07-10",
+        "cum_pct": -0.06
+      },
+      {
+        "trade_date": "2026-07-13",
+        "cum_pct": 0.49
+      },
+      {
+        "trade_date": "2026-07-14",
+        "cum_pct": 1.15
+      },
+      {
+        "trade_date": "2026-07-15",
+        "cum_pct": 1.37
+      },
+      {
+        "trade_date": "2026-07-16",
+        "cum_pct": 1.19
+      },
+      {
+        "trade_date": "2026-07-17",
+        "cum_pct": -0.38
+      },
+      {
+        "trade_date": "2026-07-20",
+        "cum_pct": -1.29
+      },
+      {
+        "trade_date": "2026-07-21",
+        "cum_pct": 1.92
+      },
+      {
+        "trade_date": "2026-07-22",
+        "cum_pct": 2.27
+      },
+      {
+        "trade_date": "2026-07-23",
+        "cum_pct": 2.92
+      },
+      {
+        "trade_date": "2026-07-24",
+        "cum_pct": 1.43
+      },
+      {
+        "trade_date": "2026-07-27",
+        "cum_pct": 2.61
+      },
+      {
         "trade_date": "2026-07-28",
-        "cum_pct": -0.35
+        "cum_pct": 2.27
       },
       {
         "trade_date": "2026-07-29",
-        "cum_pct": 0.94
-      },
-      {
-        "trade_date": "2026-08-19",
-        "cum_pct": 1.04
+        "cum_pct": 3.76
       },
       {
         "trade_date": "2026-08-20",
-        "cum_pct": -2.8
+        "cum_pct": 1.04
       },
       {
         "trade_date": "2026-08-21",
-        "cum_pct": -2.28
+        "cum_pct": 1.61
       },
       {
         "trade_date": "2026-08-24",
-        "cum_pct": -1.89
+        "cum_pct": 1.8
       },
       {
         "trade_date": "2026-08-25",
-        "cum_pct": -1.92
+        "cum_pct": 1.98
       },
       {
         "trade_date": "2026-08-26",
-        "cum_pct": -1.38
+        "cum_pct": 2.6
       },
       {
         "trade_date": "2026-08-27",
-        "cum_pct": -1.54
+        "cum_pct": 2.58
       },
       {
         "trade_date": "2026-08-28",
-        "cum_pct": -1.76
+        "cum_pct": 2.12
       },
       {
         "trade_date": "2026-08-31",
-        "cum_pct": -2.24
+        "cum_pct": 1.36
       },
       {
         "trade_date": "2026-09-01",
-        "cum_pct": -2.2
+        "cum_pct": 1.29
       },
       {
         "trade_date": "2026-09-02",
-        "cum_pct": -2.96
+        "cum_pct": 0.57
       },
       {
         "trade_date": "2026-09-03",
-        "cum_pct": -2.83
+        "cum_pct": 3.01
       },
       {
         "trade_date": "2026-09-04",
-        "cum_pct": -3.06
+        "cum_pct": 2.64
       },
       {
         "trade_date": "2026-09-07",
-        "cum_pct": -3.0
+        "cum_pct": 2.52
       },
       {
         "trade_date": "2026-09-08",
-        "cum_pct": -2.81
+        "cum_pct": 2.79
       },
       {
         "trade_date": "2026-09-09",
-        "cum_pct": -3.0
+        "cum_pct": 2.4
       },
       {
         "trade_date": "2026-09-10",
-        "cum_pct": -3.26
+        "cum_pct": 1.88
       },
       {
         "trade_date": "2026-09-11",
-        "cum_pct": -4.0
+        "cum_pct": 0.92
       },
       {
         "trade_date": "2026-09-14",
-        "cum_pct": -3.98
+        "cum_pct": 1.34
       },
       {
         "trade_date": "2026-09-15",
-        "cum_pct": -3.99
+        "cum_pct": 1.23
       },
       {
         "trade_date": "2026-09-16",
-        "cum_pct": -3.93
+        "cum_pct": 1.24
       },
       {
         "trade_date": "2026-09-17",
-        "cum_pct": -4.48
+        "cum_pct": 0.85
       },
       {
         "trade_date": "2026-09-18",
-        "cum_pct": -3.95
+        "cum_pct": 1.45
+      },
+      {
+        "trade_date": "2026-09-21",
+        "cum_pct": 0.7
+      },
+      {
+        "trade_date": "2026-09-22",
+        "cum_pct": 0.83
       },
       {
         "trade_date": "2026-09-23",
-        "cum_pct": -1.46
+        "cum_pct": 4.42
       },
       {
         "trade_date": "2026-09-24",
-        "cum_pct": -2.89
+        "cum_pct": 2.71
       }
     ],
     "sh": [
       {
-        "trade_date": "2026-03-02",
-        "pct_from_baseline": 1.8
-      },
-      {
-        "trade_date": "2026-03-03",
-        "pct_from_baseline": 0.34
-      },
-      {
-        "trade_date": "2026-03-04",
-        "pct_from_baseline": -0.64
-      },
-      {
-        "trade_date": "2026-03-05",
+        "trade_date": "2026-02-02",
         "pct_from_baseline": 0.0
       },
       {
-        "trade_date": "2026-03-06",
-        "pct_from_baseline": 0.38
+        "trade_date": "2026-02-03",
+        "pct_from_baseline": 1.29
       },
       {
-        "trade_date": "2026-03-09",
-        "pct_from_baseline": -0.29
+        "trade_date": "2026-02-04",
+        "pct_from_baseline": 2.15
       },
       {
-        "trade_date": "2026-03-10",
-        "pct_from_baseline": 0.35
+        "trade_date": "2026-02-05",
+        "pct_from_baseline": 1.5
       },
       {
-        "trade_date": "2026-03-11",
-        "pct_from_baseline": 0.61
+        "trade_date": "2026-02-06",
+        "pct_from_baseline": 1.24
       },
       {
-        "trade_date": "2026-03-12",
-        "pct_from_baseline": 0.5
+        "trade_date": "2026-02-09",
+        "pct_from_baseline": 2.67
       },
       {
-        "trade_date": "2026-03-13",
-        "pct_from_baseline": -0.32
+        "trade_date": "2026-02-10",
+        "pct_from_baseline": 2.8
       },
       {
-        "trade_date": "2026-03-16",
-        "pct_from_baseline": -0.58
+        "trade_date": "2026-02-11",
+        "pct_from_baseline": 2.89
       },
       {
-        "trade_date": "2026-03-17",
-        "pct_from_baseline": -1.43
+        "trade_date": "2026-02-12",
+        "pct_from_baseline": 2.95
       },
       {
-        "trade_date": "2026-03-18",
-        "pct_from_baseline": -1.11
+        "trade_date": "2026-02-13",
+        "pct_from_baseline": 1.65
       },
       {
-        "trade_date": "2026-03-19",
-        "pct_from_baseline": -2.48
+        "trade_date": "2026-02-24",
+        "pct_from_baseline": 2.53
       },
       {
-        "trade_date": "2026-03-20",
-        "pct_from_baseline": -3.69
+        "trade_date": "2026-02-25",
+        "pct_from_baseline": 3.27
       },
       {
-        "trade_date": "2026-03-23",
-        "pct_from_baseline": -7.19
-      },
-      {
-        "trade_date": "2026-03-24",
-        "pct_from_baseline": -5.53
-      },
-      {
-        "trade_date": "2026-03-25",
-        "pct_from_baseline": -4.3
-      },
-      {
-        "trade_date": "2026-03-26",
-        "pct_from_baseline": -5.34
-      },
-      {
-        "trade_date": "2026-03-27",
-        "pct_from_baseline": -4.74
-      },
-      {
-        "trade_date": "2026-03-30",
-        "pct_from_baseline": -4.51
-      },
-      {
-        "trade_date": "2026-03-31",
-        "pct_from_baseline": -5.27
-      },
-      {
-        "trade_date": "2026-04-01",
-        "pct_from_baseline": -3.89
-      },
-      {
-        "trade_date": "2026-04-02",
-        "pct_from_baseline": -4.61
-      },
-      {
-        "trade_date": "2026-04-03",
-        "pct_from_baseline": -5.56
-      },
-      {
-        "trade_date": "2026-04-07",
-        "pct_from_baseline": -5.32
-      },
-      {
-        "trade_date": "2026-04-08",
-        "pct_from_baseline": -2.76
-      },
-      {
-        "trade_date": "2026-04-09",
-        "pct_from_baseline": -3.47
-      },
-      {
-        "trade_date": "2026-04-10",
-        "pct_from_baseline": -2.98
-      },
-      {
-        "trade_date": "2026-04-13",
-        "pct_from_baseline": -2.92
-      },
-      {
-        "trade_date": "2026-04-14",
-        "pct_from_baseline": -1.99
-      },
-      {
-        "trade_date": "2026-04-15",
-        "pct_from_baseline": -1.98
-      },
-      {
-        "trade_date": "2026-04-16",
-        "pct_from_baseline": -1.29
-      },
-      {
-        "trade_date": "2026-04-17",
-        "pct_from_baseline": -1.39
-      },
-      {
-        "trade_date": "2026-04-20",
-        "pct_from_baseline": -0.64
-      },
-      {
-        "trade_date": "2026-04-21",
-        "pct_from_baseline": -0.57
-      },
-      {
-        "trade_date": "2026-04-22",
-        "pct_from_baseline": -0.06
-      },
-      {
-        "trade_date": "2026-04-23",
-        "pct_from_baseline": -0.37
-      },
-      {
-        "trade_date": "2026-04-24",
-        "pct_from_baseline": -0.7
-      },
-      {
-        "trade_date": "2026-04-27",
-        "pct_from_baseline": -0.54
-      },
-      {
-        "trade_date": "2026-04-28",
-        "pct_from_baseline": -0.73
-      },
-      {
-        "trade_date": "2026-04-29",
-        "pct_from_baseline": -0.03
-      },
-      {
-        "trade_date": "2026-04-30",
-        "pct_from_baseline": 0.09
-      },
-      {
-        "trade_date": "2026-05-06",
-        "pct_from_baseline": 1.26
-      },
-      {
-        "trade_date": "2026-05-07",
-        "pct_from_baseline": 1.74
-      },
-      {
-        "trade_date": "2026-05-08",
-        "pct_from_baseline": 1.74
-      },
-      {
-        "trade_date": "2026-05-11",
-        "pct_from_baseline": 2.83
-      },
-      {
-        "trade_date": "2026-05-12",
-        "pct_from_baseline": 2.58
-      },
-      {
-        "trade_date": "2026-05-13",
+        "trade_date": "2026-02-26",
         "pct_from_baseline": 3.26
       },
       {
-        "trade_date": "2026-05-14",
-        "pct_from_baseline": 1.69
+        "trade_date": "2026-02-27",
+        "pct_from_baseline": 3.66
       },
       {
-        "trade_date": "2026-05-15",
-        "pct_from_baseline": 0.65
+        "trade_date": "2026-03-02",
+        "pct_from_baseline": 4.15
       },
       {
-        "trade_date": "2026-05-18",
-        "pct_from_baseline": 0.56
+        "trade_date": "2026-03-03",
+        "pct_from_baseline": 2.66
       },
       {
-        "trade_date": "2026-05-19",
-        "pct_from_baseline": 1.48
+        "trade_date": "2026-03-04",
+        "pct_from_baseline": 1.66
       },
       {
-        "trade_date": "2026-05-20",
-        "pct_from_baseline": 1.3
+        "trade_date": "2026-03-05",
+        "pct_from_baseline": 2.31
       },
       {
-        "trade_date": "2026-05-21",
-        "pct_from_baseline": -0.76
+        "trade_date": "2026-03-06",
+        "pct_from_baseline": 2.7
       },
       {
-        "trade_date": "2026-05-22",
-        "pct_from_baseline": 0.11
+        "trade_date": "2026-03-09",
+        "pct_from_baseline": 2.01
       },
       {
-        "trade_date": "2026-05-25",
-        "pct_from_baseline": 1.07
+        "trade_date": "2026-03-10",
+        "pct_from_baseline": 2.67
       },
       {
-        "trade_date": "2026-05-26",
-        "pct_from_baseline": 0.9
+        "trade_date": "2026-03-11",
+        "pct_from_baseline": 2.93
       },
       {
-        "trade_date": "2026-05-27",
-        "pct_from_baseline": -0.36
+        "trade_date": "2026-03-12",
+        "pct_from_baseline": 2.82
       },
       {
-        "trade_date": "2026-05-28",
-        "pct_from_baseline": -0.24
+        "trade_date": "2026-03-13",
+        "pct_from_baseline": 1.98
       },
       {
-        "trade_date": "2026-05-29",
-        "pct_from_baseline": -0.97
+        "trade_date": "2026-03-16",
+        "pct_from_baseline": 1.72
       },
       {
-        "trade_date": "2026-06-30",
-        "pct_from_baseline": -0.34
+        "trade_date": "2026-03-17",
+        "pct_from_baseline": 0.85
       },
       {
-        "trade_date": "2026-07-01",
-        "pct_from_baseline": 0.09
+        "trade_date": "2026-03-18",
+        "pct_from_baseline": 1.18
       },
       {
-        "trade_date": "2026-07-02",
-        "pct_from_baseline": -1.94
+        "trade_date": "2026-03-19",
+        "pct_from_baseline": -0.23
       },
       {
-        "trade_date": "2026-07-03",
-        "pct_from_baseline": -1.58
+        "trade_date": "2026-03-20",
+        "pct_from_baseline": -1.46
       },
       {
-        "trade_date": "2026-07-06",
-        "pct_from_baseline": -1.64
+        "trade_date": "2026-03-23",
+        "pct_from_baseline": -5.04
       },
       {
-        "trade_date": "2026-07-07",
-        "pct_from_baseline": -2.88
-      },
-      {
-        "trade_date": "2026-07-08",
+        "trade_date": "2026-03-24",
         "pct_from_baseline": -3.35
       },
       {
-        "trade_date": "2026-07-09",
-        "pct_from_baseline": -1.75
+        "trade_date": "2026-03-25",
+        "pct_from_baseline": -2.09
       },
       {
-        "trade_date": "2026-07-10",
-        "pct_from_baseline": -2.74
+        "trade_date": "2026-03-26",
+        "pct_from_baseline": -3.15
       },
       {
-        "trade_date": "2026-07-13",
-        "pct_from_baseline": -4.74
+        "trade_date": "2026-03-27",
+        "pct_from_baseline": -2.54
       },
       {
-        "trade_date": "2026-07-14",
-        "pct_from_baseline": -3.44
+        "trade_date": "2026-03-30",
+        "pct_from_baseline": -2.3
       },
       {
-        "trade_date": "2026-07-15",
-        "pct_from_baseline": -3.72
+        "trade_date": "2026-03-31",
+        "pct_from_baseline": -3.09
       },
       {
-        "trade_date": "2026-07-16",
-        "pct_from_baseline": -5.5
+        "trade_date": "2026-04-01",
+        "pct_from_baseline": -1.67
       },
       {
-        "trade_date": "2026-07-17",
-        "pct_from_baseline": -8.38
+        "trade_date": "2026-04-02",
+        "pct_from_baseline": -2.4
       },
       {
-        "trade_date": "2026-07-20",
-        "pct_from_baseline": -7.6
+        "trade_date": "2026-04-03",
+        "pct_from_baseline": -3.38
       },
       {
-        "trade_date": "2026-07-21",
-        "pct_from_baseline": -5.94
-      },
-      {
-        "trade_date": "2026-07-22",
-        "pct_from_baseline": -5.88
-      },
-      {
-        "trade_date": "2026-07-23",
-        "pct_from_baseline": -5.64
-      },
-      {
-        "trade_date": "2026-07-24",
-        "pct_from_baseline": -7.16
-      },
-      {
-        "trade_date": "2026-07-27",
-        "pct_from_baseline": -6.09
-      },
-      {
-        "trade_date": "2026-07-28",
-        "pct_from_baseline": -7.19
-      },
-      {
-        "trade_date": "2026-07-29",
-        "pct_from_baseline": -6.82
-      },
-      {
-        "trade_date": "2026-08-20",
-        "pct_from_baseline": -4.99
-      },
-      {
-        "trade_date": "2026-08-21",
-        "pct_from_baseline": -4.95
-      },
-      {
-        "trade_date": "2026-08-24",
-        "pct_from_baseline": -5.51
-      },
-      {
-        "trade_date": "2026-08-25",
-        "pct_from_baseline": -5.33
-      },
-      {
-        "trade_date": "2026-08-26",
-        "pct_from_baseline": -4.77
-      },
-      {
-        "trade_date": "2026-08-27",
-        "pct_from_baseline": -3.7
-      },
-      {
-        "trade_date": "2026-08-28",
-        "pct_from_baseline": -3.81
-      },
-      {
-        "trade_date": "2026-08-31",
-        "pct_from_baseline": -2.98
-      },
-      {
-        "trade_date": "2026-09-01",
+        "trade_date": "2026-04-07",
         "pct_from_baseline": -3.13
       },
       {
+        "trade_date": "2026-04-08",
+        "pct_from_baseline": -0.52
+      },
+      {
+        "trade_date": "2026-04-09",
+        "pct_from_baseline": -1.23
+      },
+      {
+        "trade_date": "2026-04-10",
+        "pct_from_baseline": -0.74
+      },
+      {
+        "trade_date": "2026-04-13",
+        "pct_from_baseline": -0.68
+      },
+      {
+        "trade_date": "2026-04-14",
+        "pct_from_baseline": 0.27
+      },
+      {
+        "trade_date": "2026-04-15",
+        "pct_from_baseline": 0.29
+      },
+      {
+        "trade_date": "2026-04-16",
+        "pct_from_baseline": 0.99
+      },
+      {
+        "trade_date": "2026-04-17",
+        "pct_from_baseline": 0.89
+      },
+      {
+        "trade_date": "2026-04-20",
+        "pct_from_baseline": 1.65
+      },
+      {
+        "trade_date": "2026-04-21",
+        "pct_from_baseline": 1.73
+      },
+      {
+        "trade_date": "2026-04-22",
+        "pct_from_baseline": 2.25
+      },
+      {
+        "trade_date": "2026-04-23",
+        "pct_from_baseline": 1.93
+      },
+      {
+        "trade_date": "2026-04-24",
+        "pct_from_baseline": 1.6
+      },
+      {
+        "trade_date": "2026-04-27",
+        "pct_from_baseline": 1.76
+      },
+      {
+        "trade_date": "2026-04-28",
+        "pct_from_baseline": 1.57
+      },
+      {
+        "trade_date": "2026-04-29",
+        "pct_from_baseline": 2.29
+      },
+      {
+        "trade_date": "2026-04-30",
+        "pct_from_baseline": 2.4
+      },
+      {
+        "trade_date": "2026-05-06",
+        "pct_from_baseline": 3.6
+      },
+      {
+        "trade_date": "2026-05-07",
+        "pct_from_baseline": 4.09
+      },
+      {
+        "trade_date": "2026-05-08",
+        "pct_from_baseline": 4.09
+      },
+      {
+        "trade_date": "2026-05-11",
+        "pct_from_baseline": 5.21
+      },
+      {
+        "trade_date": "2026-05-12",
+        "pct_from_baseline": 4.95
+      },
+      {
+        "trade_date": "2026-05-13",
+        "pct_from_baseline": 5.65
+      },
+      {
+        "trade_date": "2026-05-14",
+        "pct_from_baseline": 4.04
+      },
+      {
+        "trade_date": "2026-05-15",
+        "pct_from_baseline": 2.98
+      },
+      {
+        "trade_date": "2026-05-18",
+        "pct_from_baseline": 2.88
+      },
+      {
+        "trade_date": "2026-05-19",
+        "pct_from_baseline": 3.83
+      },
+      {
+        "trade_date": "2026-05-20",
+        "pct_from_baseline": 3.65
+      },
+      {
+        "trade_date": "2026-05-21",
+        "pct_from_baseline": 1.53
+      },
+      {
+        "trade_date": "2026-05-22",
+        "pct_from_baseline": 2.42
+      },
+      {
+        "trade_date": "2026-05-25",
+        "pct_from_baseline": 3.41
+      },
+      {
+        "trade_date": "2026-05-26",
+        "pct_from_baseline": 3.23
+      },
+      {
+        "trade_date": "2026-05-27",
+        "pct_from_baseline": 1.94
+      },
+      {
+        "trade_date": "2026-05-28",
+        "pct_from_baseline": 2.06
+      },
+      {
+        "trade_date": "2026-05-29",
+        "pct_from_baseline": 1.32
+      },
+      {
+        "trade_date": "2026-06-01",
+        "pct_from_baseline": 1.05
+      },
+      {
+        "trade_date": "2026-06-02",
+        "pct_from_baseline": 1.48
+      },
+      {
+        "trade_date": "2026-06-03",
+        "pct_from_baseline": 1.7
+      },
+      {
+        "trade_date": "2026-06-30",
+        "pct_from_baseline": 1.96
+      },
+      {
+        "trade_date": "2026-07-01",
+        "pct_from_baseline": 2.41
+      },
+      {
+        "trade_date": "2026-07-02",
+        "pct_from_baseline": 0.33
+      },
+      {
+        "trade_date": "2026-07-03",
+        "pct_from_baseline": 0.69
+      },
+      {
+        "trade_date": "2026-07-06",
+        "pct_from_baseline": 0.63
+      },
+      {
+        "trade_date": "2026-07-07",
+        "pct_from_baseline": -0.64
+      },
+      {
+        "trade_date": "2026-07-08",
+        "pct_from_baseline": -1.12
+      },
+      {
+        "trade_date": "2026-07-09",
+        "pct_from_baseline": 0.52
+      },
+      {
+        "trade_date": "2026-07-10",
+        "pct_from_baseline": -0.49
+      },
+      {
+        "trade_date": "2026-07-13",
+        "pct_from_baseline": -2.54
+      },
+      {
+        "trade_date": "2026-07-14",
+        "pct_from_baseline": -1.21
+      },
+      {
+        "trade_date": "2026-07-15",
+        "pct_from_baseline": -1.5
+      },
+      {
+        "trade_date": "2026-07-16",
+        "pct_from_baseline": -3.32
+      },
+      {
+        "trade_date": "2026-07-17",
+        "pct_from_baseline": -6.27
+      },
+      {
+        "trade_date": "2026-07-20",
+        "pct_from_baseline": -5.47
+      },
+      {
+        "trade_date": "2026-07-21",
+        "pct_from_baseline": -3.77
+      },
+      {
+        "trade_date": "2026-07-22",
+        "pct_from_baseline": -3.7
+      },
+      {
+        "trade_date": "2026-07-23",
+        "pct_from_baseline": -3.46
+      },
+      {
+        "trade_date": "2026-07-24",
+        "pct_from_baseline": -5.02
+      },
+      {
+        "trade_date": "2026-07-27",
+        "pct_from_baseline": -3.92
+      },
+      {
+        "trade_date": "2026-07-28",
+        "pct_from_baseline": -5.04
+      },
+      {
+        "trade_date": "2026-07-29",
+        "pct_from_baseline": -4.66
+      },
+      {
+        "trade_date": "2026-08-20",
+        "pct_from_baseline": -2.79
+      },
+      {
+        "trade_date": "2026-08-21",
+        "pct_from_baseline": -2.75
+      },
+      {
+        "trade_date": "2026-08-24",
+        "pct_from_baseline": -3.33
+      },
+      {
+        "trade_date": "2026-08-25",
+        "pct_from_baseline": -3.15
+      },
+      {
+        "trade_date": "2026-08-26",
+        "pct_from_baseline": -2.57
+      },
+      {
+        "trade_date": "2026-08-27",
+        "pct_from_baseline": -1.47
+      },
+      {
+        "trade_date": "2026-08-28",
+        "pct_from_baseline": -1.58
+      },
+      {
+        "trade_date": "2026-08-31",
+        "pct_from_baseline": -0.73
+      },
+      {
+        "trade_date": "2026-09-01",
+        "pct_from_baseline": -0.89
+      },
+      {
         "trade_date": "2026-09-02",
-        "pct_from_baseline": -4.07
+        "pct_from_baseline": -1.85
       },
       {
         "trade_date": "2026-09-03",
-        "pct_from_baseline": -4.05
+        "pct_from_baseline": -1.83
       },
       {
         "trade_date": "2026-09-04",
-        "pct_from_baseline": -4.34
+        "pct_from_baseline": -2.13
       },
       {
         "trade_date": "2026-09-07",
-        "pct_from_baseline": -4.28
+        "pct_from_baseline": -2.07
       },
       {
         "trade_date": "2026-09-08",
-        "pct_from_baseline": -4.09
+        "pct_from_baseline": -1.87
       },
       {
         "trade_date": "2026-09-09",
-        "pct_from_baseline": -3.82
+        "pct_from_baseline": -1.6
       },
       {
         "trade_date": "2026-09-10",
-        "pct_from_baseline": -4.24
+        "pct_from_baseline": -2.03
       },
       {
         "trade_date": "2026-09-11",
-        "pct_from_baseline": -5.37
+        "pct_from_baseline": -3.18
       },
       {
         "trade_date": "2026-09-14",
-        "pct_from_baseline": -5.43
+        "pct_from_baseline": -3.25
       },
       {
         "trade_date": "2026-09-15",
-        "pct_from_baseline": -5.95
+        "pct_from_baseline": -3.77
       },
       {
         "trade_date": "2026-09-16",
-        "pct_from_baseline": -5.28
+        "pct_from_baseline": -3.09
       },
       {
         "trade_date": "2026-09-17",
-        "pct_from_baseline": -5.67
+        "pct_from_baseline": -3.49
       },
       {
         "trade_date": "2026-09-18",
-        "pct_from_baseline": -4.79
+        "pct_from_baseline": -2.59
+      },
+      {
+        "trade_date": "2026-09-21",
+        "pct_from_baseline": -1.64
+      },
+      {
+        "trade_date": "2026-09-22",
+        "pct_from_baseline": -1.58
       },
       {
         "trade_date": "2026-09-23",
-        "pct_from_baseline": -4.19
+        "pct_from_baseline": -1.97
       },
       {
         "trade_date": "2026-09-24",
-        "pct_from_baseline": -5.36
+        "pct_from_baseline": -3.17
       }
     ],
     "sz": [
       {
-        "trade_date": "2026-03-02",
-        "pct_from_baseline": 1.8
-      },
-      {
-        "trade_date": "2026-03-03",
-        "pct_from_baseline": 0.34
-      },
-      {
-        "trade_date": "2026-03-04",
-        "pct_from_baseline": -0.64
-      },
-      {
-        "trade_date": "2026-03-05",
+        "trade_date": "2026-02-02",
         "pct_from_baseline": 0.0
       },
       {
-        "trade_date": "2026-03-06",
-        "pct_from_baseline": 0.38
+        "trade_date": "2026-02-03",
+        "pct_from_baseline": 1.29
       },
       {
-        "trade_date": "2026-03-09",
-        "pct_from_baseline": -0.29
+        "trade_date": "2026-02-04",
+        "pct_from_baseline": 2.15
       },
       {
-        "trade_date": "2026-03-10",
-        "pct_from_baseline": 0.35
+        "trade_date": "2026-02-05",
+        "pct_from_baseline": 1.5
       },
       {
-        "trade_date": "2026-03-11",
-        "pct_from_baseline": 0.61
+        "trade_date": "2026-02-06",
+        "pct_from_baseline": 1.24
       },
       {
-        "trade_date": "2026-03-12",
-        "pct_from_baseline": 0.5
+        "trade_date": "2026-02-09",
+        "pct_from_baseline": 2.67
       },
       {
-        "trade_date": "2026-03-13",
-        "pct_from_baseline": -0.32
+        "trade_date": "2026-02-10",
+        "pct_from_baseline": 2.8
       },
       {
-        "trade_date": "2026-03-16",
-        "pct_from_baseline": -0.58
+        "trade_date": "2026-02-11",
+        "pct_from_baseline": 2.89
       },
       {
-        "trade_date": "2026-03-17",
-        "pct_from_baseline": -1.43
+        "trade_date": "2026-02-12",
+        "pct_from_baseline": 2.95
       },
       {
-        "trade_date": "2026-03-18",
-        "pct_from_baseline": -1.11
+        "trade_date": "2026-02-13",
+        "pct_from_baseline": 1.65
       },
       {
-        "trade_date": "2026-03-19",
-        "pct_from_baseline": -2.48
+        "trade_date": "2026-02-24",
+        "pct_from_baseline": 2.53
       },
       {
-        "trade_date": "2026-03-20",
-        "pct_from_baseline": -3.69
+        "trade_date": "2026-02-25",
+        "pct_from_baseline": 3.27
       },
       {
-        "trade_date": "2026-03-23",
-        "pct_from_baseline": -7.19
-      },
-      {
-        "trade_date": "2026-03-24",
-        "pct_from_baseline": -5.53
-      },
-      {
-        "trade_date": "2026-03-25",
-        "pct_from_baseline": -4.3
-      },
-      {
-        "trade_date": "2026-03-26",
-        "pct_from_baseline": -5.34
-      },
-      {
-        "trade_date": "2026-03-27",
-        "pct_from_baseline": -4.74
-      },
-      {
-        "trade_date": "2026-03-30",
-        "pct_from_baseline": -4.51
-      },
-      {
-        "trade_date": "2026-03-31",
-        "pct_from_baseline": -5.27
-      },
-      {
-        "trade_date": "2026-04-01",
-        "pct_from_baseline": -3.89
-      },
-      {
-        "trade_date": "2026-04-02",
-        "pct_from_baseline": -4.61
-      },
-      {
-        "trade_date": "2026-04-03",
-        "pct_from_baseline": -5.56
-      },
-      {
-        "trade_date": "2026-04-07",
-        "pct_from_baseline": -5.32
-      },
-      {
-        "trade_date": "2026-04-08",
-        "pct_from_baseline": -2.76
-      },
-      {
-        "trade_date": "2026-04-09",
-        "pct_from_baseline": -3.47
-      },
-      {
-        "trade_date": "2026-04-10",
-        "pct_from_baseline": -2.98
-      },
-      {
-        "trade_date": "2026-04-13",
-        "pct_from_baseline": -2.92
-      },
-      {
-        "trade_date": "2026-04-14",
-        "pct_from_baseline": -1.99
-      },
-      {
-        "trade_date": "2026-04-15",
-        "pct_from_baseline": -1.98
-      },
-      {
-        "trade_date": "2026-04-16",
-        "pct_from_baseline": -1.29
-      },
-      {
-        "trade_date": "2026-04-17",
-        "pct_from_baseline": -1.39
-      },
-      {
-        "trade_date": "2026-04-20",
-        "pct_from_baseline": -0.64
-      },
-      {
-        "trade_date": "2026-04-21",
-        "pct_from_baseline": -0.57
-      },
-      {
-        "trade_date": "2026-04-22",
-        "pct_from_baseline": -0.06
-      },
-      {
-        "trade_date": "2026-04-23",
-        "pct_from_baseline": -0.37
-      },
-      {
-        "trade_date": "2026-04-24",
-        "pct_from_baseline": -0.7
-      },
-      {
-        "trade_date": "2026-04-27",
-        "pct_from_baseline": -0.54
-      },
-      {
-        "trade_date": "2026-04-28",
-        "pct_from_baseline": -0.73
-      },
-      {
-        "trade_date": "2026-04-29",
-        "pct_from_baseline": -0.03
-      },
-      {
-        "trade_date": "2026-04-30",
-        "pct_from_baseline": 0.09
-      },
-      {
-        "trade_date": "2026-05-06",
-        "pct_from_baseline": 1.26
-      },
-      {
-        "trade_date": "2026-05-07",
-        "pct_from_baseline": 1.74
-      },
-      {
-        "trade_date": "2026-05-08",
-        "pct_from_baseline": 1.74
-      },
-      {
-        "trade_date": "2026-05-11",
-        "pct_from_baseline": 2.83
-      },
-      {
-        "trade_date": "2026-05-12",
-        "pct_from_baseline": 2.58
-      },
-      {
-        "trade_date": "2026-05-13",
+        "trade_date": "2026-02-26",
         "pct_from_baseline": 3.26
       },
       {
-        "trade_date": "2026-05-14",
-        "pct_from_baseline": 1.69
+        "trade_date": "2026-02-27",
+        "pct_from_baseline": 3.66
       },
       {
-        "trade_date": "2026-05-15",
-        "pct_from_baseline": 0.65
+        "trade_date": "2026-03-02",
+        "pct_from_baseline": 4.15
       },
       {
-        "trade_date": "2026-05-18",
-        "pct_from_baseline": 0.56
+        "trade_date": "2026-03-03",
+        "pct_from_baseline": 2.66
       },
       {
-        "trade_date": "2026-05-19",
-        "pct_from_baseline": 1.48
+        "trade_date": "2026-03-04",
+        "pct_from_baseline": 1.66
       },
       {
-        "trade_date": "2026-05-20",
-        "pct_from_baseline": 1.3
+        "trade_date": "2026-03-05",
+        "pct_from_baseline": 2.31
       },
       {
-        "trade_date": "2026-05-21",
-        "pct_from_baseline": -0.76
+        "trade_date": "2026-03-06",
+        "pct_from_baseline": 2.7
       },
       {
-        "trade_date": "2026-05-22",
-        "pct_from_baseline": 0.11
+        "trade_date": "2026-03-09",
+        "pct_from_baseline": 2.01
       },
       {
-        "trade_date": "2026-05-25",
-        "pct_from_baseline": 1.07
+        "trade_date": "2026-03-10",
+        "pct_from_baseline": 2.67
       },
       {
-        "trade_date": "2026-05-26",
-        "pct_from_baseline": 0.9
+        "trade_date": "2026-03-11",
+        "pct_from_baseline": 2.93
       },
       {
-        "trade_date": "2026-05-27",
-        "pct_from_baseline": -0.36
+        "trade_date": "2026-03-12",
+        "pct_from_baseline": 2.82
       },
       {
-        "trade_date": "2026-05-28",
-        "pct_from_baseline": -0.24
+        "trade_date": "2026-03-13",
+        "pct_from_baseline": 1.98
       },
       {
-        "trade_date": "2026-05-29",
-        "pct_from_baseline": -0.97
+        "trade_date": "2026-03-16",
+        "pct_from_baseline": 1.72
       },
       {
-        "trade_date": "2026-06-30",
-        "pct_from_baseline": -0.34
+        "trade_date": "2026-03-17",
+        "pct_from_baseline": 0.85
       },
       {
-        "trade_date": "2026-07-01",
-        "pct_from_baseline": 0.09
+        "trade_date": "2026-03-18",
+        "pct_from_baseline": 1.18
       },
       {
-        "trade_date": "2026-07-02",
-        "pct_from_baseline": -1.94
+        "trade_date": "2026-03-19",
+        "pct_from_baseline": -0.23
       },
       {
-        "trade_date": "2026-07-03",
-        "pct_from_baseline": -1.58
+        "trade_date": "2026-03-20",
+        "pct_from_baseline": -1.46
       },
       {
-        "trade_date": "2026-07-06",
-        "pct_from_baseline": -1.64
+        "trade_date": "2026-03-23",
+        "pct_from_baseline": -5.04
       },
       {
-        "trade_date": "2026-07-07",
-        "pct_from_baseline": -2.88
-      },
-      {
-        "trade_date": "2026-07-08",
+        "trade_date": "2026-03-24",
         "pct_from_baseline": -3.35
       },
       {
-        "trade_date": "2026-07-09",
-        "pct_from_baseline": -1.75
+        "trade_date": "2026-03-25",
+        "pct_from_baseline": -2.09
       },
       {
-        "trade_date": "2026-07-10",
-        "pct_from_baseline": -2.74
+        "trade_date": "2026-03-26",
+        "pct_from_baseline": -3.15
       },
       {
-        "trade_date": "2026-07-13",
-        "pct_from_baseline": -4.74
+        "trade_date": "2026-03-27",
+        "pct_from_baseline": -2.54
       },
       {
-        "trade_date": "2026-07-14",
-        "pct_from_baseline": -3.44
+        "trade_date": "2026-03-30",
+        "pct_from_baseline": -2.3
       },
       {
-        "trade_date": "2026-07-15",
-        "pct_from_baseline": -3.72
+        "trade_date": "2026-03-31",
+        "pct_from_baseline": -3.09
       },
       {
-        "trade_date": "2026-07-16",
-        "pct_from_baseline": -5.5
+        "trade_date": "2026-04-01",
+        "pct_from_baseline": -1.67
       },
       {
-        "trade_date": "2026-07-17",
-        "pct_from_baseline": -8.38
+        "trade_date": "2026-04-02",
+        "pct_from_baseline": -2.4
       },
       {
-        "trade_date": "2026-07-20",
-        "pct_from_baseline": -7.6
+        "trade_date": "2026-04-03",
+        "pct_from_baseline": -3.38
       },
       {
-        "trade_date": "2026-07-21",
-        "pct_from_baseline": -5.94
-      },
-      {
-        "trade_date": "2026-07-22",
-        "pct_from_baseline": -5.88
-      },
-      {
-        "trade_date": "2026-07-23",
-        "pct_from_baseline": -5.64
-      },
-      {
-        "trade_date": "2026-07-24",
-        "pct_from_baseline": -7.16
-      },
-      {
-        "trade_date": "2026-07-27",
-        "pct_from_baseline": -6.09
-      },
-      {
-        "trade_date": "2026-07-28",
-        "pct_from_baseline": -7.19
-      },
-      {
-        "trade_date": "2026-07-29",
-        "pct_from_baseline": -6.82
-      },
-      {
-        "trade_date": "2026-08-20",
-        "pct_from_baseline": -4.99
-      },
-      {
-        "trade_date": "2026-08-21",
-        "pct_from_baseline": -4.95
-      },
-      {
-        "trade_date": "2026-08-24",
-        "pct_from_baseline": -5.51
-      },
-      {
-        "trade_date": "2026-08-25",
-        "pct_from_baseline": -5.33
-      },
-      {
-        "trade_date": "2026-08-26",
-        "pct_from_baseline": -4.77
-      },
-      {
-        "trade_date": "2026-08-27",
-        "pct_from_baseline": -3.7
-      },
-      {
-        "trade_date": "2026-08-28",
-        "pct_from_baseline": -3.81
-      },
-      {
-        "trade_date": "2026-08-31",
-        "pct_from_baseline": -2.98
-      },
-      {
-        "trade_date": "2026-09-01",
+        "trade_date": "2026-04-07",
         "pct_from_baseline": -3.13
       },
       {
+        "trade_date": "2026-04-08",
+        "pct_from_baseline": -0.52
+      },
+      {
+        "trade_date": "2026-04-09",
+        "pct_from_baseline": -1.23
+      },
+      {
+        "trade_date": "2026-04-10",
+        "pct_from_baseline": -0.74
+      },
+      {
+        "trade_date": "2026-04-13",
+        "pct_from_baseline": -0.68
+      },
+      {
+        "trade_date": "2026-04-14",
+        "pct_from_baseline": 0.27
+      },
+      {
+        "trade_date": "2026-04-15",
+        "pct_from_baseline": 0.29
+      },
+      {
+        "trade_date": "2026-04-16",
+        "pct_from_baseline": 0.99
+      },
+      {
+        "trade_date": "2026-04-17",
+        "pct_from_baseline": 0.89
+      },
+      {
+        "trade_date": "2026-04-20",
+        "pct_from_baseline": 1.65
+      },
+      {
+        "trade_date": "2026-04-21",
+        "pct_from_baseline": 1.73
+      },
+      {
+        "trade_date": "2026-04-22",
+        "pct_from_baseline": 2.25
+      },
+      {
+        "trade_date": "2026-04-23",
+        "pct_from_baseline": 1.93
+      },
+      {
+        "trade_date": "2026-04-24",
+        "pct_from_baseline": 1.6
+      },
+      {
+        "trade_date": "2026-04-27",
+        "pct_from_baseline": 1.76
+      },
+      {
+        "trade_date": "2026-04-28",
+        "pct_from_baseline": 1.57
+      },
+      {
+        "trade_date": "2026-04-29",
+        "pct_from_baseline": 2.29
+      },
+      {
+        "trade_date": "2026-04-30",
+        "pct_from_baseline": 2.4
+      },
+      {
+        "trade_date": "2026-05-06",
+        "pct_from_baseline": 3.6
+      },
+      {
+        "trade_date": "2026-05-07",
+        "pct_from_baseline": 4.09
+      },
+      {
+        "trade_date": "2026-05-08",
+        "pct_from_baseline": 4.09
+      },
+      {
+        "trade_date": "2026-05-11",
+        "pct_from_baseline": 5.21
+      },
+      {
+        "trade_date": "2026-05-12",
+        "pct_from_baseline": 4.95
+      },
+      {
+        "trade_date": "2026-05-13",
+        "pct_from_baseline": 5.65
+      },
+      {
+        "trade_date": "2026-05-14",
+        "pct_from_baseline": 4.04
+      },
+      {
+        "trade_date": "2026-05-15",
+        "pct_from_baseline": 2.98
+      },
+      {
+        "trade_date": "2026-05-18",
+        "pct_from_baseline": 2.88
+      },
+      {
+        "trade_date": "2026-05-19",
+        "pct_from_baseline": 3.83
+      },
+      {
+        "trade_date": "2026-05-20",
+        "pct_from_baseline": 3.65
+      },
+      {
+        "trade_date": "2026-05-21",
+        "pct_from_baseline": 1.53
+      },
+      {
+        "trade_date": "2026-05-22",
+        "pct_from_baseline": 2.42
+      },
+      {
+        "trade_date": "2026-05-25",
+        "pct_from_baseline": 3.41
+      },
+      {
+        "trade_date": "2026-05-26",
+        "pct_from_baseline": 3.23
+      },
+      {
+        "trade_date": "2026-05-27",
+        "pct_from_baseline": 1.94
+      },
+      {
+        "trade_date": "2026-05-28",
+        "pct_from_baseline": 2.06
+      },
+      {
+        "trade_date": "2026-05-29",
+        "pct_from_baseline": 1.32
+      },
+      {
+        "trade_date": "2026-06-01",
+        "pct_from_baseline": 1.05
+      },
+      {
+        "trade_date": "2026-06-02",
+        "pct_from_baseline": 1.48
+      },
+      {
+        "trade_date": "2026-06-03",
+        "pct_from_baseline": 1.7
+      },
+      {
+        "trade_date": "2026-06-30",
+        "pct_from_baseline": 1.96
+      },
+      {
+        "trade_date": "2026-07-01",
+        "pct_from_baseline": 2.41
+      },
+      {
+        "trade_date": "2026-07-02",
+        "pct_from_baseline": 0.33
+      },
+      {
+        "trade_date": "2026-07-03",
+        "pct_from_baseline": 0.69
+      },
+      {
+        "trade_date": "2026-07-06",
+        "pct_from_baseline": 0.63
+      },
+      {
+        "trade_date": "2026-07-07",
+        "pct_from_baseline": -0.64
+      },
+      {
+        "trade_date": "2026-07-08",
+        "pct_from_baseline": -1.12
+      },
+      {
+        "trade_date": "2026-07-09",
+        "pct_from_baseline": 0.52
+      },
+      {
+        "trade_date": "2026-07-10",
+        "pct_from_baseline": -0.49
+      },
+      {
+        "trade_date": "2026-07-13",
+        "pct_from_baseline": -2.54
+      },
+      {
+        "trade_date": "2026-07-14",
+        "pct_from_baseline": -1.21
+      },
+      {
+        "trade_date": "2026-07-15",
+        "pct_from_baseline": -1.5
+      },
+      {
+        "trade_date": "2026-07-16",
+        "pct_from_baseline": -3.32
+      },
+      {
+        "trade_date": "2026-07-17",
+        "pct_from_baseline": -6.27
+      },
+      {
+        "trade_date": "2026-07-20",
+        "pct_from_baseline": -5.47
+      },
+      {
+        "trade_date": "2026-07-21",
+        "pct_from_baseline": -3.77
+      },
+      {
+        "trade_date": "2026-07-22",
+        "pct_from_baseline": -3.7
+      },
+      {
+        "trade_date": "2026-07-23",
+        "pct_from_baseline": -3.46
+      },
+      {
+        "trade_date": "2026-07-24",
+        "pct_from_baseline": -5.02
+      },
+      {
+        "trade_date": "2026-07-27",
+        "pct_from_baseline": -3.92
+      },
+      {
+        "trade_date": "2026-07-28",
+        "pct_from_baseline": -5.04
+      },
+      {
+        "trade_date": "2026-07-29",
+        "pct_from_baseline": -4.66
+      },
+      {
+        "trade_date": "2026-08-20",
+        "pct_from_baseline": -2.79
+      },
+      {
+        "trade_date": "2026-08-21",
+        "pct_from_baseline": -2.75
+      },
+      {
+        "trade_date": "2026-08-24",
+        "pct_from_baseline": -3.33
+      },
+      {
+        "trade_date": "2026-08-25",
+        "pct_from_baseline": -3.15
+      },
+      {
+        "trade_date": "2026-08-26",
+        "pct_from_baseline": -2.57
+      },
+      {
+        "trade_date": "2026-08-27",
+        "pct_from_baseline": -1.47
+      },
+      {
+        "trade_date": "2026-08-28",
+        "pct_from_baseline": -1.58
+      },
+      {
+        "trade_date": "2026-08-31",
+        "pct_from_baseline": -0.73
+      },
+      {
+        "trade_date": "2026-09-01",
+        "pct_from_baseline": -0.89
+      },
+      {
         "trade_date": "2026-09-02",
-        "pct_from_baseline": -4.07
+        "pct_from_baseline": -1.85
       },
       {
         "trade_date": "2026-09-03",
-        "pct_from_baseline": -4.05
+        "pct_from_baseline": -1.83
       },
       {
         "trade_date": "2026-09-04",
-        "pct_from_baseline": -4.34
+        "pct_from_baseline": -2.13
       },
       {
         "trade_date": "2026-09-07",
-        "pct_from_baseline": -4.28
+        "pct_from_baseline": -2.07
       },
       {
         "trade_date": "2026-09-08",
-        "pct_from_baseline": -4.09
+        "pct_from_baseline": -1.87
       },
       {
         "trade_date": "2026-09-09",
-        "pct_from_baseline": -3.82
+        "pct_from_baseline": -1.6
       },
       {
         "trade_date": "2026-09-10",
-        "pct_from_baseline": -4.24
+        "pct_from_baseline": -2.03
       },
       {
         "trade_date": "2026-09-11",
-        "pct_from_baseline": -5.37
+        "pct_from_baseline": -3.18
       },
       {
         "trade_date": "2026-09-14",
-        "pct_from_baseline": -5.43
+        "pct_from_baseline": -3.25
       },
       {
         "trade_date": "2026-09-15",
-        "pct_from_baseline": -5.95
+        "pct_from_baseline": -3.77
       },
       {
         "trade_date": "2026-09-16",
-        "pct_from_baseline": -5.28
+        "pct_from_baseline": -3.09
       },
       {
         "trade_date": "2026-09-17",
-        "pct_from_baseline": -5.67
+        "pct_from_baseline": -3.49
       },
       {
         "trade_date": "2026-09-18",
-        "pct_from_baseline": -4.79
+        "pct_from_baseline": -2.59
+      },
+      {
+        "trade_date": "2026-09-21",
+        "pct_from_baseline": -1.64
+      },
+      {
+        "trade_date": "2026-09-22",
+        "pct_from_baseline": -1.58
       },
       {
         "trade_date": "2026-09-23",
-        "pct_from_baseline": -4.19
+        "pct_from_baseline": -1.97
       },
       {
         "trade_date": "2026-09-24",
-        "pct_from_baseline": -5.36
+        "pct_from_baseline": -3.17
       }
     ],
     "csi300": [
       {
-        "trade_date": "2026-03-02",
-        "pct_from_baseline": 1.74
-      },
-      {
-        "trade_date": "2026-03-03",
-        "pct_from_baseline": 0.18
-      },
-      {
-        "trade_date": "2026-03-04",
-        "pct_from_baseline": -0.97
-      },
-      {
-        "trade_date": "2026-03-05",
+        "trade_date": "2026-02-02",
         "pct_from_baseline": 0.0
       },
       {
-        "trade_date": "2026-03-06",
-        "pct_from_baseline": 0.27
-      },
-      {
-        "trade_date": "2026-03-09",
-        "pct_from_baseline": -0.69
-      },
-      {
-        "trade_date": "2026-03-10",
-        "pct_from_baseline": 0.58
-      },
-      {
-        "trade_date": "2026-03-11",
-        "pct_from_baseline": 1.22
-      },
-      {
-        "trade_date": "2026-03-12",
-        "pct_from_baseline": 0.86
-      },
-      {
-        "trade_date": "2026-03-13",
-        "pct_from_baseline": 0.46
-      },
-      {
-        "trade_date": "2026-03-16",
-        "pct_from_baseline": 0.51
-      },
-      {
-        "trade_date": "2026-03-17",
-        "pct_from_baseline": -0.22
-      },
-      {
-        "trade_date": "2026-03-18",
-        "pct_from_baseline": 0.23
-      },
-      {
-        "trade_date": "2026-03-19",
-        "pct_from_baseline": -1.39
-      },
-      {
-        "trade_date": "2026-03-20",
-        "pct_from_baseline": -1.74
-      },
-      {
-        "trade_date": "2026-03-23",
-        "pct_from_baseline": -4.94
-      },
-      {
-        "trade_date": "2026-03-24",
-        "pct_from_baseline": -3.72
-      },
-      {
-        "trade_date": "2026-03-25",
-        "pct_from_baseline": -2.37
-      },
-      {
-        "trade_date": "2026-03-26",
-        "pct_from_baseline": -3.66
-      },
-      {
-        "trade_date": "2026-03-27",
-        "pct_from_baseline": -3.12
-      },
-      {
-        "trade_date": "2026-03-30",
-        "pct_from_baseline": -3.35
-      },
-      {
-        "trade_date": "2026-03-31",
-        "pct_from_baseline": -4.25
-      },
-      {
-        "trade_date": "2026-04-01",
-        "pct_from_baseline": -2.62
-      },
-      {
-        "trade_date": "2026-04-02",
-        "pct_from_baseline": -3.63
-      },
-      {
-        "trade_date": "2026-04-03",
-        "pct_from_baseline": -4.45
-      },
-      {
-        "trade_date": "2026-04-07",
-        "pct_from_baseline": -4.46
-      },
-      {
-        "trade_date": "2026-04-08",
-        "pct_from_baseline": -1.12
-      },
-      {
-        "trade_date": "2026-04-09",
-        "pct_from_baseline": -1.75
-      },
-      {
-        "trade_date": "2026-04-10",
-        "pct_from_baseline": -0.24
-      },
-      {
-        "trade_date": "2026-04-13",
-        "pct_from_baseline": -0.03
-      },
-      {
-        "trade_date": "2026-04-14",
-        "pct_from_baseline": 1.15
-      },
-      {
-        "trade_date": "2026-04-15",
-        "pct_from_baseline": 0.81
-      },
-      {
-        "trade_date": "2026-04-16",
-        "pct_from_baseline": 1.91
-      },
-      {
-        "trade_date": "2026-04-17",
-        "pct_from_baseline": 1.74
-      },
-      {
-        "trade_date": "2026-04-20",
-        "pct_from_baseline": 2.36
-      },
-      {
-        "trade_date": "2026-04-21",
-        "pct_from_baseline": 2.59
-      },
-      {
-        "trade_date": "2026-04-22",
-        "pct_from_baseline": 3.27
-      },
-      {
-        "trade_date": "2026-04-23",
-        "pct_from_baseline": 2.98
-      },
-      {
-        "trade_date": "2026-04-24",
-        "pct_from_baseline": 2.62
-      },
-      {
-        "trade_date": "2026-04-27",
-        "pct_from_baseline": 2.65
-      },
-      {
-        "trade_date": "2026-04-28",
-        "pct_from_baseline": 2.38
-      },
-      {
-        "trade_date": "2026-04-29",
-        "pct_from_baseline": 3.5
-      },
-      {
-        "trade_date": "2026-04-30",
-        "pct_from_baseline": 3.43
-      },
-      {
-        "trade_date": "2026-05-06",
-        "pct_from_baseline": 4.94
-      },
-      {
-        "trade_date": "2026-05-07",
-        "pct_from_baseline": 5.44
-      },
-      {
-        "trade_date": "2026-05-08",
-        "pct_from_baseline": 4.82
-      },
-      {
-        "trade_date": "2026-05-11",
-        "pct_from_baseline": 6.54
-      },
-      {
-        "trade_date": "2026-05-12",
-        "pct_from_baseline": 6.46
-      },
-      {
-        "trade_date": "2026-05-13",
-        "pct_from_baseline": 7.54
-      },
-      {
-        "trade_date": "2026-05-14",
-        "pct_from_baseline": 5.74
-      },
-      {
-        "trade_date": "2026-05-15",
-        "pct_from_baseline": 4.56
-      },
-      {
-        "trade_date": "2026-05-18",
-        "pct_from_baseline": 4.0
-      },
-      {
-        "trade_date": "2026-05-19",
-        "pct_from_baseline": 4.41
-      },
-      {
-        "trade_date": "2026-05-20",
-        "pct_from_baseline": 4.37
-      },
-      {
-        "trade_date": "2026-05-21",
-        "pct_from_baseline": 2.91
-      },
-      {
-        "trade_date": "2026-05-22",
-        "pct_from_baseline": 4.25
-      },
-      {
-        "trade_date": "2026-05-25",
-        "pct_from_baseline": 5.89
-      },
-      {
-        "trade_date": "2026-05-26",
-        "pct_from_baseline": 6.46
-      },
-      {
-        "trade_date": "2026-05-27",
-        "pct_from_baseline": 5.6
-      },
-      {
-        "trade_date": "2026-05-28",
-        "pct_from_baseline": 5.73
-      },
-      {
-        "trade_date": "2026-05-29",
-        "pct_from_baseline": 5.26
-      },
-      {
-        "trade_date": "2026-06-01",
-        "pct_from_baseline": 4.23
-      },
-      {
-        "trade_date": "2026-06-02",
-        "pct_from_baseline": 5.74
-      },
-      {
-        "trade_date": "2026-06-03",
-        "pct_from_baseline": 6.26
-      },
-      {
-        "trade_date": "2026-06-04",
-        "pct_from_baseline": 5.53
-      },
-      {
-        "trade_date": "2026-06-05",
-        "pct_from_baseline": 3.64
-      },
-      {
-        "trade_date": "2026-06-08",
-        "pct_from_baseline": 1.42
-      },
-      {
-        "trade_date": "2026-06-09",
-        "pct_from_baseline": 3.32
-      },
-      {
-        "trade_date": "2026-06-10",
-        "pct_from_baseline": 2.17
-      },
-      {
-        "trade_date": "2026-06-11",
-        "pct_from_baseline": 1.61
-      },
-      {
-        "trade_date": "2026-06-12",
-        "pct_from_baseline": 2.79
-      },
-      {
-        "trade_date": "2026-06-15",
-        "pct_from_baseline": 5.25
-      },
-      {
-        "trade_date": "2026-06-16",
-        "pct_from_baseline": 5.09
-      },
-      {
-        "trade_date": "2026-06-17",
-        "pct_from_baseline": 6.1
-      },
-      {
-        "trade_date": "2026-06-18",
-        "pct_from_baseline": 6.32
-      },
-      {
-        "trade_date": "2026-06-22",
-        "pct_from_baseline": 8.86
-      },
-      {
-        "trade_date": "2026-06-23",
-        "pct_from_baseline": 5.85
-      },
-      {
-        "trade_date": "2026-06-24",
-        "pct_from_baseline": 6.35
-      },
-      {
-        "trade_date": "2026-06-25",
-        "pct_from_baseline": 8.01
-      },
-      {
-        "trade_date": "2026-06-26",
-        "pct_from_baseline": 4.74
-      },
-      {
-        "trade_date": "2026-06-29",
-        "pct_from_baseline": 6.01
-      },
-      {
-        "trade_date": "2026-06-30",
-        "pct_from_baseline": 7.14
-      },
-      {
-        "trade_date": "2026-07-01",
-        "pct_from_baseline": 6.7
-      },
-      {
-        "trade_date": "2026-07-02",
-        "pct_from_baseline": 3.54
-      },
-      {
-        "trade_date": "2026-07-03",
-        "pct_from_baseline": 4.18
-      },
-      {
-        "trade_date": "2026-07-06",
-        "pct_from_baseline": 4.18
-      },
-      {
-        "trade_date": "2026-07-07",
-        "pct_from_baseline": 3.11
-      },
-      {
-        "trade_date": "2026-07-08",
-        "pct_from_baseline": 2.32
-      },
-      {
-        "trade_date": "2026-07-09",
-        "pct_from_baseline": 4.92
-      },
-      {
-        "trade_date": "2026-07-10",
-        "pct_from_baseline": 2.86
-      },
-      {
-        "trade_date": "2026-07-13",
-        "pct_from_baseline": 1.03
-      },
-      {
-        "trade_date": "2026-07-14",
-        "pct_from_baseline": 3.2
-      },
-      {
-        "trade_date": "2026-07-15",
-        "pct_from_baseline": 2.99
-      },
-      {
-        "trade_date": "2026-07-16",
-        "pct_from_baseline": 1.09
-      },
-      {
-        "trade_date": "2026-07-17",
-        "pct_from_baseline": -2.55
-      },
-      {
-        "trade_date": "2026-07-20",
-        "pct_from_baseline": -1.06
-      },
-      {
-        "trade_date": "2026-07-21",
-        "pct_from_baseline": 1.97
-      },
-      {
-        "trade_date": "2026-07-22",
-        "pct_from_baseline": 1.5
-      },
-      {
-        "trade_date": "2026-07-23",
-        "pct_from_baseline": 1.73
-      },
-      {
-        "trade_date": "2026-07-24",
-        "pct_from_baseline": 0.03
-      },
-      {
-        "trade_date": "2026-07-27",
+        "trade_date": "2026-02-03",
         "pct_from_baseline": 1.18
       },
       {
-        "trade_date": "2026-07-28",
-        "pct_from_baseline": -1.68
+        "trade_date": "2026-02-04",
+        "pct_from_baseline": 2.01
       },
       {
-        "trade_date": "2026-07-29",
-        "pct_from_baseline": -1.02
+        "trade_date": "2026-02-05",
+        "pct_from_baseline": 1.4
       },
       {
-        "trade_date": "2026-08-20",
-        "pct_from_baseline": -1.18
+        "trade_date": "2026-02-06",
+        "pct_from_baseline": 0.82
       },
       {
-        "trade_date": "2026-08-21",
-        "pct_from_baseline": -0.62
+        "trade_date": "2026-02-09",
+        "pct_from_baseline": 2.46
       },
       {
-        "trade_date": "2026-08-24",
-        "pct_from_baseline": -1.82
+        "trade_date": "2026-02-10",
+        "pct_from_baseline": 2.57
       },
       {
-        "trade_date": "2026-08-25",
-        "pct_from_baseline": -2.06
+        "trade_date": "2026-02-11",
+        "pct_from_baseline": 2.34
       },
       {
-        "trade_date": "2026-08-26",
-        "pct_from_baseline": -1.22
+        "trade_date": "2026-02-12",
+        "pct_from_baseline": 2.47
       },
       {
-        "trade_date": "2026-08-27",
-        "pct_from_baseline": -0.37
+        "trade_date": "2026-02-13",
+        "pct_from_baseline": 1.18
       },
       {
-        "trade_date": "2026-08-28",
-        "pct_from_baseline": -0.83
+        "trade_date": "2026-02-24",
+        "pct_from_baseline": 2.2
       },
       {
-        "trade_date": "2026-08-31",
+        "trade_date": "2026-02-25",
+        "pct_from_baseline": 2.82
+      },
+      {
+        "trade_date": "2026-02-26",
+        "pct_from_baseline": 2.62
+      },
+      {
+        "trade_date": "2026-02-27",
+        "pct_from_baseline": 2.27
+      },
+      {
+        "trade_date": "2026-03-02",
+        "pct_from_baseline": 2.66
+      },
+      {
+        "trade_date": "2026-03-03",
+        "pct_from_baseline": 1.08
+      },
+      {
+        "trade_date": "2026-03-04",
+        "pct_from_baseline": -0.07
+      },
+      {
+        "trade_date": "2026-03-05",
+        "pct_from_baseline": 0.91
+      },
+      {
+        "trade_date": "2026-03-06",
+        "pct_from_baseline": 1.18
+      },
+      {
+        "trade_date": "2026-03-09",
+        "pct_from_baseline": 0.21
+      },
+      {
+        "trade_date": "2026-03-10",
+        "pct_from_baseline": 1.49
+      },
+      {
+        "trade_date": "2026-03-11",
+        "pct_from_baseline": 2.14
+      },
+      {
+        "trade_date": "2026-03-12",
+        "pct_from_baseline": 1.77
+      },
+      {
+        "trade_date": "2026-03-13",
+        "pct_from_baseline": 1.37
+      },
+      {
+        "trade_date": "2026-03-16",
+        "pct_from_baseline": 1.42
+      },
+      {
+        "trade_date": "2026-03-17",
+        "pct_from_baseline": 0.68
+      },
+      {
+        "trade_date": "2026-03-18",
+        "pct_from_baseline": 1.14
+      },
+      {
+        "trade_date": "2026-03-19",
         "pct_from_baseline": -0.49
       },
       {
+        "trade_date": "2026-03-20",
+        "pct_from_baseline": -0.85
+      },
+      {
+        "trade_date": "2026-03-23",
+        "pct_from_baseline": -4.08
+      },
+      {
+        "trade_date": "2026-03-24",
+        "pct_from_baseline": -2.85
+      },
+      {
+        "trade_date": "2026-03-25",
+        "pct_from_baseline": -1.49
+      },
+      {
+        "trade_date": "2026-03-26",
+        "pct_from_baseline": -2.79
+      },
+      {
+        "trade_date": "2026-03-27",
+        "pct_from_baseline": -2.25
+      },
+      {
+        "trade_date": "2026-03-30",
+        "pct_from_baseline": -2.48
+      },
+      {
+        "trade_date": "2026-03-31",
+        "pct_from_baseline": -3.39
+      },
+      {
+        "trade_date": "2026-04-01",
+        "pct_from_baseline": -1.73
+      },
+      {
+        "trade_date": "2026-04-02",
+        "pct_from_baseline": -2.76
+      },
+      {
+        "trade_date": "2026-04-03",
+        "pct_from_baseline": -3.59
+      },
+      {
+        "trade_date": "2026-04-07",
+        "pct_from_baseline": -3.59
+      },
+      {
+        "trade_date": "2026-04-08",
+        "pct_from_baseline": -0.23
+      },
+      {
+        "trade_date": "2026-04-09",
+        "pct_from_baseline": -0.86
+      },
+      {
+        "trade_date": "2026-04-10",
+        "pct_from_baseline": 0.66
+      },
+      {
+        "trade_date": "2026-04-13",
+        "pct_from_baseline": 0.87
+      },
+      {
+        "trade_date": "2026-04-14",
+        "pct_from_baseline": 2.07
+      },
+      {
+        "trade_date": "2026-04-15",
+        "pct_from_baseline": 1.72
+      },
+      {
+        "trade_date": "2026-04-16",
+        "pct_from_baseline": 2.84
+      },
+      {
+        "trade_date": "2026-04-17",
+        "pct_from_baseline": 2.66
+      },
+      {
+        "trade_date": "2026-04-20",
+        "pct_from_baseline": 3.29
+      },
+      {
+        "trade_date": "2026-04-21",
+        "pct_from_baseline": 3.52
+      },
+      {
+        "trade_date": "2026-04-22",
+        "pct_from_baseline": 4.2
+      },
+      {
+        "trade_date": "2026-04-23",
+        "pct_from_baseline": 3.92
+      },
+      {
+        "trade_date": "2026-04-24",
+        "pct_from_baseline": 3.55
+      },
+      {
+        "trade_date": "2026-04-27",
+        "pct_from_baseline": 3.58
+      },
+      {
+        "trade_date": "2026-04-28",
+        "pct_from_baseline": 3.31
+      },
+      {
+        "trade_date": "2026-04-29",
+        "pct_from_baseline": 4.44
+      },
+      {
+        "trade_date": "2026-04-30",
+        "pct_from_baseline": 4.37
+      },
+      {
+        "trade_date": "2026-05-06",
+        "pct_from_baseline": 5.89
+      },
+      {
+        "trade_date": "2026-05-07",
+        "pct_from_baseline": 6.39
+      },
+      {
+        "trade_date": "2026-05-08",
+        "pct_from_baseline": 5.77
+      },
+      {
+        "trade_date": "2026-05-11",
+        "pct_from_baseline": 7.51
+      },
+      {
+        "trade_date": "2026-05-12",
+        "pct_from_baseline": 7.43
+      },
+      {
+        "trade_date": "2026-05-13",
+        "pct_from_baseline": 8.52
+      },
+      {
+        "trade_date": "2026-05-14",
+        "pct_from_baseline": 6.7
+      },
+      {
+        "trade_date": "2026-05-15",
+        "pct_from_baseline": 5.51
+      },
+      {
+        "trade_date": "2026-05-18",
+        "pct_from_baseline": 4.94
+      },
+      {
+        "trade_date": "2026-05-19",
+        "pct_from_baseline": 5.36
+      },
+      {
+        "trade_date": "2026-05-20",
+        "pct_from_baseline": 5.31
+      },
+      {
+        "trade_date": "2026-05-21",
+        "pct_from_baseline": 3.85
+      },
+      {
+        "trade_date": "2026-05-22",
+        "pct_from_baseline": 5.19
+      },
+      {
+        "trade_date": "2026-05-25",
+        "pct_from_baseline": 6.85
+      },
+      {
+        "trade_date": "2026-05-26",
+        "pct_from_baseline": 7.42
+      },
+      {
+        "trade_date": "2026-05-27",
+        "pct_from_baseline": 6.56
+      },
+      {
+        "trade_date": "2026-05-28",
+        "pct_from_baseline": 6.69
+      },
+      {
+        "trade_date": "2026-05-29",
+        "pct_from_baseline": 6.21
+      },
+      {
+        "trade_date": "2026-06-01",
+        "pct_from_baseline": 5.17
+      },
+      {
+        "trade_date": "2026-06-02",
+        "pct_from_baseline": 6.7
+      },
+      {
+        "trade_date": "2026-06-03",
+        "pct_from_baseline": 7.23
+      },
+      {
+        "trade_date": "2026-06-04",
+        "pct_from_baseline": 6.49
+      },
+      {
+        "trade_date": "2026-06-05",
+        "pct_from_baseline": 4.58
+      },
+      {
+        "trade_date": "2026-06-08",
+        "pct_from_baseline": 2.34
+      },
+      {
+        "trade_date": "2026-06-09",
+        "pct_from_baseline": 4.25
+      },
+      {
+        "trade_date": "2026-06-10",
+        "pct_from_baseline": 3.1
+      },
+      {
+        "trade_date": "2026-06-11",
+        "pct_from_baseline": 2.53
+      },
+      {
+        "trade_date": "2026-06-12",
+        "pct_from_baseline": 3.72
+      },
+      {
+        "trade_date": "2026-06-15",
+        "pct_from_baseline": 6.2
+      },
+      {
+        "trade_date": "2026-06-16",
+        "pct_from_baseline": 6.04
+      },
+      {
+        "trade_date": "2026-06-17",
+        "pct_from_baseline": 7.06
+      },
+      {
+        "trade_date": "2026-06-18",
+        "pct_from_baseline": 7.29
+      },
+      {
+        "trade_date": "2026-06-22",
+        "pct_from_baseline": 9.85
+      },
+      {
+        "trade_date": "2026-06-23",
+        "pct_from_baseline": 6.8
+      },
+      {
+        "trade_date": "2026-06-24",
+        "pct_from_baseline": 7.32
+      },
+      {
+        "trade_date": "2026-06-25",
+        "pct_from_baseline": 8.99
+      },
+      {
+        "trade_date": "2026-06-26",
+        "pct_from_baseline": 5.69
+      },
+      {
+        "trade_date": "2026-06-29",
+        "pct_from_baseline": 6.97
+      },
+      {
+        "trade_date": "2026-06-30",
+        "pct_from_baseline": 8.11
+      },
+      {
+        "trade_date": "2026-07-01",
+        "pct_from_baseline": 7.66
+      },
+      {
+        "trade_date": "2026-07-02",
+        "pct_from_baseline": 4.48
+      },
+      {
+        "trade_date": "2026-07-03",
+        "pct_from_baseline": 5.13
+      },
+      {
+        "trade_date": "2026-07-06",
+        "pct_from_baseline": 5.12
+      },
+      {
+        "trade_date": "2026-07-07",
+        "pct_from_baseline": 4.04
+      },
+      {
+        "trade_date": "2026-07-08",
+        "pct_from_baseline": 3.25
+      },
+      {
+        "trade_date": "2026-07-09",
+        "pct_from_baseline": 5.87
+      },
+      {
+        "trade_date": "2026-07-10",
+        "pct_from_baseline": 3.8
+      },
+      {
+        "trade_date": "2026-07-13",
+        "pct_from_baseline": 1.94
+      },
+      {
+        "trade_date": "2026-07-14",
+        "pct_from_baseline": 4.14
+      },
+      {
+        "trade_date": "2026-07-15",
+        "pct_from_baseline": 3.93
+      },
+      {
+        "trade_date": "2026-07-16",
+        "pct_from_baseline": 2.01
+      },
+      {
+        "trade_date": "2026-07-17",
+        "pct_from_baseline": -1.67
+      },
+      {
+        "trade_date": "2026-07-20",
+        "pct_from_baseline": -0.17
+      },
+      {
+        "trade_date": "2026-07-21",
+        "pct_from_baseline": 2.89
+      },
+      {
+        "trade_date": "2026-07-22",
+        "pct_from_baseline": 2.42
+      },
+      {
+        "trade_date": "2026-07-23",
+        "pct_from_baseline": 2.65
+      },
+      {
+        "trade_date": "2026-07-24",
+        "pct_from_baseline": 0.94
+      },
+      {
+        "trade_date": "2026-07-27",
+        "pct_from_baseline": 2.09
+      },
+      {
+        "trade_date": "2026-07-28",
+        "pct_from_baseline": -0.79
+      },
+      {
+        "trade_date": "2026-07-29",
+        "pct_from_baseline": -0.12
+      },
+      {
+        "trade_date": "2026-08-20",
+        "pct_from_baseline": -0.29
+      },
+      {
+        "trade_date": "2026-08-21",
+        "pct_from_baseline": 0.28
+      },
+      {
+        "trade_date": "2026-08-24",
+        "pct_from_baseline": -0.93
+      },
+      {
+        "trade_date": "2026-08-25",
+        "pct_from_baseline": -1.17
+      },
+      {
+        "trade_date": "2026-08-26",
+        "pct_from_baseline": -0.33
+      },
+      {
+        "trade_date": "2026-08-27",
+        "pct_from_baseline": 0.53
+      },
+      {
+        "trade_date": "2026-08-28",
+        "pct_from_baseline": 0.07
+      },
+      {
+        "trade_date": "2026-08-31",
+        "pct_from_baseline": 0.41
+      },
+      {
         "trade_date": "2026-09-01",
-        "pct_from_baseline": -0.78
+        "pct_from_baseline": 0.12
       },
       {
         "trade_date": "2026-09-02",
-        "pct_from_baseline": -2.15
+        "pct_from_baseline": -1.26
       },
       {
         "trade_date": "2026-09-03",
-        "pct_from_baseline": -2.05
+        "pct_from_baseline": -1.16
       },
       {
         "trade_date": "2026-09-04",
-        "pct_from_baseline": -2.14
+        "pct_from_baseline": -1.26
       },
       {
         "trade_date": "2026-09-07",
-        "pct_from_baseline": -1.56
+        "pct_from_baseline": -0.67
       },
       {
         "trade_date": "2026-09-08",
-        "pct_from_baseline": -1.91
+        "pct_from_baseline": -1.03
       },
       {
         "trade_date": "2026-09-09",
-        "pct_from_baseline": -1.62
+        "pct_from_baseline": -0.72
       },
       {
         "trade_date": "2026-09-10",
-        "pct_from_baseline": -2.14
+        "pct_from_baseline": -1.25
       },
       {
         "trade_date": "2026-09-11",
-        "pct_from_baseline": -2.96
+        "pct_from_baseline": -2.08
       },
       {
         "trade_date": "2026-09-14",
-        "pct_from_baseline": -3.61
+        "pct_from_baseline": -2.73
       },
       {
         "trade_date": "2026-09-15",
-        "pct_from_baseline": -4.25
+        "pct_from_baseline": -3.39
       },
       {
         "trade_date": "2026-09-16",
-        "pct_from_baseline": -3.6
+        "pct_from_baseline": -2.73
       },
       {
         "trade_date": "2026-09-17",
-        "pct_from_baseline": -4.03
+        "pct_from_baseline": -3.17
       },
       {
         "trade_date": "2026-09-18",
-        "pct_from_baseline": -3.02
+        "pct_from_baseline": -2.14
+      },
+      {
+        "trade_date": "2026-09-21",
+        "pct_from_baseline": -1.44
+      },
+      {
+        "trade_date": "2026-09-22",
+        "pct_from_baseline": -1.33
       },
       {
         "trade_date": "2026-09-23",
-        "pct_from_baseline": -2.81
+        "pct_from_baseline": -1.93
       },
       {
         "trade_date": "2026-09-24",
-        "pct_from_baseline": -4.49
+        "pct_from_baseline": -3.62
       }
     ]
   }
