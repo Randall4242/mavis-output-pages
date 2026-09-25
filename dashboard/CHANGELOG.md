@@ -4,6 +4,23 @@
 
 ---
 
+## v32.26 · 2026-09-25 · pnl-recent-5 表格加左侧标签列 (实/总/gap)
+
+- **user 反馈**: pnl-recent-5 表格 (5 列 × 4 行) 最左侧每行加简化标题 (实/总/gap)
+- **改动**:
+  - **grid 列结构**: 5 列 → **6 列** (`minmax(32px, auto) repeat(5, minmax(0, 1fr))`), 新增 1 列标签
+  - **4 行 × 6 列 grid** (auto-flow row):
+    - row 1 日期行: label 留空 (视觉对齐)
+    - row 2 已实现: label = "实"
+    - row 3 总盈亏: label = "总"
+    - row 4 持仓盈亏: label = "gap"
+  - **`.pnl-recent-label`**: 字号 10px, 灰色 #A8A8A8, 右对齐 (靠数字列), 加粗 600, dashed border-right 分隔
+  - **JS 重构**: 4 行字符串数组 (label + 5 data cells), 用 `grid-template-columns` 自然按行填
+- **mobile 适配** (max-width: 480px): label 列缩 minmax(28px, auto), 字号 9px, gap 2px
+- 4 处版本号同步 v32.26
+
+---
+
 ## v32.25 · 2026-09-25 · chart-pnl-trend 加最近 5 个日期速览 (5 列 × 3 行)
 
 - **user 反馈**: chart-pnl-trend 卡片 x 轴 tick labels 跟底部 chart-legend 之间加一块, 展示最近 5 个日期的 3 个数字 (已实现 / 总盈亏 / 持仓盈亏 gap)

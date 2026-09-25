@@ -984,10 +984,10 @@
     position: relative;
     height: 280px;
   }
-  /* v32.25: 最近 5 个日期速览 (5 列横向 × 3 行竖向, x 轴跟底部 chart-legend 之间) */
+  /* v32.26: 最近 5 个日期速览 (6 列: 1 标签列 + 5 数据列 × 4 行: 日期 + 3 数字) */
   .pnl-recent-5 {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: minmax(32px, auto) repeat(5, minmax(0, 1fr));
     gap: 4px;
     margin-top: 14px;
     padding: 10px 6px;
@@ -1022,11 +1022,24 @@
   }
   .pnl-recent-5 .pnl-recent-val.up { color: #C45C4F; }    /* A 股惯例涨红 */
   .pnl-recent-5 .pnl-recent-val.down { color: #7A8A76; }  /* 跌绿 */
-  /* v32.25: mobile (S24 360px) 字号缩到 10px, no padding */
+  /* v32.26: 标签列 (实 / 总 / gap), 跟数据列分隔 (dashed border-right) */
+  .pnl-recent-5 .pnl-recent-label {
+    font-size: 10px;
+    color: #A8A8A8;
+    text-align: right;
+    padding: 4px 6px 4px 2px;
+    align-self: center;
+    white-space: nowrap;
+    border-right: 1px dashed #F0EFEB;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  /* v32.26: mobile (S24 360px) 字号缩到 10px, no padding */
   @media (max-width: 480px) {
-    .pnl-recent-5 { padding: 8px 2px; }
+    .pnl-recent-5 { padding: 8px 2px; gap: 2px; grid-template-columns: minmax(28px, auto) repeat(5, minmax(0, 1fr)); }
     .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
     .pnl-recent-5 .pnl-recent-val { font-size: 10px; }
+    .pnl-recent-5 .pnl-recent-label { font-size: 9px; padding: 2px 4px 2px 1px; }
     .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; }
   }
   /* v32.24: press-and-drag tooltip 容器 (绝对定位, chart 底部 x 轴 tick labels 之上, 居中显示在 dragged x 上) */
@@ -1623,7 +1636,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.25 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.26 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1631,6 +1644,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.25"></script>
+<script src="dashboard.js?v=32.26"></script>
 </body>
 </html>
