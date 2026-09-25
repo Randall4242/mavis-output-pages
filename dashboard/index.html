@@ -988,19 +988,16 @@
     position: relative;
     height: 280px;
   }
-  /* v32.28: 最近 5 个日期速览 (横向溢出 + 滚动条, 列宽根据内容自适应不重叠) */
+  /* v32.29: 最近 3 个日期速览 (4 列 × 4 行: 1 label + 3 data) — 不用滑动 */
   .pnl-recent-5 {
     display: grid;
-    grid-template-columns: minmax(32px, max-content) repeat(5, minmax(72px, max-content));
-    /* v32.28: 列宽最小 72px, 内容大时 max-content 让列宽撑开, 容器溢出时横向滚动 */
+    grid-template-columns: minmax(32px, max-content) repeat(3, minmax(72px, max-content));
     gap: 6px;
     margin-top: 14px;
     padding: 10px 6px;
     border-top: 1px dashed var(--border);
     border-bottom: 1px dashed var(--border);
     font-family: 'JetBrains Mono', monospace;
-    overflow-x: auto;  /* v32.28: 横向滚动条, 让列宽超出容器宽度时仍可读 */
-    -webkit-overflow-scrolling: touch;
   }
   .pnl-recent-5 .pnl-recent-cell {
     display: flex;
@@ -1009,7 +1006,7 @@
     gap: 2px;
     padding: 4px 2px;
     border-right: 1px dashed #F0EFEB;
-    min-width: 72px;  /* v32.28: 跟 grid 一致, 强制最小宽度 */
+    min-width: 72px;
   }
   .pnl-recent-5 .pnl-recent-cell:last-child {
     border-right: none;
@@ -1042,11 +1039,11 @@
     font-weight: 600;
     letter-spacing: 0.02em;
   }
-  /* v32.28: mobile (S24 360px) 字号缩, 列宽最小值不变, 用户需横向滚动看完整 */
+  /* v32.29: mobile (S24 360px) 字号缩, 3 列够装下不需滑动 */
   @media (max-width: 480px) {
-    .pnl-recent-5 { padding: 8px 2px; gap: 4px; }
+    .pnl-recent-5 { padding: 8px 2px; gap: 4px; grid-template-columns: minmax(28px, max-content) repeat(3, minmax(64px, max-content)); }
     .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
-    .pnl-recent-5 .pnl-recent-val { font-size: 9px; letter-spacing: 0.05em; }
+    .pnl-recent-5 .pnl-recent-val { font-size: 10px; letter-spacing: 0.04em; }
     .pnl-recent-5 .pnl-recent-label { font-size: 9px; padding: 2px 4px 2px 1px; }
     .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; min-width: 64px; }
   }
@@ -1644,7 +1641,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.28 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.29 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1652,6 +1649,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.28"></script>
+<script src="dashboard.js?v=32.29"></script>
 </body>
 </html>

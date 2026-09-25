@@ -4,6 +4,21 @@
 
 ---
 
+## v32.29 · 2026-09-25 · pnl-recent-5 改 3 列 + 行名顺序 实/gap/总
+
+- **user 反馈**:
+  1. 行名顺序 实/总/gap → **实/gap/总** (把 gap 放中间, 跟 chart 上 total - realized = floating 视觉对应)
+  2. 列数 5 → **3 列**, 不用横向滑动, 数字完整显示
+- **改动**:
+  - **grid 列**: `repeat(5, minmax(72px, max-content))` → **`repeat(3, minmax(72px, max-content))`** (4 列 × 4 行, 含 label 列)
+  - **JS 行顺序重排**: row 2 实 / row 3 gap / row 4 总 (gap 移到中间)
+  - **JS slice(-5) → slice(-3)**
+  - **移除 `overflow-x: auto`** (3 列装得下, 不需滚动)
+  - **mobile 列宽**: `repeat(3, minmax(64px, max-content))` (S24 360px 装得下, ~280px 总宽)
+- 4 处版本号同步 v32.29
+
+---
+
 ## v32.28 · 2026-09-25 · pnl-recent-5 拉长 + 横向滚动条 — 解决数字重叠
 
 - **user 反馈**: v32.27 letter-spacing + 字号缩小后仍重叠, 希望整体拉长表格
