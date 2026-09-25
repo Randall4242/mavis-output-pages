@@ -4,6 +4,24 @@
 
 ---
 
+## v32.34 · 2026-09-25 · chart-benchmark 上证 + 沪深 300 缺数据 forward fill (假设性回填)
+
+- **user 反馈**: chart-benchmark 上证指数 + 沪深 300 数据有缺失天 (拉数失败 / 数据源中断), chart 上有断点 / 数据不连续
+- **实测缺数**:
+  - **上证指数** 缺 21 天: `2026-06-01 ~ 2026-06-29` 一整段 (19 天) + `2026-08-19` 单天
+  - **沪深 300** 缺 1 天: `2026-08-19` 单天
+  - 原因: 行情拉自腾讯 qt.gtimg.cn, 数据源偶发中断
+- **修法** (跟 pnl_series `cost_basis: 'carry_forward'` 同语义):
+  - **`forwardFillArr(arr)` helper** (module scope): 缺的天用前一个有效值回填, 让 chart 数据连续
+  - **`renderBenchmarkChart`** + **`updateBenchmarkChartFull`**: dataset[1] (sh) / dataset[2] (csi300) 都过 forwardFillArr
+  - **新方法 `updateBenchmarkCarryForwardNote`**: 计算 cf 段 dates, 渲染 note 文案 (类似 updateCarryForwardNote 套路), 显示在 chart-benchmark 卡片底部
+  - **HTML**: chart-benchmark card 底部加 `<div id="benchmark-carry-forward-note">` + 数据来源行
+  - **CF 段视觉**: 折线仍连续 (fill: false 时 forward fill 让段连起来), 但 carry forward 段跟 real 段视觉无区分 (因为 sh / csi300 已是 dashed line), 通过 note 文字告知
+- **示例文案**: `上证指数 21 天 (06-01~06-29 + 08-19~08-19) + 沪深 300 1 天 (08-19~08-19) 为假设性回填 (前一个交易日值)`
+- 4 处版本号同步 v32.34
+
+---
+
 ## v32.33 · 2026-09-25 · chart-benchmark fill 规则 — 仅我的持仓覆盖面积有颜色
 
 - **user 反馈**: chart-benchmark 三个数据集的覆盖面积都填了红/绿淡, 视觉太乱

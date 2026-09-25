@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.33 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.34 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -191,6 +191,16 @@
   const fmtMoneyAbs = (x) => x == null ? '—' : Math.abs(x).toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
   const fmtMoneyBig = (x) => x == null ? '—' : Math.abs(x).toLocaleString('zh-CN', {minimumFractionDigits: 0, maximumFractionDigits: 0});
   const fmtPct = (x) => x == null ? '—' : (x >= 0 ? '+' : '') + x.toFixed(2) + '%';
+  // v32.34: forward fill — 缺的天用前一个有效值回填 (chart-benchmark 上证 + 沪深 300 假设性回填)
+  const forwardFillArr = (arr) => {
+    const filled = arr.slice();
+    let last = null;
+    for (let i = 0; i < filled.length; i++) {
+      if (filled[i] != null) last = filled[i];
+      else if (last != null) filled[i] = last;
+    }
+    return filled;
+  };
 
   const App = {
     charts: {},
@@ -815,6 +825,12 @@
       } catch (e) {
         console.warn('[charts] carry_forward note update failed:', e);
       }
+      // v32.34: benchmark 假设性回填 note (上证 + 沪深 300 缺的天 forward fill)
+      try {
+        this.updateBenchmarkCarryForwardNote(data.benchmark || {});
+      } catch (e) {
+        console.warn('[charts] benchmark carry_forward note update failed:', e);
+      }
       // v32.0: 成功 → hide skeleton (覆盖正常路径 + polling 触发路径)
       this.hideAllSkeletons();
       // v32.2: analysis tab 内容画完 (chart / carry_forward note), 重新算 tab-stage 高度
@@ -1006,6 +1022,15 @@
       });
       if (c.data.datasets[1]) c.data.datasets[1].data = labels.map((_, i) => shMap[my[i].trade_date] ?? null);
       if (c.data.datasets[2]) c.data.datasets[2].data = labels.map((_, i) => csiMap[my[i].trade_date] ?? null);
+      // v32.34: dataset[1] / dataset[2] forward fill (缺的天用前一个值回填, 让 chart 数据连续)
+      const ds1Raw = c.data.datasets[1] ? c.data.datasets[1].data : [];
+      const ds2Raw = c.data.datasets[2] ? c.data.datasets[2].data : [];
+      if (c.data.datasets[1]) c.data.datasets[1].data = forwardFillArr(ds1Raw);
+      if (c.data.datasets[2]) c.data.datasets[2].data = forwardFillArr(ds2Raw);
+      // 标记 carry_forward 段 (raw=null 但 filled 有值)
+      const myDates = my.map(r => r.trade_date);
+      this._shCfDates = ds1Raw.map((v, i) => v == null && ds1Raw.slice(0, i).some(x => x != null) ? myDates[i] : null).filter(Boolean);
+      this._csiCfDates = ds2Raw.map((v, i) => v == null && ds2Raw.slice(0, i).some(x => x != null) ? myDates[i] : null).filter(Boolean);
       // v32.15: dataset[0].label 末条数字也同步用 max invested capital 算 (跟 summary 卡片同口径)
       c.data.datasets[0].label = `我的总盈亏 (含已实现) (${this._computeMyPctLabel()})`;
       c.update('none');
@@ -1064,6 +1089,51 @@
         const short = ranges.map(([s, e]) => `${series[s].trade_date.substring(5)}~${series[e].trade_date.substring(5)}`).join(' + ');
         note.innerHTML = `<span class="legend-mark"></span>${cfDays} 天为假设性回填 (${short})`;
       }
+    },
+
+    // v32.34: chart-benchmark carry forward note (上证 + 沪深 300 缺的天 forward fill 统计)
+    // 跟 updateCarryForwardNote 独立 — 数据源不同 (pnl_series 是 cost_basis, benchmark 是 forward fill mask)
+    updateBenchmarkCarryForwardNote(bench) {
+      const note = $('benchmark-carry-forward-note');
+      const textEl = $('benchmark-carry-forward-text');
+      if (!note || !textEl) return;
+      const shDates = this._shCfDates || [];
+      const csiDates = this._csiCfDates || [];
+      if (shDates.length === 0 && csiDates.length === 0) {
+        note.style.display = 'none';
+        return;
+      }
+      // 计算 contiguous ranges (跟 pnl-trend 同款逻辑)
+      const fmtRanges = (dates) => {
+        if (dates.length === 0) return '';
+        const sorted = dates.slice().sort();
+        const ranges = [];
+        let start = sorted[0], prev = sorted[0];
+        for (let i = 1; i < sorted.length; i++) {
+          if (sorted[i] === prev || isNextDay(prev, sorted[i])) {
+            prev = sorted[i];
+          } else {
+            ranges.push([start, prev]);
+            start = sorted[i];
+            prev = sorted[i];
+          }
+        }
+        ranges.push([start, prev]);
+        return ranges.map(([s, e]) => `${s.substring(5)}~${e.substring(5)}`).join(' + ');
+      };
+      const isNextDay = (a, b) => {
+        const da = new Date(a), db = new Date(b);
+        return (db - da) === 86400000;
+      };
+      const parts = [];
+      if (shDates.length > 0) {
+        parts.push(`上证指数 ${shDates.length} 天 (${fmtRanges(shDates)})`);
+      }
+      if (csiDates.length > 0) {
+        parts.push(`沪深 300 ${csiDates.length} 天 (${fmtRanges(csiDates)})`);
+      }
+      note.style.display = '';
+      textEl.textContent = `${parts.join(' + ')} 为假设性回填 (前一个交易日值)`;
     },
 
     renderPnlTrendChart(series) {
@@ -1486,14 +1556,21 @@
       const lookup = (arr) => Object.fromEntries((arr || []).map(r => [r.trade_date, r.pct_from_baseline]));
       const shMap = lookup(bench.sh);
       const csiMap = lookup(bench.csi300);
-      const shData = labels.map((_, i) => {
+      // v32.34: forward fill — 缺的天用前一个有效值回填 (假设性回填, 跟 pnl_series carry_forward 同语义)
+      // 标记哪些 index 是 carry_forward (用于 chart-benchmark note 统计)
+      const shRaw = labels.map((_, i) => {
         const fullDate = my[i].trade_date;
         return shMap[fullDate] ?? null;
       });
-      const csiData = labels.map((_, i) => {
+      const csiRaw = labels.map((_, i) => {
         const fullDate = my[i].trade_date;
         return csiMap[fullDate] ?? null;
       });
+      // carry forward 段标记 (raw=null 但前一个有有效值)
+      this._shCfDates = shRaw.map((v, i) => v == null && shRaw.slice(0, i).some(x => x != null) ? my[i].trade_date : null).filter(Boolean);
+      this._csiCfDates = csiRaw.map((v, i) => v == null && csiRaw.slice(0, i).some(x => x != null) ? my[i].trade_date : null).filter(Boolean);
+      const shData = forwardFillArr(shRaw);
+      const csiData = forwardFillArr(csiRaw);
 
       const isMobile = this._isMobile();
       const maxTicks = isMobile ? 5 : 10;

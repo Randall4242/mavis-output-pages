@@ -1570,6 +1570,14 @@
   </div>
   <!-- v32.31: 最近 3 个日期速览 (跟 pnl-recent 同款 4 列 × 4 行) -->
   <div class="benchmark-recent-3" id="benchmark-recent-3"></div>
+  <!-- v32.34: 假设性回填 note (上证 + 沪深 300 缺的天用前一个有效值回填) -->
+  <div class="chart-legend" id="benchmark-legend-block">
+    <div class="chart-legend-note" id="benchmark-carry-forward-note" style="display:none;">
+      <span class="legend-mark"></span>
+      <span id="benchmark-carry-forward-text"></span>
+    </div>
+    <div>数据来源: Supabase · 行情拉自腾讯 qt.gtimg.cn</div>
+  </div>
 </div>
 </section>
 
@@ -1662,7 +1670,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.33 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.34 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1670,6 +1678,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.33"></script>
+<script src="dashboard.js?v=32.34"></script>
 </body>
 </html>
