@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.30 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.31 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -1478,16 +1478,28 @@
       const isMobile = this._isMobile();
       const maxTicks = isMobile ? 5 : 10;
 
+      // v32.31: 复用 chart-pnl-trend 规范
+      // - 我的持仓: 实线, segment.borderColor 按 y 正负变色 (A 股惯例涨红跌绿), fill: false 不遮挡其他线
+      // - 上证指数: 短虚线, segment.borderColor 按 y 正负变色, fill target 0 红/绿淡
+      // - 沪深 300: 点线, segment.borderColor 按 y 正负变色, fill target 0 红/绿淡
+      const segmentUpDown = (ctx) => {
+        const midY = (ctx.p0.parsed.y + ctx.p1.parsed.y) / 2;
+        return midY >= 0 ? 'rgba(196, 92, 79, 0.85)' : 'rgba(122, 138, 118, 0.85)';
+      };
       const datasets = [
         {
-          // v32.15: 末条数字同步用 max invested capital 算 (跟 summary 卡片同口径)
           label: `我的总盈亏 (含已实现) (${this._computeMyPctLabel()})`,
           data: myData,
-          borderColor: '#1A1A1A',
-          backgroundColor: 'rgba(26,26,26,0.06)',
+          borderColor: 'rgba(196, 92, 79, 0.85)',  // 默认红 (segment 染色覆盖)
+          borderWidth: 2,
+          borderDash: [],  // 实线
+          fill: false,  // 不填 (避免遮挡指数线)
           pointRadius: 0,
           pointHoverRadius: 4,
-          borderWidth: 2,
+          pointHoverBackgroundColor: '#1A1A1A',
+          pointHoverBorderColor: '#FFFFFF',
+          pointHoverBorderWidth: 2,
+          segment: { borderColor: segmentUpDown },
           tension: 0.25,
         },
       ];
@@ -1495,12 +1507,20 @@
         datasets.push({
           label: `上证指数 (${fmtPct(shData[shData.length - 1] || 0)})`,
           data: shData,
-          borderColor: '#C45C4F',  // accent-up 暖红
-          backgroundColor: 'rgba(196, 92, 79, 0.05)',
+          borderColor: 'rgba(196, 92, 79, 0.85)',
+          borderWidth: 1.5,
+          borderDash: [5, 3],  // 短虚线
+          fill: {
+            target: { value: 0 },
+            above: 'rgba(196, 92, 79, 0.10)',
+            below: 'rgba(122, 138, 118, 0.10)',
+          },
           pointRadius: 0,
           pointHoverRadius: 4,
-          borderWidth: 1.5,
-          borderDash: [5, 3],  // 短虚线 (跟沪深 300 [2,4] 点线区分)
+          pointHoverBackgroundColor: '#1A1A1A',
+          pointHoverBorderColor: '#FFFFFF',
+          pointHoverBorderWidth: 2,
+          segment: { borderColor: segmentUpDown },
           tension: 0.25,
           spanGaps: true,
         });
@@ -1509,16 +1529,48 @@
         datasets.push({
           label: `沪深 300 (${fmtPct(csiData[csiData.length - 1] || 0)})`,
           data: csiData,
-          borderColor: '#3A2E26',  // accent-engrave 深棕铜版画
-          backgroundColor: 'rgba(58, 46, 38, 0.05)',
+          borderColor: 'rgba(196, 92, 79, 0.85)',
+          borderWidth: 1.5,
+          borderDash: [2, 4],  // 点线
+          fill: {
+            target: { value: 0 },
+            above: 'rgba(196, 92, 79, 0.10)',
+            below: 'rgba(122, 138, 118, 0.10)',
+          },
           pointRadius: 0,
           pointHoverRadius: 4,
-          borderWidth: 1.5,
-          borderDash: [2, 4],  // 点线 (跟上证指数 [5,3] 短虚线区分)
+          pointHoverBackgroundColor: '#1A1A1A',
+          pointHoverBorderColor: '#FFFFFF',
+          pointHoverBorderWidth: 2,
+          segment: { borderColor: segmentUpDown },
           tension: 0.25,
           spanGaps: true,
         });
       }
+
+      // v32.31: vertical line marker plugin (跟 pnl-trend 同款)
+      const benchmarkVerticalLinePlugin = {
+        id: 'benchmarkVerticalLine',
+        afterDatasetsDraw(chart) {
+          const idx = chart._benchmarkHoverIdx;
+          if (idx == null) return;
+          const xScale = chart.scales.x;
+          if (!xScale) return;
+          const x = xScale.getPixelForValue(idx);
+          const cctx = chart.ctx;
+          const cArea = chart.chartArea;
+          if (!cArea) return;
+          cctx.save();
+          cctx.beginPath();
+          cctx.moveTo(x, cArea.top);
+          cctx.lineTo(x, cArea.bottom);
+          cctx.lineWidth = 1;
+          cctx.strokeStyle = '#3A2E26';  // accent-engrave 深棕
+          cctx.setLineDash([3, 3]);
+          cctx.stroke();
+          cctx.restore();
+        }
+      };
 
       this.charts.benchmark = new Chart(el.getContext('2d'), {
         type: 'line',
@@ -1526,7 +1578,9 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
+          // v32.31: 关闭内置 tooltip events, 改用 canvas mousedown/moveup 手控制
+          interaction: { mode: 'nearest', intersect: false },
+          events: [],
           plugins: {
             legend: {
               labels: {
@@ -1538,21 +1592,7 @@
                 padding: 12,
               }
             },
-            tooltip: {
-              backgroundColor: '#1A1A1A',
-              titleColor: '#F7F7F5',
-              bodyColor: '#F7F7F5',
-              titleFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 11, weight: 600 },
-              bodyFont: { family: 'JetBrains Mono', size: isMobile ? 10 : 12 },
-              padding: isMobile ? 8 : 10,
-              borderColor: '#3A2E26',
-              borderWidth: 1,
-              yAlign: isMobile ? 'bottom' : undefined,
-              xAlign: isMobile ? 'center' : undefined,
-              callbacks: {
-                label: (ctx) => `${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`,
-              },
-            }
+            tooltip: { enabled: false },  // v32.31: 关闭内置 tooltip
           },
           scales: {
             x: {
@@ -1576,8 +1616,129 @@
               }
             }
           }
-        }
+        },
+        plugins: [benchmarkVerticalLinePlugin],
       });
+
+      // v32.31: press-and-drag tooltip (跟 pnl-trend 同款)
+      const benchChart = this.charts.benchmark;
+      const tooltipEl = document.getElementById('benchmark-tooltip');
+      if (!tooltipEl) {
+        console.warn('[benchmark] tooltip container not found');
+      } else {
+        let isDragging = false;
+        const fmt = (n) => (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+        const showAt = (clientX) => {
+          const rect = el.getBoundingClientRect();
+          const localX = clientX - rect.left;
+          const clampedX = Math.max(0, Math.min(localX, rect.width));
+          const xScale = benchChart.scales.x;
+          const value = xScale.getValueForPixel(clampedX);
+          const idx = Math.max(0, Math.min(labels.length - 1, Math.round(value)));
+          const myV = myData[idx];
+          const shV = shData[idx];
+          const csiV = csiData[idx];
+          const tradeDate = my[idx] ? my[idx].trade_date : '';
+          const myLine = myV != null ? `<div class="benchmark-tooltip-line">我的持仓: ${fmt(myV)}</div>` : '';
+          const shLine = shV != null ? `<div class="benchmark-tooltip-line">上证指数: ${fmt(shV)}</div>` : '';
+          const csiLine = csiV != null ? `<div class="benchmark-tooltip-line">沪深 300: ${fmt(csiV)}</div>` : '';
+          tooltipEl.innerHTML = `<div class="benchmark-tooltip-title">${tradeDate}</div>${myLine}${shLine}${csiLine}`;
+          tooltipEl.style.left = clampedX + 'px';
+          tooltipEl.style.opacity = 1;
+          benchChart._benchmarkHoverIdx = idx;
+          benchChart.update('none');
+        };
+        const hide = () => {
+          tooltipEl.style.opacity = 0;
+          benchChart._benchmarkHoverIdx = null;
+          benchChart.update('none');
+        };
+
+        el.addEventListener('mousedown', (e) => {
+          if (e.target !== el) return;
+          e.preventDefault();
+          isDragging = true;
+          showAt(e.clientX);
+        });
+        el.addEventListener('touchstart', (e) => {
+          if (e.target !== el) return;
+          if (e.touches.length === 0) return;
+          isDragging = true;
+          showAt(e.touches[0].clientX);
+          e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const rect = el.getBoundingClientRect();
+          if (e.clientX < rect.left || e.clientX > rect.right ||
+              e.clientY < rect.top || e.clientY > rect.bottom) {
+            hide();
+            isDragging = false;
+            return;
+          }
+          showAt(e.clientX);
+        });
+        document.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          if (e.touches.length === 0) return;
+          const t = e.touches[0];
+          const rect = el.getBoundingClientRect();
+          if (t.clientX < rect.left || t.clientX > rect.right ||
+              t.clientY < rect.top || t.clientY > rect.bottom) {
+            hide();
+            isDragging = false;
+            return;
+          }
+          showAt(t.clientX);
+          e.preventDefault();
+        }, { passive: false });
+
+        document.addEventListener('mouseup', () => {
+          if (!isDragging) return;
+          isDragging = false;
+          hide();
+        });
+        document.addEventListener('touchend', () => {
+          if (!isDragging) return;
+          isDragging = false;
+          hide();
+        });
+      }
+
+      // v32.31: 最近 3 个日期速览 (跟 pnl-recent 同款 4 列 × 4 行)
+      const recent3El = document.getElementById('benchmark-recent-3');
+      if (recent3El) {
+        const fmt = (n) => (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+        const last3 = my.slice(-3);
+        const rows = [
+          // row 1: 日期行
+          '<div class="pnl-recent-label"></div>' + last3.map(r => `<div class="pnl-recent-cell"><div class="pnl-recent-date">${r.trade_date.substring(5)}</div></div>`).join(''),
+          // row 2: 我的持仓
+          '<div class="pnl-recent-label">我的</div>' + last3.map((r, i) => {
+            const realIdx = my.length - 3 + i;
+            const v = myData[realIdx];
+            return `<div class="pnl-recent-cell"><div class="pnl-recent-val ${v >= 0 ? 'up' : 'down'}">${fmt(v)}</div></div>`;
+          }).join(''),
+          // row 3: 上证指数
+          '<div class="pnl-recent-label">上证</div>' + last3.map((r, i) => {
+            const realIdx = my.length - 3 + i;
+            const v = shData[realIdx];
+            return v != null
+              ? `<div class="pnl-recent-cell"><div class="pnl-recent-val ${v >= 0 ? 'up' : 'down'}">${fmt(v)}</div></div>`
+              : `<div class="pnl-recent-cell"><div class="pnl-recent-val">—</div></div>`;
+          }).join(''),
+          // row 4: 沪深 300
+          '<div class="pnl-recent-label">沪深</div>' + last3.map((r, i) => {
+            const realIdx = my.length - 3 + i;
+            const v = csiData[realIdx];
+            return v != null
+              ? `<div class="pnl-recent-cell"><div class="pnl-recent-val ${v >= 0 ? 'up' : 'down'}">${fmt(v)}</div></div>`
+              : `<div class="pnl-recent-cell"><div class="pnl-recent-val">—</div></div>`;
+          }).join(''),
+        ];
+        recent3El.innerHTML = rows.join('');
+      }
     },
 
     async refresh() {

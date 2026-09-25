@@ -4,6 +4,31 @@
 
 ---
 
+## v32.31 · 2026-09-25 · chart-benchmark 复用 chart-pnl-trend 规范
+
+- **user 反馈**: chart-benchmark (累计收益率 vs 大盘) 跟 chart-pnl-trend 视觉不一致, 复用 3 套规范
+  1. 悬浮窗规范 (press-and-drag + 底部 x 轴上方)
+  2. chart 下方最近三日数据 (跟 pnl-recent 同款)
+  3. 折线 + 覆盖面积规范 (A 股惯例涨红跌绿 + segment.borderColor + fill target 0)
+- **改动**:
+  - **CSS 复用**:
+    - `.pnl-trend-tooltip, .benchmark-tooltip` 共享 tooltip 样式 (绝对定位 bottom: 30px, 深色背景, transform 居中)
+    - `.pnl-recent-5, .benchmark-recent-3` 共享速览表格样式 (4 列 × 4 行, grid 居中, label 居中)
+  - **HTML**:
+    - chart-canvas-wrap 内加 `<div id="benchmark-tooltip" class="benchmark-tooltip">`
+    - chart-canvas-wrap 下面加 `<div class="benchmark-recent-3" id="benchmark-recent-3">`
+  - **JS renderBenchmarkChart 重写**:
+    - 3 个 datasets 改 A 股惯例涨红跌绿 (`segment.borderColor` 按 y 正负变色), 实线 / 短虚线 / 点线 (borderDash 区分)
+    - 我的持仓 `fill: false` (避免遮挡指数线), 上证 + 沪深 `fill target: 0` (above 红 below 绿淡)
+    - **关闭内置 tooltip** (`events: []` + `tooltip.enabled: false`)
+    - **verticalLinePlugin** 读 `chart._benchmarkHoverIdx` 画竖线
+    - **press-and-drag 事件** (mousedown/moveup/touchstart/end), 跟 pnl-trend 完全同款逻辑
+    - **recent-3 表格渲染**: 4 行 × 4 列 (label + 3 数据列), 行: 日期 / 我的 / 上证 / 沪深, 按涨跌染色, null 显示 `—`
+- **保留**: `label` 末尾的 `(${this._computeMyPctLabel()})` 同步 max invested capital 算 (v32.15 沿用)
+- 4 处版本号同步 v32.31
+
+---
+
 ## v32.30 · 2026-09-25 · pnl-recent-5 表格居中 + 数字/label 居中 (不再缩在左边)
 
 - **user 反馈**: v32.29 表格紧贴 chart-card 左边, 右侧 ~80px 空白不均衡, "缩在左边太丑"

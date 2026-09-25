@@ -989,7 +989,8 @@
     height: 280px;
   }
   /* v32.30: 最近 3 个日期速览 (4 列 × 4 行: 1 label + 3 data) — 表格居中 */
-  .pnl-recent-5 {
+  .pnl-recent-5,
+  .benchmark-recent-3 {
     display: grid;
     grid-template-columns: minmax(32px, max-content) repeat(3, minmax(72px, max-content));
     /* v32.30: 表格宽度按内容自适应 + 居中, 不再紧贴 chart-card 左边 */
@@ -1001,7 +1002,8 @@
     border-bottom: 1px dashed var(--border);
     font-family: 'JetBrains Mono', monospace;
   }
-  .pnl-recent-5 .pnl-recent-cell {
+  .pnl-recent-5 .pnl-recent-cell,
+  .benchmark-recent-3 .pnl-recent-cell {
     display: flex;
     flex-direction: column;
     align-items: center;  /* v32.30: 数字居中, 视觉重心居中 */
@@ -1010,10 +1012,12 @@
     border-right: 1px dashed #F0EFEB;
     min-width: 72px;
   }
-  .pnl-recent-5 .pnl-recent-cell:last-child {
+  .pnl-recent-5 .pnl-recent-cell:last-child,
+  .benchmark-recent-3 .pnl-recent-cell:last-child {
     border-right: none;
   }
-  .pnl-recent-5 .pnl-recent-date {
+  .pnl-recent-5 .pnl-recent-date,
+  .benchmark-recent-3 .pnl-recent-date {
     color: #A8A8A8;
     font-size: 10px;
     letter-spacing: 0.02em;
@@ -1021,16 +1025,21 @@
     white-space: nowrap;
     align-self: center;  /* v32.30: 日期也居中 */
   }
-  .pnl-recent-5 .pnl-recent-val {
+  .pnl-recent-5 .pnl-recent-val,
+  .benchmark-recent-3 .pnl-recent-val {
     font-size: 11px;
     font-weight: 500;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.04em;
+    color: #1A1A1A;  /* v32.31: 默认黑 (涨跌再覆盖) */
   }
-  .pnl-recent-5 .pnl-recent-val.up { color: #C45C4F; }
-  .pnl-recent-5 .pnl-recent-val.down { color: #7A8A76; }
-  .pnl-recent-5 .pnl-recent-label {
+  .pnl-recent-5 .pnl-recent-val.up,
+  .benchmark-recent-3 .pnl-recent-val.up { color: #C45C4F; }
+  .pnl-recent-5 .pnl-recent-val.down,
+  .benchmark-recent-3 .pnl-recent-val.down { color: #7A8A76; }
+  .pnl-recent-5 .pnl-recent-label,
+  .benchmark-recent-3 .pnl-recent-label {
     font-size: 10px;
     color: #A8A8A8;
     text-align: center;  /* v32.30: label 居中 */
@@ -1043,14 +1052,20 @@
   }
   /* v32.30: mobile (S24 360px) 字号缩, 3 列够装下不需滑动 */
   @media (max-width: 480px) {
-    .pnl-recent-5 { padding: 8px 2px; gap: 4px; grid-template-columns: minmax(28px, max-content) repeat(3, minmax(64px, max-content)); }
-    .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
-    .pnl-recent-5 .pnl-recent-val { font-size: 10px; letter-spacing: 0.04em; }
-    .pnl-recent-5 .pnl-recent-label { font-size: 9px; padding: 2px 4px 2px 1px; }
-    .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; min-width: 64px; }
+    .pnl-recent-5,
+    .benchmark-recent-3 { padding: 8px 2px; gap: 4px; grid-template-columns: minmax(28px, max-content) repeat(3, minmax(64px, max-content)); }
+    .pnl-recent-5 .pnl-recent-date,
+    .benchmark-recent-3 .pnl-recent-date { font-size: 9px; }
+    .pnl-recent-5 .pnl-recent-val,
+    .benchmark-recent-3 .pnl-recent-val { font-size: 10px; letter-spacing: 0.04em; }
+    .pnl-recent-5 .pnl-recent-label,
+    .benchmark-recent-3 .pnl-recent-label { font-size: 9px; padding: 2px 4px 2px 1px; }
+    .pnl-recent-5 .pnl-recent-cell,
+    .benchmark-recent-3 .pnl-recent-cell { padding: 2px 1px; min-width: 64px; }
   }
   /* v32.24: press-and-drag tooltip 容器 (绝对定位, chart 底部 x 轴 tick labels 之上, 居中显示在 dragged x 上) */
-  .pnl-trend-tooltip {
+  .pnl-trend-tooltip,
+  .benchmark-tooltip {
     position: absolute;
     bottom: 30px;  /* chart-canvas-wrap 底部上方 30px, 即 x 轴 tick labels 之上 */
     background: #1A1A1A;
@@ -1546,11 +1561,15 @@
   </div>
   <div class="chart-canvas-wrap">
     <canvas id="chart-benchmark"></canvas>
+    <!-- v32.31: press-and-drag tooltip 容器 (跟 pnl-trend 同款) -->
+    <div id="benchmark-tooltip" class="benchmark-tooltip"></div>
     <div class="chart-skeleton" id="skeleton-benchmark">
       <span>数据加载中…</span>
       <div class="skeleton-bar"></div>
     </div>
   </div>
+  <!-- v32.31: 最近 3 个日期速览 (跟 pnl-recent 同款 4 列 × 4 行) -->
+  <div class="benchmark-recent-3" id="benchmark-recent-3"></div>
 </div>
 </section>
 
@@ -1643,7 +1662,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.30 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.31 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1651,6 +1670,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.30"></script>
+<script src="dashboard.js?v=32.31"></script>
 </body>
 </html>
