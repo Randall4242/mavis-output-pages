@@ -8,8 +8,11 @@
 // v15: fallback — 用 v11 浓密铜版画 PNG, 改 layout: top+bottom 各 1 张 no-repeat 居中, opacity 0.38, 保留 4 角纹章
 // v21: 删 v20 全部装饰 (太丑: 4 角啃一口 + 短刻线像订书钉 + 中点圆印像眼睛), 只留 hero 1px border (CSS 已自带)
 // v22: 用户反馈 — 4 角斜切跟卡片直角冲突, 改为沿 4 边画 guilloche 编织花纹 (2 条 sine 互绕), 4 角留 6px 空白, stroke-linecap=round 让端点圆头丝滑过渡
+// v32.23: install + fetch 都强制 cache-bust 绕过 github.io Fastly CDN stale cache
+//         (之前 v32.22 推送 8.5h 后 live github.io 还是 v32.21, CDN 没 invalidate)
+//         install 用 cache: 'reload' 强制 fresh fetch, fetch 用 cache: 'no-store' + URL 加 _t 时间戳
 
-const CACHE_NAME = 'mavis-dashboard-v32-22';
+const CACHE_NAME = 'mavis-dashboard-v32-23';
 const ASSETS = [
   './',
   './index.html',
@@ -26,7 +29,12 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
+      // cache: 'reload' 强制 fresh fetch, 绕过 HTTP cache (含 github.io CDN)
+      .then(cache => Promise.all(ASSETS.map(url =>
+        fetch(new Request(url, { cache: 'reload' }))
+          .then(res => { if (res.ok) cache.put(url, res); })
+          .catch(e => console.warn('[sw] install cache fail for', url, e))
+      )))
       .then(() => self.skipWaiting())
   );
 });
@@ -45,13 +53,19 @@ self.addEventListener('fetch', event => {
   // 只处理 GET
   if (event.request.method !== 'GET') return;
 
-  // Network-first 策略: 优先网络, 失败 fallback 缓存
-  // (跟 v22.23 之前的 stale-while-revalidate 不同 — S24 SW 后台标签页不会触发 install,
-  // 旧 cache 会一直 serve. network-first 保证下次 reload 拿最新)
+  const reqUrl = event.request.url;
+  // 同源请求加 cache-bust 时间戳 query param + cache: 'no-store'
+  // 强制 github.io CDN 走 fresh fetch (绕过 stale cache)
+  const isSameOrigin = reqUrl.startsWith(self.location.origin);
+  const bustUrl = isSameOrigin
+    ? reqUrl + (reqUrl.includes('?') ? '&' : '?') + '_=' + Date.now()
+    : reqUrl;
+
   event.respondWith(
-    fetch(event.request)
+    fetch(bustUrl, { cache: 'no-store' })
       .then(networkRes => {
-        if (networkRes.ok && event.request.url.startsWith(self.location.origin)) {
+        // 用原 URL (不带 _t) 作 cache key, 否则 cache 里全是带 _t 的 key
+        if (networkRes.ok && isSameOrigin) {
           const clone = networkRes.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }

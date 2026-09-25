@@ -4,6 +4,19 @@
 
 ---
 
+## v32.23 · 2026-09-25 · sw.js cache-bust 修 github.io CDN stale 问题
+
+- **bug**: user 反馈过了一整个晚上 (8.5h) 浏览器还显示 v32.21, push 过的 v32.22 实际已经上仓 (raw.githubusercontent.com dashboard.js 是 v32.22, sw.js CACHE_NAME = v32-22), 但 live github.io 还 serve v32.21
+- **根因**: github.io Fastly CDN 8.5h 没 invalidate dashboard.js / sw.js cache。sw fetch handler 是 network-first, 但网络拿到的就是 CDN stale cache (cache-control: max-age=600), 永远拿不到新版本
+- **修法**:
+  - **install**: `cache: 'reload'` 强制 fresh fetch 绕过 HTTP cache (含 github.io CDN)。`Promise.all` + 单独 cache.put, 单个失败不影响整体 (catch + warn)
+  - **fetch**: 每次同源请求加 cache-bust 时间戳 query (`?_=<Date.now()>`), 配合 `cache: 'no-store'` 让浏览器强制走网络 (不发 If-Modified-Since, 不存浏览器 cache)
+  - **cache key 仍用原 URL** (event.request 不带 _t), 避免 cache 里有 _t 后缀污染 key
+- **副作用**: 每次 fetch 都走 CDN, 不再被 CDN stale 缓存影响。但 github.io CDN 应该能扛住 PWA 这种小流量
+- 4 处版本号同步 v32.23 (dashboard.js content 没变, line 2 / ?v= / footer 都 bump)
+
+---
+
 ## v32.22 · 2026-09-25 · chart-pnl-trend 悬浮窗改顶部对齐 + vertical line marker + 点击持久
 
 - **tooltip 行为重构**: user 反馈悬浮窗挡图表。改方案:
