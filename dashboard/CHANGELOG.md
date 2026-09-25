@@ -4,6 +4,19 @@
 
 ---
 
+## v32.27 · 2026-09-25 · pnl-recent-5 数字太密 — 加 letter-spacing + 右对齐 + gap 加大
+
+- **user 反馈**: S24 截图显示数字符号 (-/+,/.) 跟数字紧贴重叠, 千位分隔符看不清, 列间无空隙
+- **根因**: 5 列在 360px 宽度下每列 ~50-55px, `,` / `.` 等符号字符 letter-spacing=normal, 跟数字挤一起; 数字居中对齐, 溢出到列分隔线之外
+- **修法**:
+  - **`.pnl-recent-val` letter-spacing: 0.04em** (desktop) / **0.05em** (mobile): 给符号字符留 breathing room
+  - **`.pnl-recent-cell` align-items: flex-end** + **`.pnl-recent-date` align-self: flex-end**: 数字 / 日期都右对齐, 列分隔线紧贴右边不溢出
+  - **`.pnl-recent-5` gap 加大**: 4px → 6px (desktop) / 2px → 4px (mobile), 列间留明显空隙
+  - **mobile font-size**: val 10px → **9px**, 给 5 列数据留出空间
+- 4 处版本号同步 v32.27
+
+---
+
 ## v32.26 · 2026-09-25 · pnl-recent-5 表格加左侧标签列 (实/总/gap)
 
 - **user 反馈**: pnl-recent-5 表格 (5 列 × 4 行) 最左侧每行加简化标题 (实/总/gap)

@@ -984,11 +984,11 @@
     position: relative;
     height: 280px;
   }
-  /* v32.26: 最近 5 个日期速览 (6 列: 1 标签列 + 5 数据列 × 4 行: 日期 + 3 数字) */
+  /* v32.27: 最近 5 个日期速览 (6 列 × 4 行, 数字右对齐 + letter-spacing 避免符号重叠) */
   .pnl-recent-5 {
     display: grid;
     grid-template-columns: minmax(32px, auto) repeat(5, minmax(0, 1fr));
-    gap: 4px;
+    gap: 6px;
     margin-top: 14px;
     padding: 10px 6px;
     border-top: 1px dashed var(--border);
@@ -998,11 +998,11 @@
   .pnl-recent-5 .pnl-recent-cell {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;  /* v32.27: 数字右对齐, 避免溢出到下一列 */
     gap: 2px;
     padding: 4px 2px;
     border-right: 1px dashed #F0EFEB;
-    min-width: 0;  /* 防止 grid 列内容溢出 */
+    min-width: 0;
   }
   .pnl-recent-5 .pnl-recent-cell:last-child {
     border-right: none;
@@ -1013,16 +1013,18 @@
     letter-spacing: 0.02em;
     margin-bottom: 2px;
     white-space: nowrap;
+    align-self: flex-end;  /* v32.27: 日期也右对齐 */
   }
   .pnl-recent-5 .pnl-recent-val {
     font-size: 11px;
     font-weight: 500;
     white-space: nowrap;
-    font-variant-numeric: tabular-nums;  /* 等宽数字, 对齐 */
+    font-variant-numeric: tabular-nums;
+    /* v32.27: letter-spacing 给符号 (-/+,/.) 留呼吸空间, 避免跟数字连写 */
+    letter-spacing: 0.04em;
   }
-  .pnl-recent-5 .pnl-recent-val.up { color: #C45C4F; }    /* A 股惯例涨红 */
-  .pnl-recent-5 .pnl-recent-val.down { color: #7A8A76; }  /* 跌绿 */
-  /* v32.26: 标签列 (实 / 总 / gap), 跟数据列分隔 (dashed border-right) */
+  .pnl-recent-5 .pnl-recent-val.up { color: #C45C4F; }
+  .pnl-recent-5 .pnl-recent-val.down { color: #7A8A76; }
   .pnl-recent-5 .pnl-recent-label {
     font-size: 10px;
     color: #A8A8A8;
@@ -1034,11 +1036,11 @@
     font-weight: 600;
     letter-spacing: 0.02em;
   }
-  /* v32.26: mobile (S24 360px) 字号缩到 10px, no padding */
+  /* v32.27: mobile (S24 360px) 字号缩 + gap 加大 */
   @media (max-width: 480px) {
-    .pnl-recent-5 { padding: 8px 2px; gap: 2px; grid-template-columns: minmax(28px, auto) repeat(5, minmax(0, 1fr)); }
+    .pnl-recent-5 { padding: 8px 2px; gap: 4px; grid-template-columns: minmax(28px, auto) repeat(5, minmax(0, 1fr)); }
     .pnl-recent-5 .pnl-recent-date { font-size: 9px; }
-    .pnl-recent-5 .pnl-recent-val { font-size: 10px; }
+    .pnl-recent-5 .pnl-recent-val { font-size: 9px; letter-spacing: 0.05em; }
     .pnl-recent-5 .pnl-recent-label { font-size: 9px; padding: 2px 4px 2px 1px; }
     .pnl-recent-5 .pnl-recent-cell { padding: 2px 1px; }
   }
@@ -1636,7 +1638,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.26 · 2026-09-25 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.27 · 2026-09-25 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1644,6 +1646,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.26"></script>
+<script src="dashboard.js?v=32.27"></script>
 </body>
 </html>
