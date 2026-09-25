@@ -4,6 +4,32 @@
 
 ---
 
+## v32.35 · 2026-09-25 · 前端自动补齐缺失交易日 + 我的持仓 fallback 到 initial_principal
+
+- **user 反馈**:
+  1. 我的持仓数据没缺天, 但前 66 天 `cost_basis='carry_forward'` (没买入, 数据 0) 也算 "假设性回填"
+  2. **9-21 / 9-22 这两个真实交易日, backend pipeline 漏渲染**, 4 个数据源 (pnl_series / my_portfolio / sh / csi300) 都缺
+- **实测缺数**:
+  - **9-21 (周一)**: pnl_series / my_portfolio / sh / csi300 全缺
+  - **9-22 (周二)**: 同上
+  - 原因: backend pipeline 那两天渲染失败/漏跑, 数据源是真实的
+- **修法**:
+  - **`fillMissingTradingDates(items)` helper** (module scope): 检测相邻 item 之间的交易日间隔, 跳过周末 (周六日), 自动插入缺失的交易日, 用前一个 item 数据 fill, 标记 `cost_basis='carry_forward'`
+  - **`_filledPnlSeries()` / `_filledBenchmark()`** 方法 (App): 包装 `fillMissingTradingDates` + 收集 missing dates (存到 this._insertedPnlDates 等, 给 carry forward note 用)
+  - **`ensureCharts(data)`**: 用 `_filledPnlSeries()` / `_filledBenchmark()` 给 render / update 用, chart 数据自动含 9-21 / 9-22 两个 slot
+  - **accountFunds change handler** (line 681 / 697): 也用 `_filledBenchmark()` 保持数据一致
+  - **`_getMyPctDenom()`**: 没设 accountFunds → fallback `initial_principal` (settings UI placeholder 文字 "留空: 累计买入 (49064.3)" 即此 fallback)
+  - **`_computeMyPctLabel()`**: 用 `_getMyPctDenom()` 拿分母, 同步 fallback
+- **chart-pnl-trend**:
+  - 之前 128 条 pnl_series → 现在 130 条 (含 9-21 / 9-22 填充, cost_basis='carry_forward')
+  - carry_forward note 自动统计含 9-21 / 9-22 段
+- **chart-benchmark**:
+  - 之前 128 条 my_portfolio → 130 条
+  - sh / csi300 也补齐 9-21 / 9-22 slot (用 9-18 数据 fill)
+- 4 处版本号同步 v32.35
+
+---
+
 ## v32.34 · 2026-09-25 · chart-benchmark 上证 + 沪深 300 缺数据 forward fill (假设性回填)
 
 - **user 反馈**: chart-benchmark 上证指数 + 沪深 300 数据有缺失天 (拉数失败 / 数据源中断), chart 上有断点 / 数据不连续

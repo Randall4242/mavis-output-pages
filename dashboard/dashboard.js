@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.34 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.35 (2026-09-25)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -200,6 +200,39 @@
       else if (last != null) filled[i] = last;
     }
     return filled;
+  };
+  // v32.35: 补齐缺失的交易日 — backend pipeline 偶尔漏生成某天数据 (例如 9-21/9-22), 前端自动检测并插入 + 用前一个 item 的数据 fill
+  // 跳过周末 (周六周日不算交易日), 用周一到周五检测
+  // 返回 { filled: [{...item, trade_date, cost_basis: 'carry_forward'}, ...], missing: ['2026-09-21', ...] }
+  const fillMissingTradingDates = (items) => {
+    if (items.length < 2) return { filled: items.slice(), missing: [] };
+    const result = [];
+    const missing = [];
+    const dt = (s) => new Date(s + 'T00:00:00');
+    const fmt = (d) => d.toISOString().slice(0, 10);
+    for (let i = 0; i < items.length; i++) {
+      if (i > 0) {
+        const prevDate = dt(items[i - 1].trade_date);
+        const currDate = dt(items[i].trade_date);
+        const d = new Date(prevDate);
+        d.setDate(d.getDate() + 1);
+        while (d < currDate) {
+          const wd = d.getDay();  // 0=日, 6=六
+          if (wd !== 0 && wd !== 6) {
+            const dtStr = fmt(d);
+            result.push({
+              ...items[i - 1],
+              trade_date: dtStr,
+              cost_basis: 'carry_forward',
+            });
+            missing.push(dtStr);
+          }
+          d.setDate(d.getDate() + 1);
+        }
+      }
+      result.push(items[i]);
+    }
+    return { filled: result, missing };
   };
 
   const App = {
@@ -644,8 +677,9 @@
           if (this.data) {
             this.renderThreeSeg(this.data);
             // v32.15: chart-benchmark legend label 末条也用 accountFunds 算, 同步触发
-            if (this.charts.benchmark && this.dataCache && this.dataCache.benchmark) {
-              this.updateBenchmarkChartFull(this.dataCache.benchmark);
+            // v32.35: 用 _filledBenchmark() 自动补齐缺失的交易日 (9-21/9-22 等)
+            if (this.charts.benchmark && this.data && this.data.benchmark) {
+              this.updateBenchmarkChartFull(this._filledBenchmark());
             }
           }
         });
@@ -659,8 +693,8 @@
           this.toast('已清空最大占用本金 · 总盈亏% 回到累计投入');
           if (this.data) {
             this.renderThreeSeg(this.data);
-            if (this.charts.benchmark && this.dataCache && this.dataCache.benchmark) {
-              this.updateBenchmarkChartFull(this.dataCache.benchmark);
+            if (this.charts.benchmark && this.data && this.data.benchmark) {
+              this.updateBenchmarkChartFull(this._filledBenchmark());
             }
           }
         });
@@ -903,25 +937,28 @@
     // v22.26: chart 已存在 → updateChartsFull 重设 data + update('none');
     // 不存在 → renderXxxChart 走 new Chart. 这样 chart 跨刷新活着.
     ensureCharts(data) {
+      // v32.35: 用 _filledPnlSeries / _filledBenchmark 自动补齐缺失的交易日
+      const filledSeries = this._filledPnlSeries();
+      const filledBench = this._filledBenchmark();
       if (!this.charts.pnlTrend) {
         try {
-          this.renderPnlTrendChart(data.pnl_series || []);
+          this.renderPnlTrendChart(filledSeries);
         } catch (e) {
           console.error('[charts] PnL trend render failed:', e);
           this.toast('P&L 图表加载失败: ' + (e.message || 'unknown'));
         }
       } else {
-        this.updatePnlTrendChartFull(data.pnl_series || []);
+        this.updatePnlTrendChartFull(filledSeries);
       }
       if (!this.charts.benchmark) {
         try {
-          this.renderBenchmarkChart(data.benchmark || {});
+          this.renderBenchmarkChart(filledBench);
         } catch (e) {
           console.error('[charts] benchmark render failed:', e);
           this.toast('基准对比图表加载失败: ' + (e.message || 'unknown'));
         }
       } else {
-        this.updateBenchmarkChartFull(data.benchmark || {});
+        this.updateBenchmarkChartFull(filledBench);
       }
     },
 
@@ -959,7 +996,7 @@
         const shMap = new Map((bench.sh || []).map(r => [r.trade_date, r]));
         const csiMap = new Map((bench.csi300 || []).map(r => [r.trade_date, r]));
         const seriesMap = new Map(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
-        const denom = this.accountFunds && this.accountFunds > 0 ? this.accountFunds : null;
+        const denom = this._getMyPctDenom();
         newDays.forEach(r => {
           const fullDate = r.trade_date;
           const myR = myMap.get(fullDate);
@@ -1012,7 +1049,7 @@
       const csiMap = Object.fromEntries((bench.csi300 || []).map(r => [r.trade_date, r.pct_from_baseline]));
       // v32.32: 跟 renderBenchmarkChart 一致, 删 backend cum_pct, 用前端 runtime 公式
       const seriesMap = Object.fromEntries(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
-      const denom = this.accountFunds && this.accountFunds > 0 ? this.accountFunds : null;
+      const denom = this._getMyPctDenom();
       c.data.labels = labels;
       c.data.datasets[0].data = my.map(r => {
         const s = seriesMap[r.trade_date];
@@ -1038,14 +1075,52 @@
     },
 
     // v32.15: 算我的总盈亏% 末条 label (chart legend / dataset[0].label 共享)
-    // v32.32: 彻底删 backend cum_pct fallback, 严格用 (持仓 + 已实现) / accountFunds 公式
+    // v32.32: 删 backend cum_pct, 严格用 (持仓 + 已实现) / denom 公式
+    // v32.35: denom fallback → initial_principal (settings UI 留空 fallback)
     _computeMyPctLabel() {
-      if (this.accountFunds && this.accountFunds > 0 && this.data && this.data.summary) {
+      const denom = this._getMyPctDenom();
+      if (denom && this.data && this.data.summary) {
         const tp = this.data.summary.total_pnl_abs;
-        const myPctLast = Math.round((tp / this.accountFunds) * 10000) / 100;
+        const myPctLast = Math.round((tp / denom) * 10000) / 100;
         return fmtPct(myPctLast);
       }
-      return '—';  // 没设 accountFunds → 显示 "—", 提示去设置填最大占用本金
+      return '—';
+    },
+    // v32.35: 我的持仓% 分母 — user 填 accountFunds → 用 user, 否则 fallback initial_principal
+    // settings UI placeholder "留空: 累计买入 (49064.3)" 即此 fallback
+    _getMyPctDenom() {
+      if (this.accountFunds && this.accountFunds > 0) return this.accountFunds;
+      const ip = this.data && this.data.summary && this.data.summary.initial_principal;
+      return ip && ip > 0 ? ip : null;
+    },
+    // v32.35: 是否用了 fallback (没填 accountFunds → 显示提示)
+    _isMyPctUsingFallback() {
+      return !(this.accountFunds && this.accountFunds > 0)
+        && !!(this.data && this.data.summary && this.data.summary.initial_principal);
+    },
+
+    // v32.35: 补齐缺失的交易日, 返回填充后的 series + missing dates
+    // 用于 chart-pnl-trend (pnl_series) + chart-benchmark (my_portfolio / sh / csi300)
+    _filledPnlSeries() {
+      const series = (this.data && this.data.pnl_series) || [];
+      const { filled, missing } = fillMissingTradingDates(series);
+      this._insertedPnlDates = missing;
+      return filled;
+    },
+    _filledBenchmark() {
+      const bench = (this.data && this.data.benchmark) || {};
+      const myRes = fillMissingTradingDates(bench.my_portfolio || []);
+      const shRes = fillMissingTradingDates(bench.sh || []);
+      const csiRes = fillMissingTradingDates(bench.csi300 || []);
+      this._insertedMyDates = myRes.missing;
+      this._insertedShDates = shRes.missing;
+      this._insertedCsiDates = csiRes.missing;
+      return {
+        my_portfolio: myRes.filled,
+        sh: shRes.filled,
+        csi300: csiRes.filled,
+        first_buy_date: bench.first_buy_date,
+      };
     },
 
     // 移动端检测兜底: 旧 WebView / 某些 Android 浏览器可能没 window.matchMedia, 之前 v22.8 在 raf 回调里抛错被吞
@@ -1091,26 +1166,35 @@
       }
     },
 
-    // v32.34: chart-benchmark carry forward note (上证 + 沪深 300 缺的天 forward fill 统计)
-    // 跟 updateCarryForwardNote 独立 — 数据源不同 (pnl_series 是 cost_basis, benchmark 是 forward fill mask)
+    // v32.35: chart-benchmark carry forward note (我的持仓 + 上证 + 沪深 300 缺的天 forward fill 统计)
+    // 整合 _insertedMyDates (v32.35 fill 补的天) + _shCfDates (v32.34 forward fill mask) + _insertedShDates / _insertedCsiDates
     updateBenchmarkCarryForwardNote(bench) {
       const note = $('benchmark-carry-forward-note');
       const textEl = $('benchmark-carry-forward-text');
       if (!note || !textEl) return;
-      const shDates = this._shCfDates || [];
-      const csiDates = this._csiCfDates || [];
-      if (shDates.length === 0 && csiDates.length === 0) {
+      // v32.35: 我的持仓段 — fillMissingTradingDates 补的天 (例如 9-21/9-22)
+      const myDates = this._insertedMyDates || [];
+      const shDates = [
+        ...((this._shCfDates || [])),
+        ...((this._insertedShDates || [])),
+      ];
+      const csiDates = [
+        ...((this._csiCfDates || [])),
+        ...((this._insertedCsiDates || [])),
+      ];
+      if (myDates.length === 0 && shDates.length === 0 && csiDates.length === 0) {
         note.style.display = 'none';
         return;
       }
-      // 计算 contiguous ranges (跟 pnl-trend 同款逻辑)
+      // 计算 contiguous ranges (跟 pnl-trend updateCarryForwardNote 算法一致)
       const fmtRanges = (dates) => {
         if (dates.length === 0) return '';
         const sorted = dates.slice().sort();
         const ranges = [];
         let start = sorted[0], prev = sorted[0];
         for (let i = 1; i < sorted.length; i++) {
-          if (sorted[i] === prev || isNextDay(prev, sorted[i])) {
+          const da = new Date(prev), db = new Date(sorted[i]);
+          if (sorted[i] === prev || (db - da) === 86400000) {
             prev = sorted[i];
           } else {
             ranges.push([start, prev]);
@@ -1121,11 +1205,10 @@
         ranges.push([start, prev]);
         return ranges.map(([s, e]) => `${s.substring(5)}~${e.substring(5)}`).join(' + ');
       };
-      const isNextDay = (a, b) => {
-        const da = new Date(a), db = new Date(b);
-        return (db - da) === 86400000;
-      };
       const parts = [];
+      if (myDates.length > 0) {
+        parts.push(`我的持仓 ${myDates.length} 天 (${fmtRanges(myDates)})`);
+      }
       if (shDates.length > 0) {
         parts.push(`上证指数 ${shDates.length} 天 (${fmtRanges(shDates)})`);
       }
@@ -1133,7 +1216,7 @@
         parts.push(`沪深 300 ${csiDates.length} 天 (${fmtRanges(csiDates)})`);
       }
       note.style.display = '';
-      textEl.textContent = `${parts.join(' + ')} 为假设性回填 (前一个交易日值)`;
+      textEl.textContent = `${parts.join(' + ')} 为假设性回填 (前一个交易日值 / pipeline 漏渲染)`;
     },
 
     renderPnlTrendChart(series) {
@@ -1546,7 +1629,7 @@
       //   my_pct[i] = (pnl_series[i].total_pnl + pnl_series[i].realized_pnl) / accountFunds * 100
       // 没设 accountFunds → myData 全 null (chart 隐藏 "我的" 线, 提示去设置填)
       const seriesMap = Object.fromEntries(((this.data && this.data.pnl_series) || []).map(s => [s.trade_date, s]));
-      const denom = this.accountFunds && this.accountFunds > 0 ? this.accountFunds : null;
+      const denom = this._getMyPctDenom();
       const myData = my.map(r => {
         const s = seriesMap[r.trade_date];
         if (!s || !denom) return null;
