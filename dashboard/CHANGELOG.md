@@ -2,6 +2,42 @@
 
 按 dashboard_fix1.md plan P3-B 实施。footer 简版只保留版本号 + 日期 + 母题,变动摘要归档到此文件。
 
+## v32.37 · 2026-09-28 · 统一"总投资盈亏"分母口径 (Hero + 三段式)
+
+- **user 反馈**: "今日 tab 的置顶卡片, 总投资盈亏的分母为什么和别的总投资盈亏分母不一样"
+- **根因**:
+  - v32.10 把**三段式**的总盈亏% 改成优先读 localStorage `accountFunds` (最大占用本金)
+  - 但 **Hero 置顶卡片** (`dashboard.js:590`) 一直写死 `summary.total_pnl_pct`
+    (分母 = `initial_principal` 累计买入), 没跟着改
+  - 结果: 同一个页面两个"总投资盈亏", 分母一个 53,827.10 (累计买入) 一个是用户手填值
+- **改动**:
+  1. 新增 4 个共享方法 `usingAccountFunds()` / `totalPctDenominator()` / `totalPct()` /
+     `totalDenominatorLabel()`, Hero 和三段式走同一套分母逻辑, 彻底消除分叉
+  2. Hero 百分比 + 副信息第三项 (标签 + 金额) 跟随实际口径
+  3. 三段式分母副行 `<div id="total-denominator-label">` 动态显示
+     `vs 最大占用本金` / `vs 初始总投入`
+  4. hero-stat-key `初始总投入` 加 id, accountFunds 模式下显示 `最大占用本金`
+  5. **改漏修复**: 保存 / 清空最大占用本金时只调 `renderThreeSeg`, Hero 不刷新 →
+     两处 handler (`change` + `clear`) 都补上 `renderHero`
+  6. settings 输入框 placeholder 里 hardcode 的 `49064.3` 改为动态取真实
+     `initial_principal` (数据到达后回填, 旧值早就跟实际脱节)
+- **口径定义 (v32.37 统一后)**:
+  - 分母优先级: `accountFunds` (最大占用本金, 用户手填) > `initial_principal` (累计买入)
+  - 分子恒为 `summary.total_pnl_abs` (持仓浮亏 + 已实现盈亏), 只有分母可变
+- **验证** (node 纯函数测试 4 场景):
+  | 场景 | 分母 | 输出 |
+  |---|---|---|
+  | 未填最大占用本金 | 53,827.10 | -3.61% (= 旧 Hero 值, 向后兼容) |
+  | 填 22,000 | 22,000 | -8.83% (Hero 与三段式一致) |
+  | 分母为 0 | — | 回退后端 `total_pnl_pct` |
+  | 清空设置 | 53,827.10 | 回到累计买入口径 |
+- **附带发现 (未修, 记录待议)**: 后端 `net_invested` / `total_pnl_pct_net` 前端 **0 处引用**。
+  该口径只算当前仍持有的成本 (22,417.02), 但分子含已实现盈亏 (靠已卖出的钱赚的),
+  **分子分母口径不匹配** → 百分比失真。v32.11 短暂用过, user 9-24 已回退。
+  后端注释说"保留供前端 placeholder reference"与实际不符 (placeholder 当时是 hardcode 的)。
+
+---
+
 ---
 
 ## v32.36 · 2026-09-25 · fillMissingTradingDates 时区 bug 修复 + seriesMap 用 filled pnl_series
