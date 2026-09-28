@@ -1797,6 +1797,16 @@
 
 <!-- 占用本金的当前值/峰值/加权率已上移到 summary 置顶卡片 (.cash-hero), 这里不再重复 -->
 
+<!-- ============ 占用本金走势 (v32.42: 移到置顶卡正下方, 账户转入转出之前) ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">占用本金走势 <span class="count">虚线 = 时间加权平均</span></h2>
+<div class="chart-wrap" style="position:relative;height:240px;">
+  <canvas id="chart-capital"></canvas>
+</div>
+
 <!-- ============ 账户资金进出 ============ -->
 <div class="divider">
   <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
@@ -1819,16 +1829,6 @@
 
 <div id="cf-empty" style="display:none;padding:32px 8px;text-align:center;color:var(--ink-muted);font-size:13px;line-height:1.8;">
   暂无资金流水记录。<br>以后每次入金 / 提现告诉 Mavis 一声就会记在这里。
-</div>
-
-<!-- ============ 占用本金走势 ============ -->
-<div class="divider">
-  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
-</div>
-
-<h2 class="section-title">占用本金走势 <span class="count">虚线 = 时间加权平均</span></h2>
-<div class="chart-wrap" style="position:relative;height:240px;">
-  <canvas id="chart-capital"></canvas>
 </div>
 
 </section>
@@ -1882,7 +1882,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.41 · 2026-09-28 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.42 · 2026-09-28 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1890,6 +1890,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.41"></script>
+<script src="dashboard.js?v=32.42"></script>
 </body>
 </html>
