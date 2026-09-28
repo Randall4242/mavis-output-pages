@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.37 (2026-09-28)
+ * Mavis Stock Tracker — Dashboard.js v32.38 (2026-09-28)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -91,7 +91,7 @@
  *   (在 drawer local x=328+) 裁掉, 实际渲染不出来.
  *   修法: 加 .tab-stage 外壳负责 overflow:hidden (不 transform), .tab-drawer 内层负责 transform.
  *   overflow 边界跟 transform 完全解耦. drawer width = 400% (= 4 page), 1 page = 25% of drawer,
- *   translateX(-idx * 25%) 让 drawer 偏移 1 page width. 跨 session 接手必知: transformed element
+ *   translateX(-idx * PAGE_PCT%) 让 drawer 偏移 1 page width. 跨 session 接手必知: transformed element
  *   上不要同时设 overflow:hidden, 必须分两层 — 外层 overflow, 内层 transform. 9-7 瞎归因教训 #8)
  * v31.3 bugfix (用户 9-22 反馈: 分析 / 清仓&交易 tab 顶部置顶卡片不见了 (mini 三段 + mini 持仓
  *   / 已实现盈亏). 根因: v31.0 wrap 把 summary 误放进 page-today 内, 切到非今日 tab 时 summary
@@ -181,7 +181,10 @@
 
   const DATA_URL = 'data/dashboard.json';
   // v31.0: 4 tab 顺序常量提到 module 级, 让 changeTab + initSwipeTabs 都能引用
-  const tabOrder = ['today', 'analysis', 'closed-trades', 'settings'];
+  const tabOrder = ['today', 'analysis', 'closed-trades', 'cashflow', 'settings'];
+  // v32.38: 5 page 时单页占 drawer 的 20%. 以前 25% 散在 5 处 JS + 3 处 CSS,
+  // 加 tab 要改 8 个地方, 漏一处就整页错位. 现在 JS 统一由 tabOrder 派生.
+  const PAGE_PCT = 100 / tabOrder.length;
   const $ = (id) => document.getElementById(id);
 
   // 中文习惯: 盈=红/涨, 亏=绿/跌 (跟视觉 token --accent-up/--accent-down 一致)
@@ -340,7 +343,7 @@
         this.currentTabIdx = 0;
       }
       if (this.drawer) {
-        this.drawer.style.transform = `translateX(-${this.currentTabIdx * 25}%)`;
+        this.drawer.style.transform = `translateX(-${this.currentTabIdx * PAGE_PCT}%)`;
       }
       // v31.5: hero 初始 today visible (nav active = today)
       const heroEl = document.getElementById('tab-today');
@@ -395,7 +398,7 @@
             'closed-trades': 'REALIZED P&L · 已实现盈亏',
           })[target] || '';
         }
-        const cardMode = ({ 'today':'standard', 'analysis':'compact', 'closed-trades':'hidden', 'settings':'hidden' })[target] || 'standard';
+        const cardMode = ({ 'today':'standard', 'analysis':'compact', 'closed-trades':'hidden', 'cashflow':'hidden', 'settings':'hidden' })[target] || 'standard';
         summaryEl.querySelectorAll('.holding-card').forEach(c => { c.dataset.mode = cardMode; });
       }
       // 切换 active class
@@ -417,7 +420,7 @@
         } else {
           drawer.style.transition = 'none';
         }
-        drawer.style.transform = `translateX(-${idx * 25}%)`;
+        drawer.style.transform = `translateX(-${idx * PAGE_PCT}%)`;
         this.drawer = drawer;
         if (animMs > 0) {
           setTimeout(() => {
@@ -434,6 +437,16 @@
         } else if (target === 'analysis' && this.data) {
           // 立即路径 (animMs=0, drawer 已就绪): 已有 data 就画
           requestAnimationFrame(() => this.renderCharts(this.data));
+        }
+        // v32.38: 「资金」tab 也要画 chart — 必须等 pane 可见 (hidden canvas width=0 会画坏, 旧坑)
+        if (target === 'cashflow' && this.data) {
+          setTimeout(() => {
+            try {
+              this.renderCapitalChart(this.data);
+              // chart 画完才撑高, 补一次舞台高度 (否则 footer 上面留白)
+              this.updateTabStageHeight();
+            } catch (e) { console.error('[charts] capital render failed:', e); }
+          }, animMs > 0 ? animMs : 60);
         }
       }
       // v32.0: polling 启动必须在 drawer 守卫外 — drawer 现在 query 即使 DOM (load 未完也能查),
@@ -461,7 +474,7 @@
       //   - 横移 > 50px + 时间 < 500ms + 不在 chart/table 内触发 → commit (drawer 动画到下一 page)
       //   - 否则 snap back (drawer 动画回当前 page)
       // 边界 (今日右滑 / 设置左滑) rubber band: drag 量只跟 0.30 倍, commit 失败 snap back
-      const tabOrder = ['today', 'analysis', 'closed-trades', 'settings'];
+      // v32.38: 复用 module 级 tabOrder (不再局部重定义, 避免加 tab 时两处不同步)
       let touchState = null;  // {startX, startY, startTime, currentIdx}
 
       // v31.9: 提高横滑触发门槛, 避免轻微偏移就切 tab (用户 9-22 反馈)
@@ -512,12 +525,12 @@
         this.drawer.style.transition = 'none';
         if (!inBounds) {
           // 边界 rubber band (0.3 比例)
-          // v31.2: drawer width = 400% (4 page), 1 page = 25% of drawer. translateX(-idx * 25%) = drawer offset
+          // v31.2: drawer width = 500% (5 page), 1 page = 20% of drawer. translateX(-idx * PAGE_PCT) = drawer offset
           const rubberDx = dx * SWIPE_RUBBER_RATIO;
-          this.drawer.style.transform = `translateX(calc(-${currentIdx * 25}% + ${rubberDx}px))`;
+          this.drawer.style.transform = `translateX(calc(-${currentIdx * PAGE_PCT}% + ${rubberDx}px))`;
         } else {
           // 1:1 跟手 (drawer 整个跟手指)
-          this.drawer.style.transform = `translateX(calc(-${currentIdx * 25}% + ${dx}px))`;
+          this.drawer.style.transform = `translateX(calc(-${currentIdx * PAGE_PCT}% + ${dx}px))`;
         }
       };
 
@@ -535,7 +548,7 @@
         } else {
           // snap back (边界 or 未达阈值都回 currentIdx)
           this.drawer.style.transition = `transform ${SWIPE_ANIM_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`;
-          this.drawer.style.transform = `translateX(-${currentIdx * 25}%)`;
+          this.drawer.style.transform = `translateX(-${currentIdx * PAGE_PCT}%)`;
           setTimeout(() => {
             this.drawer.style.transition = '';
           }, SWIPE_ANIM_MS);
@@ -558,6 +571,7 @@
       this.renderClosed(data);
       this.renderTradeSummary(data);
       this.renderTransactions(data);
+      this.renderCashflow(data);  // v32.38: 资金 tab
       // 不在 load() 里 renderCharts — canvas 在 hidden pane 时 width=0, Chart.js 内部 layout 坏了, 后续 destroy + 重画也救不回来
       // charts 改在 initTabs 切到分析 tab 时画 (pane visible, width 正确)
     },
@@ -606,6 +620,73 @@
           `已实现 ${rp < 0 ? '-' : '+'}${fmtMoneyBig(rp)}` +
           `<span class="sep">·</span>` +
           `${denomLabel} ${fmtMoneyBig(denom)}`;
+      }
+    },
+
+    // v32.38: 「资金」tab — 占用本金指标 + 账户转入转出流水
+    renderCashflow(data) {
+      const cap = data.capital || {};
+      const cf = data.cash_flows || [];
+      const cfs = data.cashflow_summary || {};
+
+      const curEl = $('capital-current');
+      if (curEl) {
+        curEl.textContent = cap.current != null ? fmtMoneyBig(cap.current) + ' 元' : '—';
+        curEl.className = 'seg-amount ' + pnlClass(0);
+      }
+      const curLabel = $('capital-current-label');
+      if (curLabel && cap.first_date) {
+        curLabel.textContent = `当前占用 · 自 ${cap.first_date} 起`;
+      }
+
+      const grid = $('capital-grid');
+      if (grid) {
+        const tp = (data.summary && data.summary.total_pnl_abs) || 0;
+        const rows = [
+          ['峰值占用', cap.peak != null ? fmtMoneyBig(cap.peak) + ' 元' : '—', '历史最高投入股市的钱'],
+          ['时间加权平均', cap.avg != null ? fmtMoneyBig(cap.avg) + ' 元' : '—', '按日历天加权, 更贴近真实资金效率'],
+          ['按时间加权算总盈亏', cap.avg ? fmtPct(Math.round(tp / cap.avg * 10000) / 100) : '—', `总盈亏 ${fmtMoney(tp)} ÷ ${fmtMoneyBig(cap.avg || 0)}`],
+        ];
+        grid.innerHTML = rows.map(([k, v, note]) => `
+          <div class="trade-cell">
+            <div class="trade-key">${k}</div>
+            <div class="trade-val">${v}</div>
+            <div class="trade-note">${note}</div>
+          </div>`).join('');
+      }
+
+      const sgrid = $('cf-summary-grid');
+      if (sgrid) {
+        const rows = [
+          ['累计入金', fmtMoneyBig(cfs.total_deposit || 0) + ' 元', '打进券商账户的钱'],
+          ['累计提现', fmtMoneyBig(cfs.total_withdraw || 0) + ' 元', '取出账户的钱'],
+          ['净入金', fmtMoneyBig(cfs.net_deposit || 0) + ' 元', '本金口径 = 入金 − 提现'],
+        ];
+        sgrid.innerHTML = rows.map(([k, v, note]) => `
+          <div class="trade-cell">
+            <div class="trade-key">${k}</div>
+            <div class="trade-val">${v}</div>
+            <div class="trade-note">${note}</div>
+          </div>`).join('');
+      }
+
+      const cnt = $('cf-count');
+      if (cnt) cnt.textContent = cf.length + ' 笔';
+      const empty = $('cf-empty');
+      const wrap = document.querySelector('.tx-table-wrap');
+      if (empty) empty.style.display = cf.length ? 'none' : 'block';
+      if (wrap) wrap.style.display = cf.length ? 'block' : 'none';
+
+      const tb = $('cf-tbody');
+      if (tb) {
+        const KIND = { deposit: '转入', withdraw: '转出', dividend: '股息', interest: '利息', tax: '税' };
+        tb.innerHTML = cf.map(r => `
+          <tr>
+            <td>${r.flow_date}</td>
+            <td class="${r.kind === 'deposit' ? 'up' : (r.kind === 'withdraw' ? 'down' : '')}">${KIND[r.kind] || r.kind}</td>
+            <td class="num">${Number(r.amount).toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td>${r.note || ''}</td>
+          </tr>`).join('');
       }
     },
 
@@ -989,6 +1070,83 @@
 
     // v22.26: chart 已存在 → updateChartsFull 重设 data + update('none');
     // 不存在 → renderXxxChart 走 new Chart. 这样 chart 跨刷新活着.
+    // v32.38: 占用本金走势 (只在「资金」tab 可见时画 — hidden canvas width=0 会画坏)
+    renderCapitalChart(data) {
+      const el = $('chart-capital');
+      const cap = data.capital || {};
+      if (!el || !cap.series || !cap.series.length) return;
+      if (this.charts.capital) { this.charts.capital.destroy(); }
+
+      const labels = cap.series.map(s => s.date.substring(5));
+      const values = cap.series.map(s => s.value);
+      // 平均线 — 时间加权平均是核心分母, 画出来才看得出"多数时间在平均线以下/以上"
+      const avg = cap.avg || 0;
+
+      this.charts.capital = new Chart(el.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: '占用本金',
+              data: values,
+              borderColor: '#3A2E26',
+              backgroundColor: 'rgba(58,46,38,0.06)',
+              borderWidth: 2,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              fill: true,
+              tension: 0.25,
+            },
+            {
+              label: `时间加权平均 ${fmtMoneyBig(avg)}`,
+              data: values.map(() => avg),
+              borderColor: '#C45C4F',
+              borderWidth: 1.5,
+              borderDash: [6, 4],
+              pointRadius: 0,
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { color: '#6B6B6B', boxWidth: 18, font: { size: 11 } },
+            },
+            tooltip: {
+              backgroundColor: '#1A1A1A',
+              titleFont: { size: 12 },
+              bodyFont: { size: 12 },
+              callbacks: {
+                label: (c) => `${c.dataset.label}: ${Number(c.parsed.y).toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2})} 元`,
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { color: '#F0EFEB' },
+              ticks: { color: '#A8A8A8', font: { size: 10 }, maxTicksLimit: 8 },
+            },
+            y: {
+              grid: { color: '#F0EFEB' },
+              ticks: {
+                color: '#A8A8A8',
+                font: { size: 10 },
+                callback: (v) => (v / 1000).toFixed(0) + 'k',
+              },
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    },
+
     ensureCharts(data) {
       // v32.35: 用 _filledPnlSeries / _filledBenchmark 自动补齐缺失的交易日
       const filledSeries = this._filledPnlSeries();
