@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.39 (2026-09-28)
+ * Mavis Stock Tracker — Dashboard.js v32.40 (2026-09-28)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -647,14 +647,33 @@
       const hAvg = $('capital-hero-avg');
       if (hAvg) hAvg.textContent = cap.avg != null ? fmtMoneyBig(cap.avg) : '—';
       const hRate = $('capital-hero-rate');
+      const tp = (data.summary && data.summary.total_pnl_abs) || 0;
+      const rate = cap.avg ? Math.round((tp / cap.avg) * 10000) / 100 : null;
       if (hRate) {
-        const tp = (data.summary && data.summary.total_pnl_abs) || 0;
-        const r = cap.avg ? Math.round((tp / cap.avg) * 10000) / 100 : null;
-        if (hRate) {
-          hRate.textContent = r != null ? fmtPct(r) : '—';
-          hRate.className = 'cash-hero-stat-val ' + pnlClass(tp);
-        }
+        hRate.textContent = rate != null ? fmtPct(rate) : '—';
+        hRate.className = 'cash-hero-stat-val ' + pnlClass(tp);
       }
+
+      // ---- v32.40: 指标说明 (算式 + 口径) ----
+      // 分母来源优先级跟 v32.37 totalPct() 一致: accountFunds > 累计买入
+      const s = data.summary || {};
+      const usingAF = this.usingAccountFunds();
+      const denomLabel = usingAF ? '最大占用本金' : '累计买入';
+      const setNote = (id, html) => { const e = $(id); if (e) e.innerHTML = html; };
+      const seriesLen = (cap.series || []).length;
+
+      setNote('capital-note-current', cap.current != null
+        ? `累计买入 − 累计卖出 + 累计股息 = <b>${fmtMoneyBig(cap.current)}</b> 元, 即此刻压在股市里的钱`
+        : '—');
+      setNote('capital-note-peak', cap.peak != null
+        ? `历史最高占用 <b>${fmtMoneyBig(cap.peak)}</b> 元, 衡量你最多同时押了多少`
+        : '—');
+      setNote('capital-note-avg', cap.avg != null
+        ? `按日历天加权 (含空仓期, ${seriesLen} 天) = <b>${fmtMoneyBig(cap.avg)}</b> 元, 反映真实资金效率`
+        : '—');
+      setNote('capital-note-rate', rate != null
+        ? `总盈亏 ${fmtMoney(tp)} ÷ ${fmtMoneyBig(cap.avg)} = <b>${fmtPct(rate)}</b> · 置顶卡百分比统一用「${denomLabel}」口径 (可在设置页改)`
+        : '—');
 
       // ---- 净入金三格 (复用 holding-card 视觉体系, 跟其他 tab 一致) ----
       const sgrid = $('cf-summary-grid');
