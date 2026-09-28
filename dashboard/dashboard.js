@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.36 (2026-09-25)
+ * Mavis Stock Tracker — Dashboard.js v32.37 (2026-09-28)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -587,23 +587,25 @@
 
       const heroPct = $('hero-percent');
       if (heroPct) {
-        heroPct.textContent = fmtPct(s.total_pnl_pct);
+        heroPct.textContent = fmtPct(this.totalPct(s));
         heroPct.classList.remove('up', 'down', 'neutral');
         heroPct.classList.add(pnlClass(tp));
       }
 
-      // 副信息: 持仓 X / 已实现 Y / 初始总投入 Z
+      // 副信息: 持仓 X / 已实现 Y / <分母标签> Z
+      // v32.37: 分母标签跟着实际口径走 (最大占用本金 vs 初始总投入), 不再写死
       const heroSub = $('hero-sub');
       if (heroSub) {
         const fp = s.floating_pnl_abs;
         const rp = s.realized_pnl_abs;
-        const init = s.initial_principal || 0;
+        const denom = this.totalPctDenominator(s);
+        const denomLabel = this.usingAccountFunds() ? '最大占用本金' : '初始总投入';
         heroSub.innerHTML =
           `持仓 ${fp < 0 ? '-' : '+'}${fmtMoneyBig(fp)}` +
           `<span class="sep">·</span>` +
           `已实现 ${rp < 0 ? '-' : '+'}${fmtMoneyBig(rp)}` +
           `<span class="sep">·</span>` +
-          `初始总投入 ${fmtMoneyBig(init)}`;
+          `${denomLabel} ${fmtMoneyBig(denom)}`;
       }
     },
 
@@ -645,22 +647,60 @@
         tAmt.classList.remove('up', 'down', 'neutral');
         tAmt.classList.add(pnlClass(tp));
       }
-      // v32.10: total_pnl_pct 优先用 localStorage account_funds 算
-      // (没设 → fallback 后端 summary.total_pnl_pct, 即基于累计投入 initial_principal)
+      // v32.37: 跟 Hero 走同一个 totalPct() (最大占用本金优先, 否则累计买入)
       const tPct = $('total-pct');
       if (tPct) {
-        const tPctVal = (this.accountFunds && this.accountFunds > 0)
-          ? Math.round((tp / this.accountFunds) * 10000) / 100
-          : s.total_pnl_pct;
-        tPct.textContent = fmtPct(tPctVal);
+        tPct.textContent = fmtPct(this.totalPct(s));
         tPct.classList.remove('up', 'down', 'neutral');
         tPct.classList.add(pnlClass(tp));
       }
+      // v32.37: 分母副行 + hero stat 标签跟着实际口径走
+      const tDenomLabel = $('total-denominator-label');
+      if (tDenomLabel) tDenomLabel.textContent = this.totalDenominatorLabel();
+      const ipKey = $('initial-principal-key');
+      if (ipKey) ipKey.textContent = this.usingAccountFunds() ? '最大占用本金' : '初始总投入';
+      const ipVal = $('initial-principal-val');
+      if (ipVal) {
+        const d = this.totalPctDenominator(s);
+        ipVal.textContent = d ? fmtMoneyBig(d) + ' 元' : '—';
+      }
+      // v32.37: 数据到位后回填 settings placeholder 的真实累计买入
+      this._syncAccountFundsPlaceholder();
     },
 
     // v32.10: 账户资金 (本地设置, 用户在 settings tab 输入, 用于覆写总盈亏% 分母)
     // v32.15: 语义改 "最大占用本金 (Max Invested Capital)" — 内部变量 / localStorage key 保留向后兼容
+    // v32.37: Hero 和三段式统一走下面这两个方法 — 之前 v32.10 只改了三段式, Hero 仍写死
+    //          summary.total_pnl_pct (initial_principal 分母), 导致同页两个"总投资盈亏"分母不同
     accountFunds: null,
+    // 分母优先级: 最大占用本金 (用户手填) > 累计买入 initial_principal
+    usingAccountFunds() {
+      return !!(this.accountFunds && this.accountFunds > 0);
+    },
+    totalPctDenominator(summary) {
+      if (this.usingAccountFunds()) return this.accountFunds;
+      return (summary && summary.initial_principal) || 0;
+    },
+    // 分子恒为 summary.total_pnl_abs (持仓浮亏 + 已实现盈亏), 只有分母可变
+    totalPct(summary) {
+      const s = summary || {};
+      const denom = this.totalPctDenominator(s);
+      if (!denom) return s.total_pnl_pct || 0;
+      return Math.round(((s.total_pnl_abs || 0) / denom) * 10000) / 100;
+    },
+    // 三段式 / Hero 共用的分母标签, 保证文案与实际分母一致
+    totalDenominatorLabel() {
+      return this.usingAccountFunds() ? 'vs 最大占用本金' : 'vs 初始总投入';
+    },
+    // v32.37: settings 输入框 placeholder 显示真实的累计买入金额 (数据到达后回填)
+    _syncAccountFundsPlaceholder() {
+      const input = $('account-funds-input');
+      if (!input) return;
+      const ip = this.data && this.data.summary && this.data.summary.initial_principal;
+      input.placeholder = ip
+        ? '留空: 用累计买入 ' + fmtMoneyBig(ip)
+        : '留空: 用累计买入金额';
+    },
     initAccountFunds() {
       try {
         const saved = localStorage.getItem('mavis.accountFunds');
@@ -669,6 +709,9 @@
       const input = $('account-funds-input');
       if (input) {
         if (this.accountFunds) input.value = this.accountFunds.toString();
+        // v32.37: placeholder 里的累计买入金额改为动态取真值
+        // (之前 hardcode 49064.3, 早就跟实际 initial_principal 脱节了)
+        this._syncAccountFundsPlaceholder();
         input.addEventListener('change', () => {
           const v = parseFloat(input.value);
           if (!isNaN(v) && v > 0) {
@@ -681,6 +724,8 @@
             this.toast('已清空最大占用本金 · 总盈亏% 回到累计投入');
           }
           if (this.data) {
+            // v32.37: Hero 也必须重渲染 — 分母口径改了, 之前只刷三段式导致置顶卡片显示旧分母
+            this.renderHero(this.data);
             this.renderThreeSeg(this.data);
             // v32.15: chart-benchmark legend label 末条也用 accountFunds 算, 同步触发
             // v32.35: 用 _filledBenchmark() 自动补齐缺失的交易日 (9-21/9-22 等)
@@ -698,6 +743,8 @@
           if (input) input.value = '';
           this.toast('已清空最大占用本金 · 总盈亏% 回到累计投入');
           if (this.data) {
+            // v32.37: Hero 也必须重渲染 — 分母口径改了, 之前只刷三段式导致置顶卡片显示旧分母
+            this.renderHero(this.data);
             this.renderThreeSeg(this.data);
             if (this.charts.benchmark && this.data && this.data.benchmark) {
               this.updateBenchmarkChartFull(this._filledBenchmark());
