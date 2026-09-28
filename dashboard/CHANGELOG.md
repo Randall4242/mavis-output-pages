@@ -1,6 +1,38 @@
 # Mavis Stock Tracker Dashboard — Changelog
 
 按 dashboard_fix1.md plan P3-B 实施。footer 简版只保留版本号 + 日期 + 母题,变动摘要归档到此文件。
+## v32.38 · 2026-09-28 · 新增「资金」tab (账户转入转出 + 占用本金)
+
+- **user 需求**: 记录交易和记录账户转出转入分两个渠道容易混乱, 统一跟 Mavis 说;
+  但要有个 tab 展示账户转入转出记录, 位置放在「清仓&交易」和「设置」之间
+- **drawer 4 page → 5 page** (根上修, 不是插个 div):
+  - 以前 25% 散在 **5 处 JS + 3 处 CSS**, 加 tab 要改 8 个地方, 漏一处就整页错位
+  - 抽出 `const PAGE_PCT = 100 / tabOrder.length` — 以后加 tab 只改 `tabOrder` 一行
+  - CSS: drawer `400% → 500%`, tab-page `25% → 20%`
+  - `initSwipeTabs` 里的局部 `tabOrder` 删除, 复用 module 级 (两处不同步是隐患)
+- **新 tab 内容**:
+  - 占用本金: 当前 / 峰值 / 时间加权平均 / 按时间加权算的总盈亏率
+  - 账户资金进出: 累计入金 / 累计提现 / 净入金 + 明细表
+  - 占用本金走势图 (含时间加权平均虚线)
+- **后端配套** (commit `4306355`):
+  - `compute_invested_capital()` / `compute_cashflow_summary()` / `fetch_cash_flows()`
+  - `fetch_cash_flows` 表不存在时容错返回空, **不让 workflow 挂掉** (9-28 实测 404 正常降级)
+- **实测数值 (2026-09-28)**:
+  | 指标 | 值 | 总盈亏率 |
+  |---|---:|---:|
+  | 峰值占用 | 24,453.60 | -7.95% |
+  | 时间加权平均 (从首笔买入起) | 13,616.07 | -14.27% |
+  | 时间加权平均 (从首笔入金起) | 13,447.27 | -14.45% |
+  - 时间加权只有 1.36 万, 因为**大量时间轻仓/空仓** (3-30~5-13 空了 44 天)
+- **踩坑记录**:
+  - `dividend` 行 `shares=0` / `price=现金金额`, 求和必须用 `price` 不能 `price*shares`
+    (后者恒为 0, 漏扣 06-11 厦门国贸 48 元股息会让峰值虚高 48)
+  - 资金 tab 的 chart 必须在 pane **可见后**才画 (hidden canvas `width=0` 会画坏, 老坑)
+  - 画完 chart 补一次 `updateTabStageHeight()`, 否则 footer 上方留白
+- **jsdom 验证**: 5 个 tab 顺序/transform 全对 (-0/-20/-40/-60/-80%), 资金 tab
+  渲染 3+3 项 + 表格, 空状态正确, v32.37 分母统一在真实数据上仍一致
+
+---
 
 ## v32.37 · 2026-09-28 · 统一"总投资盈亏"分母口径 (Hero + 三段式)
 
