@@ -494,6 +494,10 @@
   /* today: 现状完整 — 三段式 + 当前持仓各自独立 */
   .summary[data-tab-mode="today"] .summary-divider,
   .summary[data-tab-mode="today"] .summary-h2 { display: revert; }
+  /* v32.41: .cash-hero 默认 hidden — 只在 cashflow 模式显示.
+     v32.40 bug: 只在 cashflow 下设了样式, 但没设 base hidden,
+     于是 other tab (today/analysis/closed-trades) 下它照样占位渲染出来. */
+  .summary .cash-hero { display: none; }
 
   /* analysis: 左右分栏合并卡片 (左 3 段紧凑, 右当前持仓 mini 卡 1 列竖排, N 只自适应) */
   .summary[data-tab-mode="analysis"] .summary-divider,
@@ -678,6 +682,7 @@
   /* v32.39: 三段式/持仓全隐藏, 换成 cash-hero 块 (结构照抄 closed-trades 的单 seg 居中写法) */
   .summary[data-tab-mode="cashflow"] .three-seg,
   .summary[data-tab-mode="cashflow"] .holdings-grid { display: none; }
+  .summary[data-tab-mode="cashflow"] .cash-hero { display: flex; }  /* v32.41: 只在资金 tab 显示 */
   .cash-hero {
     display: flex;
     flex-direction: column;
@@ -1877,7 +1882,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.40 · 2026-09-28 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.41 · 2026-09-28 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1885,6 +1890,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.40"></script>
+<script src="dashboard.js?v=32.41"></script>
 </body>
 </html>
