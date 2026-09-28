@@ -1,6 +1,32 @@
 # Mavis Stock Tracker Dashboard — Changelog
 
 按 dashboard_fix1.md plan P3-B 实施。footer 简版只保留版本号 + 日期 + 母题,变动摘要归档到此文件。
+## v32.40 · 2026-09-28 · 修净入金三格溢出 + 置顶卡加指标说明
+
+- **user 反馈**:
+  1. "资金tab, 账户转手机入转出的净入金超过画面了, 看不到"
+  2. "置顶的资金投入tab, 我需要在卡片下方加上对于各个指标的说明"
+- **根因 (溢出)**: v32.39 给 `#cf-summary-grid` 写了 **inline style**
+  `style="grid-template-columns:repeat(3,1fr)"`。
+  **inline style 优先级高于 CSS 媒体查询**, 导致 `@media (max-width:600px)`
+  里的 `.holdings-grid { grid-template-columns: 1fr }` 覆盖不到它 ——
+  360px 屏上硬塞三列, 净入金 21,657 的数字被挤爆屏幕。
+  **修法**: 列数改走 CSS 类 `.cf-summary-grid` (3 列 → @900px 2 列 → @600px 1 列),
+  HTML 上的 inline style 删除。以后凡是会被媒体查询覆盖的样式, 一律不用 inline style。
+- **指标说明 (新增)**: 置顶卡 `.cash-hero` 下方加 `.cash-hero-notes`, 4 行说明:
+  | 指标 | 说明内容 |
+  |---|---|
+  | 当前占用 | 累计买入 − 累计卖出 + 累计股息 = X 元, 即此刻压在股市里的钱 |
+  | 峰值占用 | 历史最高占用 X 元, 衡量最多同时押了多少 |
+  | 加权平均 | 按日历天加权 (含空仓期, N 天) = X 元, 反映真实资金效率 |
+  | 总盈亏率 | 总盈亏 X ÷ 加权平均 = Y% · 说明置顶卡统一用什么分母口径 |
+  - 排版沿用 carry_forward 注释的克制风格: 11px / ink-secondary /
+    key 用 JetBrains Mono 9px uppercase (跟 `.hero-stat-key` 同源)
+  - 天数、金额、百分比全部动态渲染, 不硬编码
+- **jsdom 验证**: inline style 已清空 ✓, class 正确 ✓, 说明 4 条全部渲染 ✓
+
+---
+
 ## v32.39 · 2026-09-28 · 资金 tab 视觉重做 (置顶卡片 + 复用 holding-card 体系)
 
 - **user 反馈**: "资金tab不需要三段式盈亏卡片和当前持仓卡片, 删掉, 把占用本金卡片置顶吧,
