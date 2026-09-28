@@ -1,6 +1,31 @@
 # Mavis Stock Tracker Dashboard — Changelog
 
 按 dashboard_fix1.md plan P3-B 实施。footer 简版只保留版本号 + 日期 + 母题,变动摘要归档到此文件。
+## v32.39 · 2026-09-28 · 资金 tab 视觉重做 (置顶卡片 + 复用 holding-card 体系)
+
+- **user 反馈**: "资金tab不需要三段式盈亏卡片和当前持仓卡片, 删掉, 把占用本金卡片置顶吧,
+  风格和其他tab的置顶卡片一样. 顺便, 资金tab里的卡片和字体都有点丑, 按照dashboard整体风格和调性调整"
+- **置顶卡片** (v32.38 建的 `.cash-hero` 块改造):
+  - 删掉资金 tab 里的三段式盈亏 + 当前持仓卡片 (`data-tab-mode="cashflow"` 下 `display:none`)
+  - 新增 `.cash-hero` 放在 summary 卡片内, 结构**照抄 closed-trades**:
+    headpiece (铜版画装饰) 当 header → 大数字 + 副行当 body → `.cash-hero-stats` 虚线分隔三格
+  - headpiece 文案: `CAPITAL DEPLOYED · 资金投入`
+  - 字体全部复用既有 token: `.seg-amount .unit` (14px/500/ink-muted/4px)、
+    `.hero-stat-key` (JetBrains Mono/10px/uppercase/0.04em)、dashed border-top
+    — **不新造一套字号**, 跟其他 tab 视觉完全一致
+- **净入金三格弃用 `.trade-cell`** (v32.38 自造, user 反馈丑):
+  - 改成复用 `.holding-card` 体系 (banknote 左边框 + `.holding-head` + `.holding-pnl`)
+  - `grid-template-columns: repeat(3,1fr)`, mobile 自动降 1 列 (继承 `.holdings-grid` 媒体查询)
+- **删除**: `#capital-current` / `#capital-current-label` / `#capital-grid` (v32.38 的重复区)
+- **其余 tab 未受影响** (jsdom 验证): today=grid/grid · analysis=flex/flex ·
+  closed-trades=block/none · settings 整块隐藏
+
+- **jsdom 验证**: cashflow tab 下 three-seg + holdings-grid 均 `display:none` ✓,
+  `.cash-hero` 4 个值渲染正确, 净入金 3 卡渲染正确, 旧 id 已移除,
+  4 处版本号同步 (v32.39)
+
+---
+
 ## v32.38 · 2026-09-28 · 新增「资金」tab (账户转入转出 + 占用本金)
 
 - **user 需求**: 记录交易和记录账户转出转入分两个渠道容易混乱, 统一跟 Mavis 说;
