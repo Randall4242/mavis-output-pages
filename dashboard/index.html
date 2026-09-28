@@ -186,15 +186,15 @@
   .tab-drawer {
     display: flex;
     flex-direction: row;
-    width: 400%;  /* 4 page 各 25% = 4 × stage width, 让 100% in translateX = 1 page width */
+    width: 500%;  /* v32.38: 5 page (今日/分析/清仓&交易/资金/设置) 各 20% */
     will-change: transform;
     /* v32.2: align-items flex-start 让短 page 不被 flex stretch 到长 page 高 (否则 drawer 高 = max, 短 tab 撑高) */
     align-items: flex-start;
   }
   .tab-page {
-    flex: 0 0 25%;   /* 25% of drawer width = 1/4 × 400% = 100% of stage width = viewport width */
-    min-width: 25%;
-    width: 25%;
+    flex: 0 0 20%;   /* v32.38: 20% of drawer width = 1/5 × 500% = 100% of stage width */
+    min-width: 20%;
+    width: 20%;
     flex-shrink: 0;
   }
 
@@ -1370,6 +1370,7 @@
     <a href="#" class="active" data-tab="today">今日</a>
     <a href="#" data-tab="analysis">分析</a>
     <a href="#" data-tab="closed-trades">清仓&交易</a>
+    <a href="#" data-tab="cashflow">资金</a>
     <a href="#" data-tab="settings">设置</a>
   </nav>
 </header>
@@ -1622,6 +1623,56 @@
 </section>
 
 </div><!-- /page-closed-trades -->
+<div class="tab-page" id="page-cashflow">
+
+<!-- ============ TAB: 资金 (账户转入转出 + 占用本金) ============ -->
+<section class="tab-pane" id="tab-cashflow">
+
+<!-- ============ 占用本金 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">占用本金 <span class="count">投入股市的钱</span></h2>
+
+<div class="seg-amount" id="capital-current" style="font-size:32px;margin-bottom:4px;">—</div>
+<div class="seg-denominator" id="capital-current-label" style="margin-bottom:20px;">当前占用</div>
+
+<div class="trade-grid" id="capital-grid"></div>
+
+<!-- ============ 账户资金进出 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">账户转入转出 <span class="count" id="cf-count">0 笔</span></h2>
+
+<div class="trade-grid" id="cf-summary-grid"></div>
+
+<div class="tx-table-wrap" style="margin-top:20px;">
+  <table class="tx-table">
+    <thead><tr><th>日期</th><th>方向</th><th class="num">金额</th><th>备注</th></tr></thead>
+    <tbody id="cf-tbody"></tbody>
+  </table>
+</div>
+
+<div id="cf-empty" style="display:none;padding:32px 8px;text-align:center;color:var(--ink-muted);font-size:13px;line-height:1.8;">
+  暂无资金流水记录。<br>以后每次入金 / 提现告诉 Mavis 一声就会记在这里。
+</div>
+
+<!-- ============ 占用本金曲线 ============ -->
+<div class="divider">
+  <svg class="divider-ornament" viewBox="0 0 600 24" preserveAspectRatio="none"><use href="#divider-pattern"/></svg>
+</div>
+
+<h2 class="section-title">占用本金走势</h2>
+<div class="chart-wrap" style="position:relative;height:220px;">
+  <canvas id="chart-capital"></canvas>
+</div>
+
+</section>
+
+</div><!-- /page-cashflow -->
 <div class="tab-page" id="page-settings">
 
 <!-- ============ TAB: 设置 (max invested capital) ============ -->
@@ -1670,7 +1721,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.37 · 2026-09-28 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.38 · 2026-09-28 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1678,6 +1729,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.37"></script>
+<script src="dashboard.js?v=32.38"></script>
 </body>
 </html>
