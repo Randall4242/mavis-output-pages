@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.38 (2026-09-28)
+ * Mavis Stock Tracker — Dashboard.js v32.39 (2026-09-28)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -396,6 +396,7 @@
           headpieceText.textContent = ({
             'analysis': 'PORTFOLIO SNAPSHOT · 投资速览',
             'closed-trades': 'REALIZED P&L · 已实现盈亏',
+            'cashflow': 'CAPITAL DEPLOYED · 资金投入',
           })[target] || '';
         }
         const cardMode = ({ 'today':'standard', 'analysis':'compact', 'closed-trades':'hidden', 'cashflow':'hidden', 'settings':'hidden' })[target] || 'standard';
@@ -624,49 +625,54 @@
     },
 
     // v32.38: 「资金」tab — 占用本金指标 + 账户转入转出流水
+    // v32.39: 占用本金 4 个值全部上移到 summary 置顶卡片 (.cash-hero), 这里只渲染账户流水部分
     renderCashflow(data) {
       const cap = data.capital || {};
       const cf = data.cash_flows || [];
       const cfs = data.cashflow_summary || {};
 
-      const curEl = $('capital-current');
-      if (curEl) {
-        curEl.textContent = cap.current != null ? fmtMoneyBig(cap.current) + ' 元' : '—';
-        curEl.className = 'seg-amount ' + pnlClass(0);
+      // ---- 置顶卡片 (.cash-hero, 只在 cashflow tab 可见) ----
+      const hAmt = $('capital-hero-amount');
+      if (hAmt) {
+        hAmt.innerHTML = cap.current != null
+          ? fmtMoneyBig(cap.current) + '<span class="unit">元</span>'
+          : '—';
       }
-      const curLabel = $('capital-current-label');
-      if (curLabel && cap.first_date) {
-        curLabel.textContent = `当前占用 · 自 ${cap.first_date} 起`;
+      const hSub = $('capital-hero-sub');
+      if (hSub) {
+        hSub.textContent = cap.first_date ? `投入股市的钱 · 自 ${cap.first_date} 起` : '—';
       }
-
-      const grid = $('capital-grid');
-      if (grid) {
+      const hPeak = $('capital-hero-peak');
+      if (hPeak) hPeak.textContent = cap.peak != null ? fmtMoneyBig(cap.peak) : '—';
+      const hAvg = $('capital-hero-avg');
+      if (hAvg) hAvg.textContent = cap.avg != null ? fmtMoneyBig(cap.avg) : '—';
+      const hRate = $('capital-hero-rate');
+      if (hRate) {
         const tp = (data.summary && data.summary.total_pnl_abs) || 0;
-        const rows = [
-          ['峰值占用', cap.peak != null ? fmtMoneyBig(cap.peak) + ' 元' : '—', '历史最高投入股市的钱'],
-          ['时间加权平均', cap.avg != null ? fmtMoneyBig(cap.avg) + ' 元' : '—', '按日历天加权, 更贴近真实资金效率'],
-          ['按时间加权算总盈亏', cap.avg ? fmtPct(Math.round(tp / cap.avg * 10000) / 100) : '—', `总盈亏 ${fmtMoney(tp)} ÷ ${fmtMoneyBig(cap.avg || 0)}`],
-        ];
-        grid.innerHTML = rows.map(([k, v, note]) => `
-          <div class="trade-cell">
-            <div class="trade-key">${k}</div>
-            <div class="trade-val">${v}</div>
-            <div class="trade-note">${note}</div>
-          </div>`).join('');
+        const r = cap.avg ? Math.round((tp / cap.avg) * 10000) / 100 : null;
+        if (hRate) {
+          hRate.textContent = r != null ? fmtPct(r) : '—';
+          hRate.className = 'cash-hero-stat-val ' + pnlClass(tp);
+        }
       }
 
+      // ---- 净入金三格 (复用 holding-card 视觉体系, 跟其他 tab 一致) ----
       const sgrid = $('cf-summary-grid');
       if (sgrid) {
         const rows = [
-          ['累计入金', fmtMoneyBig(cfs.total_deposit || 0) + ' 元', '打进券商账户的钱'],
-          ['累计提现', fmtMoneyBig(cfs.total_withdraw || 0) + ' 元', '取出账户的钱'],
-          ['净入金', fmtMoneyBig(cfs.net_deposit || 0) + ' 元', '本金口径 = 入金 − 提现'],
+          ['累计入金', fmtMoneyBig(cfs.total_deposit || 0), '打进券商账户', 1],
+          ['累计提现', fmtMoneyBig(cfs.total_withdraw || 0), '取出账户的钱', -1],
+          ['净入金', fmtMoneyBig(cfs.net_deposit || 0), '本金口径 = 入金 − 提现', 0],
         ];
-        sgrid.innerHTML = rows.map(([k, v, note]) => `
-          <div class="trade-cell">
-            <div class="trade-key">${k}</div>
-            <div class="trade-val">${v}</div>
-            <div class="trade-note">${note}</div>
+        sgrid.innerHTML = rows.map(([k, v, note, sign]) => `
+          <div class="holding-card" data-mode="standard">
+            <div class="holding-head">
+              <span class="holding-name">${k}</span>
+            </div>
+            <div class="holding-pnl" style="margin-top:8px;">
+              <span class="holding-pnl-val ${sign > 0 ? 'up' : (sign < 0 ? 'down' : '')}" style="font-size:22px;">${v}</span>
+            </div>
+            <div class="holding-row" style="margin-top:6px;"><span class="holding-key">${note}</span></div>
           </div>`).join('');
       }
 
