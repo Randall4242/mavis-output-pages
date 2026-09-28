@@ -735,6 +735,51 @@
     letter-spacing: -0.01em;
     color: var(--ink-primary);
   }
+  /* v32.40: 指标说明 — 放在置顶卡下方, 每个数字一行, 跟 carry_forward 注释同一套克制排版 */
+  .cash-hero-notes {
+    width: 100%;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    text-align: left;
+  }
+  .cash-hero-note {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--ink-secondary);
+  }
+  .cash-hero-note + .cash-hero-note { margin-top: 5px; }
+  .cash-hero-note-key {
+    flex: 0 0 auto;
+    min-width: 82px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .cash-hero-note-val {
+    flex: 1 1 auto;
+    color: var(--ink-secondary);
+  }
+  .cash-hero-note-val b {
+    color: var(--ink-primary);
+    font-weight: 600;
+  }
+  /* v32.40: 净入金三格 — 列数用类控制, 让 mobile 媒体查询能覆盖 (别用 inline style) */
+  .cf-summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) {
+    .cf-summary-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .cf-summary-grid { grid-template-columns: 1fr; }
+  }
 
   /* settings: 全部隐藏 */
   .summary[data-tab-mode="settings"] { display: none; }
@@ -1598,6 +1643,26 @@
         <div class="cash-hero-stat-val" id="capital-hero-rate">—</div>
       </div>
     </div>
+
+    <!-- v32.40: 指标说明 (算式 + 口径, 避免数字含义不明) -->
+    <div class="cash-hero-notes">
+      <div class="cash-hero-note">
+        <span class="cash-hero-note-key">当前占用</span>
+        <span class="cash-hero-note-val" id="capital-note-current">—</span>
+      </div>
+      <div class="cash-hero-note">
+        <span class="cash-hero-note-key">峰值占用</span>
+        <span class="cash-hero-note-val" id="capital-note-peak">—</span>
+      </div>
+      <div class="cash-hero-note">
+        <span class="cash-hero-note-key">加权平均</span>
+        <span class="cash-hero-note-val" id="capital-note-avg">—</span>
+      </div>
+      <div class="cash-hero-note">
+        <span class="cash-hero-note-key">总盈亏率</span>
+        <span class="cash-hero-note-val" id="capital-note-rate">—</span>
+      </div>
+    </div>
   </div>
 
 </section>
@@ -1734,8 +1799,11 @@
 
 <h2 class="section-title">账户转入转出 <span class="count" id="cf-count">0 笔</span></h2>
 
-<!-- v32.39: 净入金三格 — 复用 .holding-card 视觉体系 (banknote 左边框), 不再自造 .trade-cell -->
-<div class="holdings-grid" id="cf-summary-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;"></div>
+<!-- v32.39: 净入金三格 — 复用 .holding-card 视觉体系 (banknote 左边框), 不再自造 .trade-cell
+     v32.40: 列数走 CSS 类 .cf-summary-grid, **不用 inline style** —
+     inline style 优先级高于媒体查询, 会把 mobile .holdings-grid{1fr} 覆盖掉,
+     导致 360px 屏上三列挤爆溢出 -->
+<div class="holdings-grid cf-summary-grid" id="cf-summary-grid"></div>
 
 <div class="tx-table-wrap">
   <table class="tx-table">
@@ -1809,7 +1877,7 @@
 <!-- ============ FOOTER ============ -->
 <footer>
   <div>数据源: Supabase (Q4 决策: 统一到云端) · <a href="data/dashboard.json">data/dashboard.json</a></div>
-  <div>PORTFOLIO DASHBOARD · v32.39 · 2026-09-28 · ELSEWHERE 母题</div>
+  <div>PORTFOLIO DASHBOARD · v32.40 · 2026-09-28 · ELSEWHERE 母题</div>
 </footer>
 
 <!-- 刷新按钮 -->
@@ -1817,6 +1885,6 @@
 <div class="refresh-toast" id="refresh-toast"></div>
 
 <!-- 数据 + 渲染 -->
-<script src="dashboard.js?v=32.39"></script>
+<script src="dashboard.js?v=32.40"></script>
 </body>
 </html>
