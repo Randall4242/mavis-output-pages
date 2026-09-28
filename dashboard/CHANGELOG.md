@@ -1,6 +1,29 @@
 # Mavis Stock Tracker Dashboard — Changelog
 
 按 dashboard_fix1.md plan P3-B 实施。footer 简版只保留版本号 + 日期 + 母题,变动摘要归档到此文件。
+## v32.41 · 2026-09-28 · 修 .cash-hero 在其他 tab 漏出
+
+- **user 反馈**: "占用本金卡片的信息和内容出现在了其他tab里, 我不需要"
+- **根因**: v32.39/40 只写了 `.summary[data-tab-mode="cashflow"] .cash-hero { display: flex }`,
+  **但没写 base 的 `display: none`**。CSS 里没有默认隐藏规则 = 默认显示,
+  于是 today / analysis / closed-trades / settings 四个 tab 下,
+  `.cash-hero` 照样占位渲染出占用本金的内容。
+  这是我加 `data-tab-mode` 变体时的经典疏漏 —— 变体只写"什么时候显示",
+  忘了写"默认不显示"。
+- **修法**:
+  - `.summary .cash-hero { display: none; }`  (base 隐藏, 放在 today 规则旁)
+  - `.summary[data-tab-mode="cashflow"] .cash-hero { display: flex; }` (只在资金 tab 显示)
+- **jsdom 验证** (5 tab 逐一切换查 computed display):
+  | tab | .cash-hero | three-seg | holdings |
+  |---|---|---|---|
+  | today | none ✓ | grid | grid |
+  | analysis | none ✓ | flex | flex |
+  | closed-trades | none ✓ | block | none |
+  | cashflow | **flex ✓** | none | none |
+  | settings | none ✓ | grid | grid |
+
+---
+
 ## v32.40 · 2026-09-28 · 修净入金三格溢出 + 置顶卡加指标说明
 
 - **user 反馈**:
