@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-09-30T15:40:14+08:00",
+    "generated_at": "2026-10-01T15:40:08+08:00",
     "trade_date": "2026-09-30",
     "source": "supabase",
     "schema_version": 2
@@ -15,8 +15,8 @@
     "total_pnl_pct_net": -5.49,
     "initial_principal": 53827.1,
     "net_invested": 22334.98,
-    "excess_csi300_pct": 7.21,
-    "excess_sh_pct": 6.16
+    "excess_csi300_pct": 2.97,
+    "excess_sh_pct": 1.9
   },
   "holdings": [
     {
@@ -1618,12 +1618,12 @@
     },
     {
       "trade_date": "2026-09-30",
-      "total_cost": 0.0,
-      "total_mkt": 0.0,
-      "total_pnl": 0.0,
-      "total_pct": 0.0,
+      "total_cost": 22335.0,
+      "total_mkt": 20190.0,
+      "total_pnl": -2145.0,
+      "total_pct": -9.6,
       "realized_pnl": 919.02,
-      "cost_basis": "carry_forward"
+      "cost_basis": "real"
     }
   ],
   "benchmark": {
@@ -2271,7 +2271,7 @@
       },
       {
         "trade_date": "2026-09-30",
-        "cum_pct": 1.55
+        "cum_pct": -2.42
       }
     ],
     "sh": [
@@ -2846,6 +2846,10 @@
       {
         "trade_date": "2026-09-29",
         "pct_from_baseline": -4.61
+      },
+      {
+        "trade_date": "2026-09-30",
+        "pct_from_baseline": -4.32
       }
     ],
     "sz": [
@@ -3420,6 +3424,10 @@
       {
         "trade_date": "2026-09-29",
         "pct_from_baseline": -4.61
+      },
+      {
+        "trade_date": "2026-09-30",
+        "pct_from_baseline": -4.32
       }
     ],
     "csi300": [
@@ -4062,6 +4070,10 @@
       {
         "trade_date": "2026-09-29",
         "pct_from_baseline": -5.66
+      },
+      {
+        "trade_date": "2026-09-30",
+        "pct_from_baseline": -5.39
       }
     ]
   },
