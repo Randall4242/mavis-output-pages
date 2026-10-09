@@ -1,22 +1,22 @@
 {
   "meta": {
-    "generated_at": "2026-10-08T15:40:10+08:00",
-    "trade_date": "2026-10-08",
+    "generated_at": "2026-10-09T15:40:07+08:00",
+    "trade_date": "2026-10-09",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -1751.98,
-    "floating_pnl_pct": -7.84,
+    "floating_pnl_abs": -1533.98,
+    "floating_pnl_pct": -6.87,
     "realized_pnl_abs": 919.02,
     "realized_pnl_pct": 2.92,
-    "total_pnl_abs": -832.96,
-    "total_pnl_pct": -1.55,
-    "total_pnl_pct_net": -3.73,
+    "total_pnl_abs": -614.96,
+    "total_pnl_pct": -1.14,
+    "total_pnl_pct_net": -2.75,
     "initial_principal": 53827.1,
     "net_invested": 22334.98,
-    "excess_csi300_pct": 6.94,
-    "excess_sh_pct": 5.87
+    "excess_csi300_pct": 7.97,
+    "excess_sh_pct": 6.63
   },
   "holdings": [
     {
@@ -24,26 +24,26 @@
       "name": "春秋航空",
       "shares": 100,
       "cost": 41.97,
-      "close": 39.65,
-      "prev_close": 40.76,
-      "change_pct": -2.72,
-      "change_amount": -1.11,
-      "daily_pnl": -111.0,
-      "pnl_abs": -232.0,
-      "pnl_pct": -5.5278
+      "close": 40.15,
+      "prev_close": 39.65,
+      "change_pct": 1.26,
+      "change_amount": 0.5,
+      "daily_pnl": 50.0,
+      "pnl_abs": -182.0,
+      "pnl_pct": -4.3364
     },
     {
       "code": "600884",
       "name": "杉杉股份",
       "shares": 1400,
       "cost": 12.9557,
-      "close": 11.87,
-      "prev_close": 11.51,
-      "change_pct": 3.13,
-      "change_amount": 0.36,
-      "daily_pnl": 504.0,
-      "pnl_abs": -1519.98,
-      "pnl_pct": -8.3801
+      "close": 11.99,
+      "prev_close": 11.87,
+      "change_pct": 1.01,
+      "change_amount": 0.12,
+      "daily_pnl": 168.0,
+      "pnl_abs": -1351.98,
+      "pnl_pct": -7.4539
     }
   ],
   "closed_holdings": [
@@ -1627,6 +1627,15 @@
     },
     {
       "trade_date": "2026-10-08",
+      "total_cost": 22335.0,
+      "total_mkt": 20583.0,
+      "total_pnl": -1752.0,
+      "total_pct": -7.84,
+      "realized_pnl": 919.02,
+      "cost_basis": "real"
+    },
+    {
+      "trade_date": "2026-10-09",
       "total_cost": 0.0,
       "total_mkt": 0.0,
       "total_pnl": 0.0,
@@ -2284,6 +2293,10 @@
       },
       {
         "trade_date": "2026-10-08",
+        "cum_pct": -1.69
+      },
+      {
+        "trade_date": "2026-10-09",
         "cum_pct": 1.55
       }
     ],
@@ -2863,6 +2876,10 @@
       {
         "trade_date": "2026-09-30",
         "pct_from_baseline": -4.32
+      },
+      {
+        "trade_date": "2026-10-08",
+        "pct_from_baseline": -5.08
       }
     ],
     "sz": [
@@ -3441,6 +3458,10 @@
       {
         "trade_date": "2026-09-30",
         "pct_from_baseline": -4.32
+      },
+      {
+        "trade_date": "2026-10-08",
+        "pct_from_baseline": -5.08
       }
     ],
     "csi300": [
@@ -4087,6 +4108,10 @@
       {
         "trade_date": "2026-09-30",
         "pct_from_baseline": -5.39
+      },
+      {
+        "trade_date": "2026-10-08",
+        "pct_from_baseline": -6.42
       }
     ]
   },
@@ -5406,11 +5431,15 @@
       {
         "date": "2026-10-08",
         "value": 21352.6
+      },
+      {
+        "date": "2026-10-09",
+        "value": 21352.6
       }
     ],
     "peak": 24453.6,
     "current": 21352.6,
-    "avg": 13760.98,
+    "avg": 13790.98,
     "first_date": "2026-01-30"
   }
 }
