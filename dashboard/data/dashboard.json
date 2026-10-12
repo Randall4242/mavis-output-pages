@@ -1,52 +1,48 @@
 {
   "meta": {
-    "generated_at": "2026-10-09T15:53:32+08:00",
-    "trade_date": "2026-10-09",
+    "generated_at": "2026-10-12T13:28:02+08:00",
+    "trade_date": "2026-10-12",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -1533.98,
-    "floating_pnl_pct": -6.87,
-    "realized_pnl_abs": 919.02,
-    "realized_pnl_pct": 2.92,
-    "total_pnl_abs": -614.96,
-    "total_pnl_pct": -1.14,
-    "total_pnl_pct_net": -2.75,
+    "floating_pnl_abs": -1687.98,
+    "floating_pnl_pct": -9.31,
+    "realized_pnl_abs": 668.0,
+    "realized_pnl_pct": 1.87,
+    "total_pnl_abs": -1019.98,
+    "total_pnl_pct": -1.89,
+    "total_pnl_pct_net": -5.62,
     "initial_principal": 53827.1,
-    "net_invested": 22334.98,
-    "excess_csi300_pct": 4.98,
-    "excess_sh_pct": 3.74
+    "net_invested": 18137.98,
+    "excess_csi300_pct": 4.54,
+    "excess_sh_pct": 3.16
   },
   "holdings": [
-    {
-      "code": "601021",
-      "name": "春秋航空",
-      "shares": 100,
-      "cost": 41.97,
-      "close": 40.15,
-      "prev_close": 39.65,
-      "change_pct": 1.26,
-      "change_amount": 0.5,
-      "daily_pnl": 50.0,
-      "pnl_abs": -182.0,
-      "pnl_pct": -4.3364
-    },
     {
       "code": "600884",
       "name": "杉杉股份",
       "shares": 1400,
       "cost": 12.9557,
-      "close": 11.99,
-      "prev_close": 11.87,
-      "change_pct": 1.01,
-      "change_amount": 0.12,
-      "daily_pnl": 168.0,
-      "pnl_abs": -1351.98,
-      "pnl_pct": -7.4539
+      "close": 11.75,
+      "prev_close": 11.99,
+      "change_pct": -2.0,
+      "change_amount": -0.24,
+      "daily_pnl": -336.0,
+      "pnl_abs": -1687.98,
+      "pnl_pct": -9.3063
     }
   ],
   "closed_holdings": [
+    {
+      "code": "601021",
+      "name": "春秋航空",
+      "closed_at": "2026-10-12",
+      "cost_total": 8616.0,
+      "recv_total": 8412.0,
+      "realized_abs": -218.27,
+      "realized_pct": -2.53
+    },
     {
       "code": "600383",
       "name": "金地集团",
@@ -85,6 +81,14 @@
     }
   ],
   "transactions_recent": [
+    {
+      "trade_date": "2026-10-12",
+      "code": "601021",
+      "name": "春秋航空",
+      "side": "sell",
+      "shares": 100,
+      "price": 39.53
+    },
     {
       "trade_date": "2026-09-28",
       "code": "600884",
@@ -151,14 +155,6 @@
     },
     {
       "trade_date": "2026-08-19",
-      "code": "601021",
-      "name": "春秋航空",
-      "side": "buy",
-      "shares": 100,
-      "price": 44.19
-    },
-    {
-      "trade_date": "2026-08-19",
       "code": "600383",
       "name": "金地集团",
       "side": "sell",
@@ -168,12 +164,12 @@
   ],
   "trade_summary": {
     "buy_count": 25,
-    "sell_count": 11,
+    "sell_count": 12,
     "dividend_count": 2,
     "total_buy_amount": 53952.45,
-    "total_sell_amount": 32330.12,
+    "total_sell_amount": 36276.1,
     "total_dividend_amount": 81.0,
-    "total_fee": 188.73
+    "total_fee": 195.75
   },
   "pnl_series": [
     {
@@ -1642,6 +1638,15 @@
       "total_pct": -6.87,
       "realized_pnl": 919.02,
       "cost_basis": "real"
+    },
+    {
+      "trade_date": "2026-10-12",
+      "total_cost": 18138.0,
+      "total_mkt": 16450.0,
+      "total_pnl": -1688.0,
+      "total_pct": -9.31,
+      "realized_pnl": 668.0,
+      "cost_basis": "real"
     }
   ],
   "benchmark": {
@@ -2298,6 +2303,10 @@
       {
         "trade_date": "2026-10-09",
         "cum_pct": -1.29
+      },
+      {
+        "trade_date": "2026-10-12",
+        "cum_pct": -2.04
       }
     ],
     "sh": [
@@ -2884,6 +2893,10 @@
       {
         "trade_date": "2026-10-09",
         "pct_from_baseline": -5.03
+      },
+      {
+        "trade_date": "2026-10-12",
+        "pct_from_baseline": -5.2
       }
     ],
     "sz": [
@@ -3470,6 +3483,10 @@
       {
         "trade_date": "2026-10-09",
         "pct_from_baseline": -5.03
+      },
+      {
+        "trade_date": "2026-10-12",
+        "pct_from_baseline": -5.2
       }
     ],
     "csi300": [
@@ -4124,6 +4141,10 @@
       {
         "trade_date": "2026-10-09",
         "pct_from_baseline": -6.27
+      },
+      {
+        "trade_date": "2026-10-12",
+        "pct_from_baseline": -6.58
       }
     ]
   },
@@ -5447,11 +5468,23 @@
       {
         "date": "2026-10-09",
         "value": 21352.6
+      },
+      {
+        "date": "2026-10-10",
+        "value": 21352.6
+      },
+      {
+        "date": "2026-10-11",
+        "value": 21352.6
+      },
+      {
+        "date": "2026-10-12",
+        "value": 17399.6
       }
     ],
     "peak": 24453.6,
-    "current": 21352.6,
-    "avg": 13790.98,
+    "current": 17399.6,
+    "avg": 13864.15,
     "first_date": "2026-01-30"
   }
 }
