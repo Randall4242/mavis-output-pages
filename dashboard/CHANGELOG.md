@@ -1,6 +1,28 @@
 # Mavis Stock Tracker Dashboard — Changelog
 
 按 dashboard_fix1.md plan P3-B 实施。footer 简版只保留版本号 + 日期 + 母题,变动摘要归档到此文件。
+## v32.43 · 2026-10-12 · 资金 tab 置顶卡加"当前持仓总市值"
+
+- **user 需求**: "在资金tab的资金投入卡片里, 当前占用本金的右边, 加一个当前持仓总市值"
+- **改动**:
+  - HTML: `.cash-hero` 顶部新增 `.cash-hero-main` 双列容器, 左列保持原"当前占用本金",
+    右列新增"当前持仓总市值" (`#mktval-hero-amount` / `#mktval-hero-sub`), 列间 1px 分隔线
+  - CSS: `.cash-hero-col` flex 1 1 0 + `min-width: 0` (不置 0 会被长数字的 min-content 撑破);
+    `@media (max-width: 600px)` 下金额 26px → 20px (双列后每列仅 ~140px 可用宽);
+    `.cash-hero-sub .nb` nowrap 防日期被拆成 "2026-" / "01-30"
+  - JS (`renderCashflow`): 市值 = Σ `holdings[].shares × close`。
+    **dashboard.json 的 holdings[] 没有 mkt_value 字段**, 所以前端现算, 后端零改动。
+    副标题 = "N 只 · 浮盈 ±X", 浮盈取 `summary.floating_pnl_abs`, 颜色走 `pnlClass` (跌绿涨红);
+    无持仓时金额显示 `—`、副标题显示"空仓"
+- **验证**: playwright S24 (360×800 DPR=3) + desktop 1280 实测
+  - 两列各 ~139/140px (mobile) / 549/550px (desktop), 列与卡均无横向溢出 (`scrollWidth == clientWidth`)
+  - 文档级 `scrollWidth == clientWidth` ✓; `.cash-hero-main` 底边 301px < `.cash-hero-stats` 顶边 319px, 不压下一段 ✓
+  - 浮盈 span 实测 `class="down"` → `rgb(122,138,118)` (跌=绿) ✓
+  - 用线上 dashboard.json 真实数据渲染: 占用本金 17,400 元 / 市值 16,450 元 (1400 股杉杉 × 11.75) ✓
+- **顺手修**: 双列后左边副标题在 360 宽下把日期断成两截, 加 nowrap 修掉
+
+---
+
 ## v32.42 · 2026-09-28 · 资金 tab 调整区块顺序
 
 - **user 需求**: "把资金tab里的占用本金走势卡片, 移到账户转入转出卡片上方, 资金投入卡片下方"
