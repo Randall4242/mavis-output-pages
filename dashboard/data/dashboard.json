@@ -1,22 +1,22 @@
 {
   "meta": {
-    "generated_at": "2026-10-12T13:28:02+08:00",
+    "generated_at": "2026-10-12T15:40:10+08:00",
     "trade_date": "2026-10-12",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -1687.98,
-    "floating_pnl_pct": -9.31,
+    "floating_pnl_abs": -1589.98,
+    "floating_pnl_pct": -8.77,
     "realized_pnl_abs": 668.0,
     "realized_pnl_pct": 1.87,
-    "total_pnl_abs": -1019.98,
-    "total_pnl_pct": -1.89,
-    "total_pnl_pct_net": -5.62,
+    "total_pnl_abs": -921.98,
+    "total_pnl_pct": -1.71,
+    "total_pnl_pct_net": -5.08,
     "initial_principal": 53827.1,
     "net_invested": 18137.98,
-    "excess_csi300_pct": 4.54,
-    "excess_sh_pct": 3.16
+    "excess_csi300_pct": 5.04,
+    "excess_sh_pct": 3.58
   },
   "holdings": [
     {
@@ -24,13 +24,13 @@
       "name": "杉杉股份",
       "shares": 1400,
       "cost": 12.9557,
-      "close": 11.75,
+      "close": 11.82,
       "prev_close": 11.99,
-      "change_pct": -2.0,
-      "change_amount": -0.24,
-      "daily_pnl": -336.0,
-      "pnl_abs": -1687.98,
-      "pnl_pct": -9.3063
+      "change_pct": -1.42,
+      "change_amount": -0.17,
+      "daily_pnl": -238.0,
+      "pnl_abs": -1589.98,
+      "pnl_pct": -8.766
     }
   ],
   "closed_holdings": [
@@ -1642,9 +1642,9 @@
     {
       "trade_date": "2026-10-12",
       "total_cost": 18138.0,
-      "total_mkt": 16450.0,
-      "total_pnl": -1688.0,
-      "total_pct": -9.31,
+      "total_mkt": 16548.0,
+      "total_pnl": -1590.0,
+      "total_pct": -8.77,
       "realized_pnl": 668.0,
       "cost_basis": "real"
     }
@@ -2306,7 +2306,7 @@
       },
       {
         "trade_date": "2026-10-12",
-        "cum_pct": -2.04
+        "cum_pct": -1.86
       }
     ],
     "sh": [
@@ -2896,7 +2896,7 @@
       },
       {
         "trade_date": "2026-10-12",
-        "pct_from_baseline": -5.2
+        "pct_from_baseline": -5.44
       }
     ],
     "sz": [
@@ -3486,7 +3486,7 @@
       },
       {
         "trade_date": "2026-10-12",
-        "pct_from_baseline": -5.2
+        "pct_from_baseline": -5.44
       }
     ],
     "csi300": [
@@ -4144,7 +4144,7 @@
       },
       {
         "trade_date": "2026-10-12",
-        "pct_from_baseline": -6.58
+        "pct_from_baseline": -6.9
       }
     ]
   },
