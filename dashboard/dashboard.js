@@ -1,5 +1,5 @@
 /**
- * Mavis Stock Tracker — Dashboard.js v32.42 (2026-09-28)
+ * Mavis Stock Tracker — Dashboard.js v32.43 (2026-10-12)
  * 拉 /data/dashboard.json, 填充 hero / 三段式 / 持仓 / 已清仓 / 交易 + 渲染 2 张 Chart.js 图
  *
  * 视觉风格: elsewhere.news 母题 + 铜版画装饰 (Round 1 收口)
@@ -640,8 +640,29 @@
       }
       const hSub = $('capital-hero-sub');
       if (hSub) {
-        hSub.textContent = cap.first_date ? `投入股市的钱 · 自 ${cap.first_date} 起` : '—';
+        // v32.43: 日期包 nowrap — 双列后列宽 ~140px, 不加会把 "2026-01-30" 断成两截
+        hSub.innerHTML = cap.first_date ? `投入股市的钱 · 自 <span class="nb">${cap.first_date}</span> 起` : '—';
       }
+
+      // v32.43: 右列 — 当前持仓总市值 (dashboard.json 的 holdings[] 没有 mkt_value 字段, 现算 Σ shares×close)
+      const holdings = data.holdings || [];
+      const mktValue = holdings.reduce(
+        (sum, h) => sum + (Number(h.shares) || 0) * (Number(h.close) || 0), 0,
+      );
+      const hMkt = $('mktval-hero-amount');
+      if (hMkt) {
+        hMkt.innerHTML = holdings.length
+          ? fmtMoneyBig(mktValue) + '<span class="unit">元</span>'
+          : '—';
+      }
+      const hMktSub = $('mktval-hero-sub');
+      if (hMktSub) {
+        const fp = (data.summary && data.summary.floating_pnl_abs) || 0;
+        hMktSub.innerHTML = holdings.length
+          ? `${holdings.length} 只 · 浮盈 <span class="${pnlClass(fp)}">${fmtMoney(fp)}</span>`
+          : '空仓';
+      }
+
       const hPeak = $('capital-hero-peak');
       if (hPeak) hPeak.textContent = cap.peak != null ? fmtMoneyBig(cap.peak) : '—';
       const hAvg = $('capital-hero-avg');
