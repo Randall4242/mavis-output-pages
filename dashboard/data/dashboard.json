@@ -1,22 +1,22 @@
 {
   "meta": {
-    "generated_at": "2026-10-12T15:40:10+08:00",
-    "trade_date": "2026-10-12",
+    "generated_at": "2026-10-13T15:40:18+08:00",
+    "trade_date": "2026-10-13",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -1589.98,
-    "floating_pnl_pct": -8.77,
+    "floating_pnl_abs": -2233.98,
+    "floating_pnl_pct": -12.32,
     "realized_pnl_abs": 668.0,
     "realized_pnl_pct": 1.87,
-    "total_pnl_abs": -921.98,
-    "total_pnl_pct": -1.71,
-    "total_pnl_pct_net": -5.08,
+    "total_pnl_abs": -1565.98,
+    "total_pnl_pct": -2.91,
+    "total_pnl_pct_net": -8.63,
     "initial_principal": 53827.1,
     "net_invested": 18137.98,
-    "excess_csi300_pct": 5.04,
-    "excess_sh_pct": 3.58
+    "excess_csi300_pct": 4.12,
+    "excess_sh_pct": 2.3
   },
   "holdings": [
     {
@@ -24,13 +24,13 @@
       "name": "杉杉股份",
       "shares": 1400,
       "cost": 12.9557,
-      "close": 11.82,
-      "prev_close": 11.99,
-      "change_pct": -1.42,
-      "change_amount": -0.17,
-      "daily_pnl": -238.0,
-      "pnl_abs": -1589.98,
-      "pnl_pct": -8.766
+      "close": 11.36,
+      "prev_close": 11.82,
+      "change_pct": -3.89,
+      "change_amount": -0.46,
+      "daily_pnl": -644.0,
+      "pnl_abs": -2233.98,
+      "pnl_pct": -12.3166
     }
   ],
   "closed_holdings": [
@@ -1647,6 +1647,15 @@
       "total_pct": -8.77,
       "realized_pnl": 668.0,
       "cost_basis": "real"
+    },
+    {
+      "trade_date": "2026-10-13",
+      "total_cost": 18138.0,
+      "total_mkt": 15904.0,
+      "total_pnl": -2234.0,
+      "total_pct": -12.32,
+      "realized_pnl": 668.0,
+      "cost_basis": "real"
     }
   ],
   "benchmark": {
@@ -2307,6 +2316,10 @@
       {
         "trade_date": "2026-10-12",
         "cum_pct": -1.86
+      },
+      {
+        "trade_date": "2026-10-13",
+        "cum_pct": -3.05
       }
     ],
     "sh": [
@@ -2897,6 +2910,10 @@
       {
         "trade_date": "2026-10-12",
         "pct_from_baseline": -5.44
+      },
+      {
+        "trade_date": "2026-10-13",
+        "pct_from_baseline": -5.35
       }
     ],
     "sz": [
@@ -3487,6 +3504,10 @@
       {
         "trade_date": "2026-10-12",
         "pct_from_baseline": -5.44
+      },
+      {
+        "trade_date": "2026-10-13",
+        "pct_from_baseline": -5.35
       }
     ],
     "csi300": [
@@ -4145,10 +4166,22 @@
       {
         "trade_date": "2026-10-12",
         "pct_from_baseline": -6.9
+      },
+      {
+        "trade_date": "2026-10-13",
+        "pct_from_baseline": -7.17
       }
     ]
   },
   "cash_flows": [
+    {
+      "id": "329c8268-6020-4162-b735-c58ec1e2ac6d",
+      "flow_date": "2026-10-13",
+      "kind": "withdraw",
+      "amount": 4046.0,
+      "note": "银行转取 -4046.00",
+      "created_at": "2026-10-13T05:15:27.453044+00:00"
+    },
     {
       "id": "e011d43e-02fc-471e-b052-8e19df2848a9",
       "flow_date": "2026-09-22",
@@ -4448,12 +4481,12 @@
   ],
   "cashflow_summary": {
     "total_deposit": 39709.0,
-    "total_withdraw": 18051.9,
-    "net_deposit": 21657.1,
+    "total_withdraw": 22097.9,
+    "net_deposit": 17611.1,
     "total_dividend_cash": 0,
     "total_interest": 0.13,
     "total_tax": 9.6,
-    "count": 37
+    "count": 38
   },
   "capital": {
     "series": [
@@ -5480,11 +5513,15 @@
       {
         "date": "2026-10-12",
         "value": 17399.6
+      },
+      {
+        "date": "2026-10-13",
+        "value": 17399.6
       }
     ],
     "peak": 24453.6,
     "current": 17399.6,
-    "avg": 13864.15,
+    "avg": 13877.91,
     "first_date": "2026-01-30"
   }
 }
