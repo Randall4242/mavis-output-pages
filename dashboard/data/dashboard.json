@@ -1,22 +1,22 @@
 {
   "meta": {
-    "generated_at": "2026-10-14T15:40:07+08:00",
-    "trade_date": "2026-10-14",
+    "generated_at": "2026-10-15T15:40:10+08:00",
+    "trade_date": "2026-10-15",
     "source": "supabase",
     "schema_version": 2
   },
   "summary": {
-    "floating_pnl_abs": -2499.98,
-    "floating_pnl_pct": -13.78,
+    "floating_pnl_abs": -3045.98,
+    "floating_pnl_pct": -16.79,
     "realized_pnl_abs": 668.0,
     "realized_pnl_pct": 1.87,
-    "total_pnl_abs": -1831.98,
-    "total_pnl_pct": -3.4,
-    "total_pnl_pct_net": -10.1,
+    "total_pnl_abs": -2377.98,
+    "total_pnl_pct": -4.42,
+    "total_pnl_pct_net": -13.11,
     "initial_principal": 53827.1,
     "net_invested": 18137.98,
-    "excess_csi300_pct": 4.88,
-    "excess_sh_pct": 2.64
+    "excess_csi300_pct": 4.99,
+    "excess_sh_pct": 3.12
   },
   "holdings": [
     {
@@ -24,13 +24,13 @@
       "name": "杉杉股份",
       "shares": 1400,
       "cost": 12.9557,
-      "close": 11.17,
-      "prev_close": 11.36,
-      "change_pct": -1.67,
-      "change_amount": -0.19,
-      "daily_pnl": -266.0,
-      "pnl_abs": -2499.98,
-      "pnl_pct": -13.7831
+      "close": 10.78,
+      "prev_close": 11.17,
+      "change_pct": -3.49,
+      "change_amount": -0.39,
+      "daily_pnl": -546.0,
+      "pnl_abs": -3045.98,
+      "pnl_pct": -16.7934
     }
   ],
   "closed_holdings": [
@@ -1665,6 +1665,15 @@
       "total_pct": -13.78,
       "realized_pnl": 668.0,
       "cost_basis": "real"
+    },
+    {
+      "trade_date": "2026-10-15",
+      "total_cost": 18138.0,
+      "total_mkt": 15092.0,
+      "total_pnl": -3046.0,
+      "total_pct": -16.79,
+      "realized_pnl": 668.0,
+      "cost_basis": "real"
     }
   ],
   "benchmark": {
@@ -2333,6 +2342,10 @@
       {
         "trade_date": "2026-10-14",
         "cum_pct": -3.55
+      },
+      {
+        "trade_date": "2026-10-15",
+        "cum_pct": -4.56
       }
     ],
     "sh": [
@@ -2931,6 +2944,10 @@
       {
         "trade_date": "2026-10-14",
         "pct_from_baseline": -6.19
+      },
+      {
+        "trade_date": "2026-10-15",
+        "pct_from_baseline": -7.68
       }
     ],
     "sz": [
@@ -3529,6 +3546,10 @@
       {
         "trade_date": "2026-10-14",
         "pct_from_baseline": -6.19
+      },
+      {
+        "trade_date": "2026-10-15",
+        "pct_from_baseline": -7.68
       }
     ],
     "csi300": [
@@ -4195,6 +4216,10 @@
       {
         "trade_date": "2026-10-14",
         "pct_from_baseline": -8.43
+      },
+      {
+        "trade_date": "2026-10-15",
+        "pct_from_baseline": -9.55
       }
     ]
   },
@@ -5546,11 +5571,15 @@
       {
         "date": "2026-10-14",
         "value": 17399.6
+      },
+      {
+        "date": "2026-10-15",
+        "value": 17399.6
       }
     ],
     "peak": 24453.6,
     "current": 17399.6,
-    "avg": 13891.56,
+    "avg": 13905.11,
     "first_date": "2026-01-30"
   }
 }
