@@ -5120,6 +5120,11 @@ async function renderInstallDiag(){
   try{
     const href = (document.querySelector('link[rel=manifest]')||{}).href;
     if(!href){ mErr = '页面没有 <link rel=manifest>'; }
+    else if(location.protocol === 'file:'){
+      /* 🔴 file:// 下 fetch 本地文件必被 CORS 拦 (origin 是 null) —— 浏览器还会
+         在控制台打一条 error, 把「无 JS 报错」的断言弄红。这里直接不去 fetch。 */
+      mErr = '本地文件模式 (file://), 浏览器不允许读本地 manifest';
+    }
     else{
       const res = await fetch(href, {cache:'no-store'});
       if(!res.ok) mErr = 'manifest 取不到 (HTTP ' + res.status + ')';
